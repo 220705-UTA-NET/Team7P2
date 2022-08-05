@@ -10,7 +10,7 @@ namespace JewelryStore
         
         public Review() { }
 
-        public Review(int id, int jewelry_id, int customer_id, string? content, int rating = rating)
+        public Review(int id, int jewelry_id, int customer_id, string? content, int rating)
         {
             this.id = id;
             this.jewelry_id = jewelry_id;
