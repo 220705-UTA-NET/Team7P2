@@ -23,7 +23,7 @@ namespace Project3.Model
         // The review itself, should the customer write one
         public string? Content { get; set; }
         // The rating of the item purchased made by the customer, should they rate their purchase
-        public byte? Rating { get; set; }
+        public int? Rating { get; set; }
         // The date of the review. 
         public string Review_Date { get; set; }
 
