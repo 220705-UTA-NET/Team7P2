@@ -9,29 +9,30 @@ namespace Project3.Model
     /*
      * Object representation of a Review on our site.
      * 
-     * @author Ellery R. De Jesus, Derick
+     * @author Derick Xie, Ellery De Jesus
      * @version 8-05-2022
      */
     public class Jewelry
     {
         // Product ID
-        public int Item_ID { get; set; }
+        public int id { get; set; }
         // Name of the product
-        public string Item_Name { get; set; }
+        public string name { get; set; }
         // The pricing of the product
-        public decimal Price { get; set; }
+        public decimal price { get; set; }
         // What material the product is made of
-        public string Material { get; set; }
+        public string material { get; set; }
         // What type of jewelry the product is (i.e. Is it a necklace, ring , etc.)
-        public string Item_Type { get; set; }
+        public string type { get; set; }
 
-        public Jewelry(int item_ID, string item_Name, decimal price, string material, string item_Type)
+        public Jewelry() { }
+
+        public Jewelry(int id, string name, string material, string type)
         {
-            Item_ID = item_ID;
-            Item_Name = item_Name;
-            Price = price;
-            Material = material;
-            Item_Type = item_Type;
+            this.id = id;
+            this.name = name;
+            this.material = material;
+            this.type = type;
         }
     }
 }
