@@ -1,3 +1,5 @@
+using Project3.Data;
+using System;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +9,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+string ConnectionString = await File.ReadAllTextAsync(Environment.GetEnvironmentVariable("DB-Connection"));
+builder.Services.AddSingleton<IRepository>(sp => new SQLRepository(ConnectionString, sp.GetRequiredService<ILogger<SQLRepository>>()));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
