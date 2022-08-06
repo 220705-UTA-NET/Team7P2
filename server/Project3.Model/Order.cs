@@ -23,13 +23,6 @@ namespace Project3.Model
         public int Jewelry_ID { get; set; }
         public int Item_ID { get; set; }
 
-        public Order(int order_ID, int customer_ID, string order_Date, int jewelry_ID, int item_ID)
-        {
-            Order_ID = order_ID;
-            Customer_ID = customer_ID;
-            Order_Date = order_Date;
-            Jewelry_ID = jewelry_ID;
-            Item_ID = item_ID;
-        }
+        public Order() { }
     }
 }

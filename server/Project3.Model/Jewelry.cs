@@ -25,13 +25,6 @@ namespace Project3.Model
         // What type of jewelry the product is (i.e. Is it a necklace, ring , etc.)
         public string Item_Type { get; set; }
 
-        public Jewelry(int item_ID, string item_Name, decimal price, string material, string item_Type)
-        {
-            Item_ID = item_ID;
-            Item_Name = item_Name;
-            Price = price;
-            Material = material;
-            Item_Type = item_Type;
-        }
+        public Jewelry() { }
     }
 }
