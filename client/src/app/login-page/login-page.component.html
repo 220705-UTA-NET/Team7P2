@@ -1,1 +1,20 @@
-<p>{{test}}</p>
+<div class="landing-page-background">
+    <main class="container-login">
+        <h1>All That Glitters is Gold</h1>
+        <div class="title-divider"></div>
+        <p>Find the perfect piece to flaunt who you are</p>
+        <form class="form-login" (submit)="authenticateUser()" [formGroup]="loginData">
+            <div class="wrapper-label-input">
+                <label [ngClass]="{'usernameLabelShift': usernameLabelShift}">Username</label>
+                <input type="text" (focus)="shiftLabel('username')" formControlName="username"> 
+            </div>
+
+            <div class="wrapper-label-input">
+                <label [ngClass]="{'passwordLabelShift': passwordLabelShift}">Password</label>
+                <input type="password" (focus)="shiftLabel('password')" formControlName="password">
+            </div>
+            <button type="submit">Sign in</button>
+            <button type="button">New? Create an account</button>
+        </form>
+    </main>
+</div>
