@@ -27,14 +27,6 @@ namespace Project3.Model
         // The date of the review. 
         public string Review_Date { get; set; }
 
-        public Review(int reviews_ID, int customer_ID, int item_ID, string? content, byte? rating, string review_Date)
-        {
-            Reviews_ID = reviews_ID;
-            Customer_ID = customer_ID;
-            Item_ID = item_ID;
-            Content = content;
-            Rating = rating;
-            Review_Date = review_Date;
-        }
+        public Review() { }
     }
 }

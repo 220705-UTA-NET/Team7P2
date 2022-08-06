@@ -17,11 +17,6 @@
         // The customer's shipping address
         public string Shipping_address { get; set; }
 
-        public Customer(int customers_ID, string cName, string shipping_address)
-        {
-            Customers_ID = customers_ID;
-            CName = cName;
-            Shipping_address = shipping_address;
-        }
+        public Customer() { }
     }
 }
