@@ -28,14 +28,38 @@ namespace Project3.Data
             _ConnectionString = connectionString;
             _logger = logger;
         }
-        public Task<List<Jewelry>> ListJewelry() { }
-        public Task<Jewelry> GetJewelry(int ItemID) { }
-        public Task<List<Review>> GetProductReviews(int ItemID) { }
-        public Task<List<Review>> GetCustomerReviews(int CustomerID) { }
-        public Task AddReview(Review review) { }
-        public Task<Customer> GetCustomer(int CustomerID) { }
-        public Task<Customer> ModifyUserProfile(string field, string value) { }
-        public Task<Order> MakePurchase(int CustomerID, int ProductID) { }
-        public Task<List<Order>> ListOrders(int CustomerID) { }
+        public async Task<List<Jewelry>> ListJewelry() {
+            List<Jewelry> jewelry = new List<Jewelry>();
+            return jewelry;
+
+        }
+        public async Task<Jewelry> GetJewelry(int ItemID) {
+            return new Jewelry();
+        }
+        public async Task<List<Review>> GetProductReviews(int ItemID) {
+            List<Review> reviews = new List<Review>();
+            return reviews;
+        }
+        public async Task<List<Review>> GetCustomerReviews(int CustomerID) {
+            List<Review> reviews = new List<Review>();
+            return reviews;
+        }
+        public async Task AddReview(Review review) { }
+        public async Task<Customer> GetCustomer(int CustomerID) {
+            Customer customer = new Customer();
+            return customer;
+        }
+        public async Task<Customer> ModifyUserProfile(string field, string value) {
+            Customer customer = new Customer();
+            return customer;
+        }
+        public async Task<Order> MakePurchase(int CustomerID, int ProductID) {
+            Order order = new Order();
+            return order;
+        }
+        public async Task<List<Order>> ListOrders(int CustomerID) {
+            List<Order> orders = new List<Order>();
+            return orders;
+        }
     }
 }
