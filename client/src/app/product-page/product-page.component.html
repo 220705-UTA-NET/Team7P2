@@ -1,1 +1,45 @@
-<p>product-page works!</p>
+<div class="product-page-background">
+    <!-- logo, cart & account -->
+    <header class="container-navbar">
+        <h1>All That Glitters is Gold</h1>
+        <div class="container-cart-user">
+            <img src="/assets/images/products/cart-shopping-solid.svg" alt="cart" class="cart-icon">
+            <img src="/assets/images/products/user-solid.svg" alt="user-profile" class="user-icon">
+        </div>
+    </header>
+    <!-- display list of products -->
+    <main class="container-products">
+        <div *ngFor="let product of products;" class="container-single-product">
+            <!-- image for testing only -->
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC-uPVLJimMVmuMaIvuspIGDIDEAa8XOmdjw&usqp=CAU" alt="{{product.name}}-img">
+            <h3>{{product.name}}</h3>
+            <p class="price">${{product.price}}</p>
+            <div class="container-type-material">
+                <p>{{product.type}}</p>
+                |
+                <p>{{product.material}}</p>
+            </div>
+        </div>
+    </main>
+    <!-- filters -->
+    <aside class="container-filters">
+        <h2>Filter by...</h2>
+        <ul class="container-type">
+            <h3>Type</h3>
+            <p>Ring</p>
+            <p>Necklace</p>
+            <p>Earrings</p>
+            <p>Bracelet</p>
+        </ul>
+        <ul class="container-material">
+            <h3>Material</h3>
+            <p>Gold</p>
+            <p>Silver</p>
+            <p>Platinum</p>
+        </ul>
+    </aside>
+    <!-- cart modal -->
+    <section></section>
+    <!-- user profile modal -->
+    <section></section>
+</div>
