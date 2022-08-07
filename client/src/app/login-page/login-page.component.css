@@ -1,3 +1,7 @@
+button {
+    cursor: pointer;
+}
+
 .landing-page-background {
     background-color: rgb(45, 45, 45);
     width: 100vw;
@@ -94,4 +98,126 @@
     border-radius: 5px;
     margin: auto;
     font-size: 1.15rem;
+    padding: 10px;
+}
+
+.btn-sign-in {
+    transition: linear all 0.1s;
+    background-color: goldenrod;
+    color: white;
+}
+
+.btn-sign-in:hover {
+    transition: linear all 0.1s;
+    transform: scale(1.1);
+}
+
+.btn-sign-in:active {
+    transition: linear all 0.1s;
+    transform: scale(0.95);
+}
+
+.btn-create-new {
+    transition: linear all 0.2s;
+    background-color: transparent;
+    color: goldenrod;
+    font-weight: 900;
+}
+
+.btn-create-new:hover {
+    transition: linear all 0.2s;
+    color: rgb(43, 42, 42);
+}
+
+.user-creation-modal-background {
+    position: absolute;
+    background-color: rgb(54, 54, 54, 0.9);
+    width: 100%;
+    height: 100%;
+}
+
+.user-creation-modal {
+    background-color: white;
+    width: 30%;
+    margin: 10rem auto auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.user-creation-modal img {
+    transition: linear all 0.2;
+    position: absolute;
+    background-color: transparent;
+    height: 32px;
+    width: 32px;
+    cursor: pointer;
+    margin-top: -250px;
+    margin-left: 420px;
+    filter: invert(77%) sepia(87%) saturate(1460%) hue-rotate(345deg) brightness(90%) contrast(88%);
+}
+
+.user-creation-modal h2 {
+    color: goldenrod;
+    font-size: 2rem;
+    padding-top: 1rem;
+}
+
+.form-user-creation {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-bottom: 2rem;
+}
+
+.form-user-creation input {
+    height: 2.15rem;
+    font-size: 1.25rem;
+    width: 50%;
+    margin: auto;
+    text-indent: 5px;
+    border: none;
+    border-bottom: 1px solid black;
+}
+
+.form-user-creation button {
+    transition: linear all 0.2s;
+    height: 2.15rem;
+    font-size: 1.15rem;
+    width: 5rem;
+    margin: auto;
+    border: none;
+    background-color: goldenrod;
+    color: white;
+    border-radius: 5px;
+}
+
+.form-user-creation button:hover {
+    transition: linear all 0.1s;
+    transform: scale(1.1);
+}
+
+.form-user-creation button:active {
+    transition: linear all 0.1s;
+    transform: scale(0.95);
+}
+
+.modal-hide {
+    display: none;
+}
+
+.modal-display {
+    display: block;
+}
+
+.hide-password-error {
+    display: none;
+}
+
+.display-password-error {
+    color: rgb(215, 10, 10);
+    display: block;
 }
