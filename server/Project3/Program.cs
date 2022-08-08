@@ -9,7 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-string ConnectionString = Environment.GetEnvironmentVariable("DB-Connection", EnvironmentVariableTarget.User);
+string ConnectionString = System.Environment.GetEnvironmentVariable("sql_connection_string") ?? throw new ArgumentNullException(nameof(ConnectionString));
 
 builder.Services.AddSingleton<IRepository>(sp => new SQLRepository(ConnectionString, sp.GetRequiredService<ILogger<SQLRepository>>()));
 var app = builder.Build();
