@@ -89,8 +89,11 @@ namespace Project3.Data
             Customer customer = new Customer();
             return customer;
         }
-        public async Task<Customer> ModifyUserProfile(string field, string value) {
+        public async Task<Customer> ModifyCustomerProfile(int CustomerID, string field, string value) {
             Customer customer = new Customer();
+            return customer;
+        }
+        public async Task<Customer> AddCustomer(Customer customer) {
             return customer;
         }
         public async Task<Order> MakePurchase(int CustomerID, int ProductID) {
