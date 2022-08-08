@@ -1,6 +1,11 @@
 
+/*
 
-
+drop table J_T;
+drop table Reviews;
+Drop table Orders;
+drop table Customers;
+DROP TABLE Jewelry;
 
 
 CREATE TABLE Customers   
@@ -24,6 +29,7 @@ Item_name NVARCHAR(16) NOT NULL,
 Price Float NOT NULL,    
 Material NVARCHAR(30) NOT NULL,    
 item_Type NVARCHAR(30) NOT NULL,
+Img_url NVARCHAR(200) NULL,
 PRIMARY KEY (Item_ID));
 
 
@@ -48,7 +54,4 @@ rating BIT NULL,
 PRIMARY KEY (Reviews_ID),
 FOREIGN KEY (Customer_ID) REFERENCES Customers(Customer_ID),
 FOREIGN KEY (Item_ID) REFERENCES Jewelry(Item_ID));
-
-SELECT * FROM Orders
-JOIN J_T ON Orders.Customer_ID=J_T.Customers_ID
-WHERE Customer_ID = 1;
+*/
