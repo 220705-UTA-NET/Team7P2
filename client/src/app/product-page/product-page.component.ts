@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 // for testing only
-import testingJson from "./testJson";
+import {testJson, cart} from "./testJson";
 
 @Component({
   selector: 'app-product-page',
@@ -10,13 +10,39 @@ import testingJson from "./testJson";
 
 export class ProductPageComponent {
   // for testing item placement only
-  products = testingJson;
+  products = testJson;
+  cart = cart;
+  cartPriceTotal = this.cartTotal();
 
-  // will need listeners for clicks to:
+  cartTotal() {
+    let cartPriceTotal = 0;
+    cart.forEach(cartItem => cartPriceTotal += cartItem.price)
+    return cartPriceTotal;
+  }
+
+  cartToggle = false;
+  toggleCartModal() {
+    this.cartToggle = !this.cartToggle;
+  }
+  
+  removeCartItem(itemName: any) {
+    let itemIndex = cart.indexOf(itemName);
+    cart.splice(itemIndex, 1);
+  }
+
+  // to do:
   // -------------------------------------
-  // profile (pop up modal with username + order history)
-  // cart (create modal with current cart items + display current number)
-  // filters (re-query for items)
-  // item (simply add to cart)
+    // cart
+      // - onClick delete item from cart
 
+
+
+
+    // item (simply add to cart)
+
+    // filters (re-query for items)
+
+    // profile (pop up modal with username + order history)
+    
+    // allow for infinite scroll OR pagination
 }
