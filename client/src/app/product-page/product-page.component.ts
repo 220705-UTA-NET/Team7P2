@@ -24,6 +24,10 @@ export class ProductPageComponent {
   toggleCartModal() {
     this.cartToggle = !this.cartToggle;
   }
+
+  addToCart(product: any) {
+    cart.push(product);
+  }
   
   removeCartItem(itemName: any) {
     let itemIndex = cart.indexOf(itemName);
