@@ -27,12 +27,13 @@ namespace Project3.Model
 
         public Jewelry() { }
 
-        public Jewelry(int id, string name, string material, string type)
+        public Jewelry(int id, string name, decimal price, string material, string type)
         {
             this.id = id;
             this.name = name;
             this.material = material;
             this.type = type;
+            this.price = price;
         }
     }
 }

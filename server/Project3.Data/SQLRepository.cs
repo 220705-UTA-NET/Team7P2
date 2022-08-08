@@ -2,6 +2,7 @@
 using Project3.Model;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,25 @@ namespace Project3.Data
         }
         public async Task<List<Jewelry>> ListJewelry() {
             List<Jewelry> jewelry = new List<Jewelry>();
+
+            using SqlConnection connection = new(_ConnectionString);
+            await connection.OpenAsync();
+
+            string cmdText = "SELECT * FROM Jewelry;";
+
+            SqlCommand cmd = new SqlCommand(cmdText, connection);
+
+            using SqlDataReader reader = cmd.ExecuteReader();
+
+            Jewelry NewJewelry;
+            while (await reader.ReadAsync())
+            {
+                NewJewelry = new Jewelry(reader.GetInt32(0), reader.GetString(1), (decimal)reader.GetFloat(2),
+                                         reader.GetString(3), reader.GetString(4));
+                jewelry.Add(NewJewelry);
+            }
+
+            await connection.CloseAsync();
             return jewelry;
 
         }
