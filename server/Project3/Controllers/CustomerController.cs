@@ -42,7 +42,7 @@ namespace Project3.Controllers
         {
             try
             {
-                await _repo.ModifyUserProfile(CustomerID, field, value);
+                await _repo.ModifyCustomerProfile(CustomerID, field, value);
                 _logger.LogInformation("Modifying Customer...");
                 return StatusCode(201);
             }
