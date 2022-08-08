@@ -19,7 +19,7 @@ namespace Project3.Controllers
         }
 
         [HttpGet("/orders{user_id}")]
-        public async Task<ActionResult<List<Order>>> ListOrders(int user_id)
+        public async Task<ActionResult<List<Order>>> ListOrders([FromRoute]int user_id)
         {
             List<Order> orders;
             

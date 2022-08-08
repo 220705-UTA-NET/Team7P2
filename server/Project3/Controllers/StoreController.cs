@@ -36,7 +36,7 @@ namespace Project3.Controllers
         }
 
         [HttpGet("/store{product_id}")]
-        public async Task<ActionResult<Jewelry>> GetJewelry(int product_id)
+        public async Task<ActionResult<Jewelry>> GetJewelry([FromRoute]int product_id)
         {
             Jewelry jewelry;
             try
