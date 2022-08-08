@@ -7,50 +7,53 @@ namespace Project3.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StoreController : ControllerBase
+    public class OrdersController : ControllerBase
     {
         private readonly ILogger<StoreController> _logger;
         private readonly IRepository _repo;
 
-        public StoreController(ILogger<StoreController> logger, IRepository repo)
+        public OrdersController(ILogger<StoreController> logger, IRepository repo)
         {
             _logger = logger;
             _repo = repo;
         }
 
-        [HttpGet("/store")]
-        public async Task<ActionResult<List<Jewelry>>> GetJewelryList()
+        [HttpGet("/orders{user_id}")]
+        public async Task<ActionResult<List<Order>>> ListOrders(int user_id)
         {
-            List<Jewelry> list = new List<Jewelry>();
+            List<Order> orders;
+            
             try
             {
-                list = await _repo.ListJewelry();
-                _logger.LogInformation("Retrieving Jewelry List ...");
+
+                orders = await _repo.ListOrders(user_id);
+                _logger.LogInformation($"Giving list of orders for user #{user_id} ...");
             }catch(Exception e)
             {
                 // Minor error checking for now
                 _logger.LogError(e, e.Message);
                 return StatusCode(500);
             }
-            return list;
+
+            return orders;
         }
 
-        [HttpGet("/store{product_id}")]
-        public async Task<ActionResult<Jewelry>> GetJewelry(int product_id)
+        [HttpPost("/orders{product_id}&{customer_id}")]
+        public async Task<ActionResult<Order>> MakePurchase(int product_id, int customer_id)
         {
-            Jewelry jewelry;
+            Order order;
             try
             {
-                jewelry = await _repo.GetJewelry(product_id);
-                _logger.LogInformation($"Getting Jewelry #{product_id} ...");
-
+                order = await _repo.MakePurchase(customer_id, product_id);
+                _logger.LogInformation($"Customer #{customer_id} purchased Product #{product_id} ...");
             }catch(Exception e)
             {
                 // Minor error checking for now
                 _logger.LogError(e, e.Message);
                 return StatusCode(500);
             }
-            return jewelry;
+
+            return order;
         }
     }
 }

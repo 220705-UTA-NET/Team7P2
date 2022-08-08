@@ -49,3 +49,6 @@ PRIMARY KEY (Reviews_ID),
 FOREIGN KEY (Customer_ID) REFERENCES Customers(Customer_ID),
 FOREIGN KEY (Item_ID) REFERENCES Jewelry(Item_ID));
 
+SELECT * FROM Orders
+JOIN J_T ON Orders.Customer_ID=J_T.Customers_ID
+WHERE Customer_ID = 1;
