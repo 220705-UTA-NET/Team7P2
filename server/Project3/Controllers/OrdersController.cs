@@ -9,10 +9,10 @@ namespace Project3.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        private readonly ILogger<StoreController> _logger;
+        private readonly ILogger<OrdersController> _logger;
         private readonly IRepository _repo;
 
-        public OrdersController(ILogger<StoreController> logger, IRepository repo)
+        public OrdersController(ILogger<OrdersController> logger, IRepository repo)
         {
             _logger = logger;
             _repo = repo;
