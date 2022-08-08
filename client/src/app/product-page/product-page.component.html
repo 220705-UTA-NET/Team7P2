@@ -3,7 +3,8 @@
     <header class="container-navbar">
         <h1>All That Glitters is Gold</h1>
         <div class="container-cart-user">
-            <img src="/assets/images/products/cart-shopping-solid.svg" alt="cart" class="cart-icon">
+            <img src="/assets/images/products/cart-shopping-solid.svg" alt="cart" class="cart-icon" (click)="toggleCartModal()">
+            <span class="cart-count">{{cart.length}}</span>
             <img src="/assets/images/products/user-solid.svg" alt="user-profile" class="user-icon">
         </div>
     </header>
@@ -39,7 +40,17 @@
         </ul>
     </aside>
     <!-- cart modal -->
-    <section></section>
+    <section class="modal-cart-background" [ngClass]="{'display-modal': cartToggle}">
+        <div class="modal-cart">
+            <img src="/assets/images/login/x-solid.svg" alt="close-icon" class="close-icon" (click)="toggleCartModal()">
+            <h4>In your cart:</h4>
+            <div *ngFor="let cartItem of cart" class="container-cart-single" (click)="removeCartItem(cartItem)">
+                <p class="cart-item">{{cartItem.name}}</p>
+                <p>${{cartItem.price}}</p>
+            </div>
+            <p class="price-total">${{cartPriceTotal}}</p>
+        </div>
+    </section>
     <!-- user profile modal -->
-    <section></section>
+    <section class="modal-profile"></section>
 </div>
