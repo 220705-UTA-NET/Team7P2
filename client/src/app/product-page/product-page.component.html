@@ -5,7 +5,8 @@
         <div class="container-cart-user">
             <img src="/assets/images/products/cart-shopping-solid.svg" alt="cart" class="cart-icon" (click)="toggleCartModal()">
             <span class="cart-count">{{cart.length}}</span>
-            <img src="/assets/images/products/user-solid.svg" alt="user-profile" class="user-icon">
+
+            <img src="/assets/images/products/user-solid.svg" alt="user-profile" class="user-icon" (click)="toggleProfileModal()">
         </div>
     </header>
     <!-- display list of products -->
@@ -27,21 +28,21 @@
         <h2>Filter by...</h2>
         <ul class="container-type">
             <h3>Type</h3>
-            <p>Ring</p>
-            <p>Necklace</p>
-            <p>Earrings</p>
-            <p>Bracelet</p>
+            <p (click)="filterType('ring'); activeFilter($event)">Ring</p>
+            <p (click)="filterType('necklace'); activeFilter($event)">Necklace</p>
+            <p (click)="filterType('earrings'); activeFilter($event)">Earrings</p>
+            <p (click)="filterType('bracelet'); activeFilter($event)">Bracelet</p>
         </ul>
         <ul class="container-material">
             <h3>Material</h3>
-            <p>Gold</p>
-            <p>Silver</p>
-            <p>Platinum</p>
+            <p (click)="filterMaterial('gold'); activeFilter($event)">Gold</p>
+            <p (click)="filterMaterial('silver'); activeFilter($event)">Silver</p>
+            <p (click)="filterMaterial('platinum'); activeFilter($event)">Platinum</p>
         </ul>
     </aside>
     <!-- cart modal -->
-    <section class="modal-cart-background" [ngClass]="{'display-modal': cartToggle}">
-        <div class="modal-cart">
+    <section class="modal-background" [ngClass]="{'display-modal': cartToggle}">
+        <div class="modal">
             <img src="/assets/images/login/x-solid.svg" alt="close-icon" class="close-icon" (click)="toggleCartModal()">
             <h4>In your cart:</h4>
             <div *ngFor="let cartItem of cart" class="container-cart-single" (click)="removeCartItem(cartItem)">
@@ -52,5 +53,13 @@
         </div>
     </section>
     <!-- user profile modal -->
-    <section class="modal-profile"></section>
+    <section class="modal-background" [ngClass]="{'display-modal': profileModalToggle}">
+        <div class="modal">
+            <img src="/assets/images/login/x-solid.svg" alt="close-icon" class="close-icon" (click)="toggleProfileModal()">
+
+            <h4 class="user-name">{{userProfile}}</h4>
+            <button type="button" class="btn-order-history" (click)="viewOrderHistory()">View Order History</button>
+            <button type="button" class="btn-logout" (click)="logout()">Logout</button>
+        </div>
+    </section>
 </div>

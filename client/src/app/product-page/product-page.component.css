@@ -144,12 +144,17 @@
     transform: translateX(5px);
 }
 
+.container-filters p.active-filter {
+    color: rgb(255, 183, 0);
+    font-weight: 900;
+}
+
 .container-type {
     margin-top: 2rem;
 }
 
 /* cart modal */
-.modal-cart-background {
+.modal-background {
     display: none;
     position: fixed;
     height: 100vh;
@@ -161,7 +166,7 @@
     display: block;
 }
 
-.modal-cart {
+.modal {
     margin: 4rem 25px auto auto;
     background-color: white;
     display: flex;
@@ -170,6 +175,31 @@
     text-align: center;
     border-radius: 5px;
     gap: 0.5rem;
+}
+
+.modal button {
+    transition: linear all 0.2s;
+    width: 50%;
+    border: none;
+    cursor: pointer;
+    margin: 10px auto;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.modal button:hover {
+    transition: linear all 0.2s;
+    opacity: 0.7;
+}
+
+.btn-order-history {
+    background-color: goldenrod;
+    color: black;
+}
+
+.btn-logout {
+    background-color: rgb(255, 61, 61);
+    color: black;
 }
 
 .close-icon {
@@ -212,4 +242,12 @@
 .price-total {
     font-weight: 700;
     font-size: 1.15rem;
+}
+
+.user-name {
+    font-weight: 900;
+    padding-top: 10px;
+    border-bottom: 1px solid black;
+    margin: auto;
+    width: 80%;
 }
