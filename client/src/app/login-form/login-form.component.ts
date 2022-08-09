@@ -29,16 +29,41 @@ export class LoginFormComponent {
       password : new FormControl('')
   })
 
-  authenticateUser() {
-    fetch("https://httpbin.org/post", {
-      method: 'POST',
+  // combine username & password, seperated by ; & base64 encryped
+  // send as an authorization header
+  // endpoint is /login
+  loginFailed = false;
+  async authenticateUser() {
+    let credentialBase: string = `${this.loginData.value.username}:${this.loginData.value.password}`;
+
+    // will need testing, but this may be what we need
+    let encodedString = Buffer.from(credentialBase).toString("base64");
+    console.log(encodedString)
+
+    // send request
+    const response = await fetch("https://httpbin.org/get", {
+      method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(this.loginData.value)
+        'Content-Type': 'application/json',
+        'Authorization': JSON.stringify(encodedString)
+      }
     });
 
-    this.router.navigate(["/productPage"])
+    // if 200 (user successfully logged in)
+    // parse response & determine next step
+    if (response.status === 200) {
+      console.log(response);
+      const responseBody = await response.text();
+      // const customer = JSON.parse(responseBody);
+      console.log(responseBody)
+
+    } else {
+      // let the user know that the login failed
+      console.log(`Login failed: ${response.status}`)
+      this.loginFailed = true;
+    }
+
+    // this.router.navigate(["/productPage"])
   }
 
 }

@@ -77,3 +77,9 @@ button {
     transition: linear all 0.1s;
     transform: scale(0.95);
 }
+
+.login-failed-message {
+    color: red;
+    text-align: center;
+    padding: 0.25rem auto;
+}

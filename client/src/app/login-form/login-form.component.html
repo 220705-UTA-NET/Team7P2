@@ -7,5 +7,7 @@
         <label [ngClass]="{'passwordLabelShift': passwordLabelShift}">Password</label>
         <input type="password" (focus)="shiftLabel('password')" formControlName="password">
     </div>
+    <!-- login failed message -->
+    <p class="login-failed-message" *ngIf="loginFailed">Login failed, please try again.</p>
     <button type="submit" class="btn-sign-in">Sign in</button>
 </form>
