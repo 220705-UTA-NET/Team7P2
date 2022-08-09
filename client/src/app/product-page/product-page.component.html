@@ -12,15 +12,7 @@
     <!-- display list of products -->
     <main class="container-products">
         <div *ngFor="let product of products;" class="container-single-product" (click)="addToCart(product)">
-            <!-- image for testing only -->
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC-uPVLJimMVmuMaIvuspIGDIDEAa8XOmdjw&usqp=CAU" alt="{{product.name}}-img">
-            <h3>{{product.name}}</h3>
-            <p class="price">${{product.price}}</p>
-            <div class="container-type-material">
-                <p>{{product.type}}</p>
-                |
-                <p>{{product.material}}</p>
-            </div>
+            <app-product-item [product]="product"></app-product-item>
         </div>
     </main>
     <!-- filters -->
