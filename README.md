@@ -6,12 +6,6 @@ Kadin               Joseph           Ellery         Kadin             Kadin
                     Rogers          Derick          Derick      Whoever finishes
                                      Rogers         Joseph
 
-## To-do
-1. Decide on a final project idea & put together proposal
-2. Create Database
-    - Can work on CRUD applications & API concurrently, once the data structure
-    is set
-
 ## Live link to proposal (work in progress)
 https://docs.google.com/document/d/1YOrJzFbNLmRTkkXQ_gYmX-Trm4ur2GcjxMZJE0VxAgY/edit
 
