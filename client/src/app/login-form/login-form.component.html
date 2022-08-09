@@ -1,0 +1,11 @@
+<form class="form-login" (submit)="authenticateUser()" [formGroup]="loginData">
+    <div class="wrapper-label-input">
+        <label [ngClass]="{'usernameLabelShift': usernameLabelShift}">Username</label>
+        <input type="text" (focus)="shiftLabel('username')" formControlName="username"> 
+    </div>
+    <div class="wrapper-label-input">
+        <label [ngClass]="{'passwordLabelShift': passwordLabelShift}">Password</label>
+        <input type="password" (focus)="shiftLabel('password')" formControlName="password">
+    </div>
+    <button type="submit" class="btn-sign-in">Sign in</button>
+</form>
