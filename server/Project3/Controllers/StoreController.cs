@@ -25,13 +25,32 @@ namespace Project3.Controllers
             try
             {
                 list = await _repo.ListJewelry();
-                _logger.LogInformation("Sending Jewelry List...");
+                _logger.LogInformation("Retrieving Jewelry List ...");
             }catch(Exception e)
             {
+                // Minor error checking for now
                 _logger.LogError(e, e.Message);
                 return StatusCode(500);
             }
             return list;
+        }
+
+        [HttpGet("/store{product_id}")]
+        public async Task<ActionResult<Jewelry>> GetJewelry([FromRoute]int product_id)
+        {
+            Jewelry jewelry;
+            try
+            {
+                jewelry = await _repo.GetJewelry(product_id);
+                _logger.LogInformation($"Getting Jewelry #{product_id} ...");
+
+            }catch(Exception e)
+            {
+                // Minor error checking for now
+                _logger.LogError(e, e.Message);
+                return StatusCode(500);
+            }
+            return jewelry;
         }
     }
 }

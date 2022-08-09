@@ -39,7 +39,7 @@ namespace Project3.Data
 
             SqlCommand cmd = new SqlCommand(cmdText, connection);
 
-            using SqlDataReader reader = cmd.ExecuteReader();
+            using SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
             Jewelry NewJewelry;
             while (await reader.ReadAsync())
@@ -54,6 +54,26 @@ namespace Project3.Data
 
         }
         public async Task<Jewelry> GetJewelry(int ItemID) {
+            Jewelry jewelry = new Jewelry();
+            using SqlConnection connection = new(_ConnectionString);
+            await connection.OpenAsync();
+
+            string cmdText = "SELECT * FROM Jewelry WHERE Item_ID=@ItemID;";
+
+            SqlCommand cmd = new SqlCommand(cmdText, connection);
+
+            cmd.Parameters.AddWithValue("@ItemID", ItemID);
+
+            using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+            if(await reader.ReadAsync())
+            {
+                jewelry.id = reader.GetInt32(0);
+                jewelry.name = reader.GetString(1);
+                jewelry.price = (decimal)reader.GetFloat(2);
+                jewelry.material = reader.GetString(3);
+                jewelry.type = reader.GetString(4);
+            }
+
             return new Jewelry();
         }
         public async Task<List<Review>> GetProductReviews(int ItemID) {
@@ -78,11 +98,57 @@ namespace Project3.Data
         }
         public async Task<Order> MakePurchase(int CustomerID, int ProductID) {
             Order order = new Order();
+
+            using SqlConnection connection = new(_ConnectionString);
+            await connection.OpenAsync();
+
+            string cmdText = @"";
+
             return order;
         }
         public async Task<List<Order>> ListOrders(int CustomerID) {
             List<Order> orders = new List<Order>();
+
+            using SqlConnection connection = new(_ConnectionString);
+            await connection.OpenAsync();
+
+            string cmdText = @"
+                             SELECT * FROM Orders 
+                             JOIN J_T ON Orders.Customer_ID=J_T.Customers_ID
+                             WHERE Customer_ID = @customer_id;
+                             ";
+
+            SqlCommand cmd = new SqlCommand(cmdText, connection);
+            cmd.Parameters.AddWithValue("@customer_id", CustomerID);
+
+            using SqlDataReader reader = cmd.ExecuteReader();
+
+            while(await reader.ReadAsync())
+            {
+                orders.Add(new Order(reader.GetInt32(0), reader.GetInt32(1), reader.GetDateTime(2), reader.GetInt32(6)));
+            }
+
             return orders;
+        }
+
+        public async Task<Customer> LogInCustomer(string Username, string Password)
+        {
+            Customer customer = new Customer();
+            using SqlConnection connection = new(_ConnectionString);
+            await connection.OpenAsync();
+            string cmdText = @"SELECT CU.Customer_ID, CName, Shipping_address FROM Customers AS CU
+                           JOIN Cred AS CR ON CU.Customer_ID=CR.Customer_ID
+                           WHERE userN=@Username AND Pass=@Password";
+
+            SqlCommand cmd = new SqlCommand(cmdText, connection);
+            cmd.Parameters.AddWithValue("@Username", Username);
+            cmd.Parameters.AddWithValue("@Password", Password);
+
+            using SqlDataReader reader = cmd.ExecuteReader();
+
+            if (await reader.ReadAsync()) customer = new Customer(reader.GetInt32(0), reader.GetString(1), reader.GetString(2));
+
+            return customer;
         }
     }
 }

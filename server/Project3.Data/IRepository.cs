@@ -30,7 +30,10 @@ namespace Project3.Data
         public Task<Order> MakePurchase(int CustomerID, int ProductID);
         // Lists the purchases that a customer has made
         public Task<List<Order>> ListOrders(int CustomerID);
-        
+        // Retrieve the Customer with the specified Username
+        public Task<Customer> LogInCustomer(string UserName, string Password);
+
+
 
     }
 }
