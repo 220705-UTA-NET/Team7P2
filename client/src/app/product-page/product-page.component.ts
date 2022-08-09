@@ -50,21 +50,6 @@ export class ProductPageComponent {
   // move user back to login page & reset the session user
   logout() {}
 
-  activeFilter(event: any) {
-    let clickedFilter = event.target;
-    clickedFilter.classList.toggle("active-filter");
-  }
-
-  filterType(type: string) {
-    // inject type into url
-      fetch("");
-  }
-
-  filterMaterial(type: string) {
-    // inject material into url
-    fetch("");
-  }
-
   // allow for infinite scroll OR pagination
   // will be tied to the fetchProducts endpoint
   // grab perhaps first 20 columns, save what column # we are at
