@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router"
+
 // for testing only
-import {testJson, cart} from "./testJson";
+import {testJson, cart} from "../testJson";
+// testing only
 
 @Component({
   selector: 'app-product-page',
@@ -14,67 +16,25 @@ export class ProductPageComponent {
   // real data will likely be created in the constructor
   products = testJson;
   cart = cart;
-  cartPriceTotal = this.cartTotal();
-  userProfile = this.setUserProfile();
   // testing only
 
-  constructor(private router: Router) {
+  constructor(private router: Router) {}
 
-  }
-
-  cartTotal() {
-    let cartPriceTotal = 0;
-    cart.forEach(cartItem => cartPriceTotal += cartItem.price)
-    return cartPriceTotal;
-  }
-
-  cartToggle = false;
+  // for opening the modal to the cart
+  // the change in this variable is tracked in cart component, which reacts accordingly
+  openModalCommand = false;
   toggleCartModal() {
-    this.cartToggle = !this.cartToggle;
+    this.openModalCommand = !this.openModalCommand;
   }
 
+  // adds clicked tile to cart
   addToCart(product: any) {
     cart.push(product);
   }
-  
-  removeCartItem(itemName: any) {
-    let itemIndex = cart.indexOf(itemName);
-    cart.splice(itemIndex, 1);
-  }
 
-  makePurchase() {
-    // send cart data to checkout page
-    this.router.navigate(["/checkout"]);
-  }
-
-  setUserProfile() {
-    return "testUser";
-  }
-
-  profileModalToggle = false;
+  openProfileModalCommand = false;
   toggleProfileModal() {
-    this.profileModalToggle = !this.profileModalToggle;
-  }
-
-  // fetch order history from API
-  viewOrderHistory() {}
-
-  // move user back to login page & reset the session user
-  logout() {}
-
-  activeFilter(event: any) {
-    let clickedFilter = event.target;
-    clickedFilter.classList.toggle("active-filter");
-  }
-
-  filterType(type: string) {
-    // inject type into url
-      fetch("");
-  }
-
-  filterMaterial(type: string) {
-    // inject material into url
-    fetch("");
+    this.openProfileModalCommand = !this.openProfileModalCommand;
   }
 
   // allow for infinite scroll OR pagination

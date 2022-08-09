@@ -19,4 +19,4 @@ COPY --from=node /app/dist/client /usr/share/nginx/html
 # EXPOSE 4200
 
 # CMD ng serve --host 0.0.0.0
-# CMD ng serve
+# CMD ng build
