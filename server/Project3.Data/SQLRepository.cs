@@ -130,5 +130,25 @@ namespace Project3.Data
 
             return orders;
         }
+
+        public async Task<Customer> LogInCustomer(string Username, string Password)
+        {
+            Customer customer = new Customer();
+            using SqlConnection connection = new(_ConnectionString);
+            await connection.OpenAsync();
+            string cmdText = @"SELECT CU.Customer_ID, CName, Shipping_address FROM Customers AS CU
+                           JOIN Cred AS CR ON CU.Customer_ID=CR.Customer_ID
+                           WHERE userN=@Username AND Pass=@Password";
+
+            SqlCommand cmd = new SqlCommand(cmdText, connection);
+            cmd.Parameters.AddWithValue("@Username", Username);
+            cmd.Parameters.AddWithValue("@Password", Password);
+
+            using SqlDataReader reader = cmd.ExecuteReader();
+
+            if (await reader.ReadAsync()) customer = new Customer(reader.GetInt32(0), reader.GetString(1), reader.GetString(2));
+
+            return customer;
+        }
     }
 }
