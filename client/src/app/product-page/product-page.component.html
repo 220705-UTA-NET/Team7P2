@@ -40,19 +40,8 @@
             <p (click)="filterMaterial('platinum'); activeFilter($event)">Platinum</p>
         </ul>
     </aside>
-    <!-- cart modal -->
-    <section class="modal-background" [ngClass]="{'display-modal': cartToggle}">
-        <div class="modal">
-            <img src="/assets/images/login/x-solid.svg" alt="close-icon" class="close-icon" (click)="toggleCartModal()">
-            <h4>In your cart:</h4>
-            <div *ngFor="let cartItem of cart" class="container-cart-single" (click)="removeCartItem(cartItem)">
-                <p class="cart-item">{{cartItem.name}}</p>
-                <p>${{cartItem.price}}</p>
-            </div>
-            <p class="price-total">${{cartPriceTotal}}</p>
-            <button type="button" class="btn-cart-purchase" (click)="makePurchase()">Purchase</button>
-        </div>
-    </section>
+    <!-- cart component -->
+    <app-cart [openModalCommand]="openModalCommand"></app-cart>
     <!-- user profile modal -->
     <section class="modal-background" [ngClass]="{'display-modal': profileModalToggle}">
         <div class="modal">
