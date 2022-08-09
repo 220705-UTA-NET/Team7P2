@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
+import {Router} from "@angular/router"
+
 
 @Component({
   selector: 'app-login-page',
@@ -8,6 +10,8 @@ import {FormControl, FormGroup} from '@angular/forms';
 })
 
 export class LoginPageComponent {
+  constructor(private router: Router) {}
+
   // moves label when an input is focused, purely cosmetic
   usernameLabelShift = false;
   passwordLabelShift = false;
@@ -34,6 +38,8 @@ export class LoginPageComponent {
       },
       body: JSON.stringify(this.loginData.value)
     });
+
+    this.router.navigate(["/productPage"])
   }
 
   // open a modal that enables a user to give a username & password + password confirmation
