@@ -1,6 +1,15 @@
 
 
 
+/*
+
+drop table J_T;
+drop table Reviews;
+Drop table Orders;
+Drop table Cred;
+drop table Customers;
+DROP TABLE Jewelry;
+
 
 
 CREATE TABLE Customers   
@@ -9,6 +18,13 @@ CName NVARCHAR(16) NOT NULL,
 Shipping_address NVARCHAR(200) NOT NULL,  
 PRIMARY KEY (Customer_ID));
 
+CREATE TABLE Cred
+(Cred_ID  INT IDENTITY Not NULL UNIQUE,
+userN VARCHAR(30) Not NULL UNIQUE,
+Pass VARCHAR(30) Not NULL UNIQUE,
+Customer_ID INT NOT NULL,
+PRIMARY KEY (Cred_ID),
+FOREIGN KEY (Customer_ID) REFERENCES Customers(Customer_ID));
 
 CREATE TABLE Orders 
 (Order_ID INT IDENTITY NOT NULL UNIQUE,    
@@ -24,6 +40,7 @@ Item_name NVARCHAR(16) NOT NULL,
 Price Float NOT NULL,    
 Material NVARCHAR(30) NOT NULL,    
 item_Type NVARCHAR(30) NOT NULL,
+Img_url NVARCHAR(200) NULL,
 PRIMARY KEY (Item_ID));
 
 
@@ -44,8 +61,8 @@ Customer_ID INT Not NULL,
 Item_ID INT NOT NULL,  
 Review_date DATETIME NOT NULL,    
 content Text NULL,    
-rating BIT NULL,
+rating TINYINT NULL,
 PRIMARY KEY (Reviews_ID),
 FOREIGN KEY (Customer_ID) REFERENCES Customers(Customer_ID),
 FOREIGN KEY (Item_ID) REFERENCES Jewelry(Item_ID));
-
+*/
