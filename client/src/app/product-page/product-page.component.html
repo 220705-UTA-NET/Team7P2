@@ -22,13 +22,5 @@
     <!-- cart component -->
     <app-cart [openModalCommand]="openModalCommand"></app-cart>
     <!-- user profile modal -->
-    <section class="modal-background" [ngClass]="{'display-modal': profileModalToggle}">
-        <div class="modal">
-            <img src="/assets/images/login/x-solid.svg" alt="close-icon" class="close-icon" (click)="toggleProfileModal()">
-
-            <h4 class="user-name">{{userProfile}}</h4>
-            <button type="button" class="btn-order-history" (click)="viewOrderHistory()">View Order History</button>
-            <button type="button" class="btn-logout" (click)="logout()">Logout</button>
-        </div>
-    </section>
+    <app-user-profile [openProfileModalCommand]="openProfileModalCommand"></app-user-profile>
 </div>

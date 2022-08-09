@@ -10,6 +10,7 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { FiltersComponent } from './filters/filters.component';
 import { ProductItemComponent } from './product-item/product-item.component';
 import { CartComponent } from './cart/cart.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { CartComponent } from './cart/cart.component';
     LoginPageComponent,
     FiltersComponent,
     ProductItemComponent,
-    CartComponent
+    CartComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
