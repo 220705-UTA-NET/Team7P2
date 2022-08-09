@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {Router} from "@angular/router"
 // for testing only
 import {testJson, cart} from "./testJson";
 
@@ -16,6 +17,10 @@ export class ProductPageComponent {
   cartPriceTotal = this.cartTotal();
   userProfile = this.setUserProfile();
   // testing only
+
+  constructor(private router: Router) {
+
+  }
 
   cartTotal() {
     let cartPriceTotal = 0;
@@ -35,6 +40,11 @@ export class ProductPageComponent {
   removeCartItem(itemName: any) {
     let itemIndex = cart.indexOf(itemName);
     cart.splice(itemIndex, 1);
+  }
+
+  makePurchase() {
+    // send cart data to checkout page
+    this.router.navigate(["/checkout"]);
   }
 
   setUserProfile() {

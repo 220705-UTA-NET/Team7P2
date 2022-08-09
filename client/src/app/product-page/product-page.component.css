@@ -244,6 +244,12 @@
     font-size: 1.15rem;
 }
 
+.btn-cart-purchase {
+    transition: linear all 0.2s;
+    background-color: goldenrod;
+    color: white;
+}
+
 .user-name {
     font-weight: 900;
     padding-top: 10px;
