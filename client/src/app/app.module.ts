@@ -11,6 +11,8 @@ import { FiltersComponent } from './filters/filters.component';
 import { ProductItemComponent } from './product-item/product-item.component';
 import { CartComponent } from './cart/cart.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { LoginFormComponent } from './login-form/login-form.component';
+import { NewUserComponent } from './new-user/new-user.component';
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     FiltersComponent,
     ProductItemComponent,
     CartComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    LoginFormComponent,
+    NewUserComponent
   ],
   imports: [
     BrowserModule,
