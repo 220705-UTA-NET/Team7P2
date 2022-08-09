@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router"
+import {ProductItemComponent} from "../product-item/product-item.component";
+import {FiltersComponent} from "../filters/filters.component";
+
 // for testing only
-import {testJson, cart} from "./testJson";
+import {testJson, cart} from "../testJson";
+// testing only
 
 @Component({
   selector: 'app-product-page',
@@ -14,37 +18,21 @@ export class ProductPageComponent {
   // real data will likely be created in the constructor
   products = testJson;
   cart = cart;
-  cartPriceTotal = this.cartTotal();
   userProfile = this.setUserProfile();
   // testing only
 
-  constructor(private router: Router) {
+  constructor(private router: Router) {}
 
-  }
-
-  cartTotal() {
-    let cartPriceTotal = 0;
-    cart.forEach(cartItem => cartPriceTotal += cartItem.price)
-    return cartPriceTotal;
-  }
-
-  cartToggle = false;
+  // for opening the modal to the cart
+  // the change in this variable is tracked in cart component, which reacts accordingly
+  openModalCommand = false;
   toggleCartModal() {
-    this.cartToggle = !this.cartToggle;
+    this.openModalCommand = !this.openModalCommand
   }
 
+  // adds clicked tile to cart
   addToCart(product: any) {
     cart.push(product);
-  }
-  
-  removeCartItem(itemName: any) {
-    let itemIndex = cart.indexOf(itemName);
-    cart.splice(itemIndex, 1);
-  }
-
-  makePurchase() {
-    // send cart data to checkout page
-    this.router.navigate(["/checkout"]);
   }
 
   setUserProfile() {
