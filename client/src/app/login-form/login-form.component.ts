@@ -41,7 +41,7 @@ export class LoginFormComponent {
     console.log(encodedString)
 
     // send request
-    const response = await fetch("https://httpbin.org/get", {
+    const response = await fetch("https://team7project2api.azurewebsites.net/login", {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
