@@ -33,5 +33,22 @@ namespace Project3.Controllers
             }
             return list;
         }
+
+        [HttpGet("/store/{filter}/{value}")]
+        public async Task<ActionResult<List<Jewelry>>> GetJewelryList([FromRoute] string filter, string value)
+        {
+            List<Jewelry> list = new List<Jewelry>();
+            try
+            {
+                list = await _repo.ListFilteredJewelry(filter, value);
+                _logger.LogInformation("Sending Filtered Jewelry List...");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                return StatusCode(500);
+            }
+            return list;
+        }
     }
 }

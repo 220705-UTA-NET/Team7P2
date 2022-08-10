@@ -44,8 +44,8 @@ namespace Project3.Data
             Jewelry NewJewelry;
             while (await reader.ReadAsync())
             {
-                NewJewelry = new Jewelry(reader.GetInt32(0), reader.GetString(1), (decimal)reader.GetFloat(2),
-                                         reader.GetString(3), reader.GetString(4));
+                NewJewelry = new Jewelry(reader.GetInt32(0), reader.GetString(1), reader.GetDouble(2),
+                                         reader.GetString(3), reader.GetString(4), reader.GetString(5));
                 jewelry.Add(NewJewelry);
             }
 
@@ -56,6 +56,46 @@ namespace Project3.Data
             return jewelry;
 
         }
+
+        public async Task<List<Jewelry>> ListFilteredJewelry(string filter, string value) {
+            List<Jewelry> jewelry = new List<Jewelry>();
+
+            using SqlConnection connection = new(_ConnectionString);
+            await connection.OpenAsync();
+
+            string cmdText = "";
+
+            switch (filter)
+            {
+                case "Material":
+                    cmdText = "SELECT * FROM Jewelry WHERE Material = @Value;";
+                    break;
+                case "item_Type":
+                    cmdText = "SELECT * FROM Jewelry WHERE item_Type = @Value;";
+                    break;
+            }
+
+            SqlCommand cmd = new SqlCommand(cmdText, connection);
+
+            cmd.Parameters.AddWithValue("@Value", value);
+
+            using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+
+            Jewelry NewJewelry;
+            while (await reader.ReadAsync())
+            {
+                NewJewelry = new Jewelry(reader.GetInt32(0), reader.GetString(1), reader.GetDouble(2),
+                                         reader.GetString(3), reader.GetString(4), reader.GetString(5));
+                jewelry.Add(NewJewelry);
+            }
+
+            await connection.CloseAsync();
+            
+            _logger.LogInformation("Executed ListFilteredJewelry, returned {0} results", jewelry.Count);
+
+            return jewelry;
+        }
+
         public async Task<Jewelry> GetJewelry(int ItemID) {
             Jewelry jewelry = new Jewelry();
 
@@ -72,8 +112,8 @@ namespace Project3.Data
 
             while (await reader.ReadAsync())
             {
-                jewelry = new Jewelry(reader.GetInt32(0), reader.GetString(1), (decimal)reader.GetFloat(2), 
-                                      reader.GetString(3), reader.GetString(4));
+                jewelry = new Jewelry(reader.GetInt32(0), reader.GetString(1), reader.GetDouble(2), 
+                                      reader.GetString(3), reader.GetString(4), reader.GetString(5));
             }
 
             _logger.LogInformation("Executed GetJewelry");
@@ -98,7 +138,7 @@ namespace Project3.Data
             while (await reader.ReadAsync())
             {
                 NewReview = new Review(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2),
-                                       reader.GetDateTime(3), reader.GetString(4), reader.GetInt32(5));
+                                       reader.GetDateTime(3), reader.GetString(4), reader.GetByte(5));
                 reviews.Add(NewReview);
             }
 
@@ -127,7 +167,7 @@ namespace Project3.Data
             while (await reader.ReadAsync())
             {
                 NewReview = new Review(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2),
-                                       reader.GetDateTime(3), reader.GetString(4), reader.GetInt32(5));
+                                       reader.GetDateTime(3), reader.GetString(4), reader.GetByte(5));
                 reviews.Add(NewReview);
             }
 
