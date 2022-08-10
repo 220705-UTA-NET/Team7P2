@@ -18,6 +18,8 @@ export class ProductPageComponent {
   cart = cart;
   // testing only
 
+  // https://team7project2api.azurewebsites.net/store for getting al jewelry
+
   constructor(private router: Router) {}
 
   // for opening the modal to the cart
@@ -41,4 +43,6 @@ export class ProductPageComponent {
   // will be tied to the fetchProducts endpoint
   // grab perhaps first 20 columns, save what column # we are at
   // fetch next 20, so on & so forth
+
+  // for fetching the initial product page, return Oninit to make the call right away
 }
