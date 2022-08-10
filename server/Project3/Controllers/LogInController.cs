@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Basic;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Project3.Data;
 using Project3.Model;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace Project3.Controllers
@@ -20,9 +24,9 @@ namespace Project3.Controllers
         }
 
         [HttpGet("/login")]
-        public async Task<ActionResult<Customer>> LogIn()
+        public async Task<ActionResult<Dictionary<string, string>>> LogIn()
         {
-            Customer customer;
+            int customerId;
             try
             {
                 // Basic Authentication For Now.
@@ -34,15 +38,48 @@ namespace Project3.Controllers
 
                 string[] cred = DString.Split(':');
 
-                customer = await _repo.LogInCustomer(cred[0], cred[1]);
+                customerId = await _repo.LogInCustomer(cred[0], cred[1]);
+
+                if (customerId != 0) {
+
+                    // May just re-direct to a different endpoint
+                    var claims = new[]
+                    {
+                        new Claim(JwtRegisteredClaimNames.Sub, $"{customerId}")
+                    };
+
+                    var secretBytes = Encoding.UTF8.GetBytes(Constants.Secret);
+                    var key = new SymmetricSecurityKey(secretBytes);
+                    var algorithm = SecurityAlgorithms.HmacSha256;
+
+                    var signingCredentials = new SigningCredentials(key, algorithm);
+                    var token = new JwtSecurityToken(
+                        Constants.Issuer,
+                        Constants.Audience,
+                        claims,
+                        DateTime.Now,
+                        DateTime.Now.AddHours(1),
+                        signingCredentials
+                        );
+                    var tokenJson = new JwtSecurityTokenHandler().WriteToken(token);
+                    Dictionary<string, string> response = new Dictionary<string, string>();
+                    response.Add("CustomerID", $"{customerId}");
+                    response.Add("Access-Token", tokenJson);
+
+                    return response;
+                }
+                else
+                {
+                    _logger.LogError("Fail sign-in attempt ...");
+                    return StatusCode(401);
+                }
 
             }catch(Exception e)
             {
                 _logger.LogError(e, e.Message);
                 return StatusCode(500);
             }
-            return customer;
-            
+           
         }
 
     }
