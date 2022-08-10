@@ -1,8 +1,13 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Router} from "@angular/router";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+
+export interface Customer {
+  id: number,
+  name: string,
+  shipping_address: string
+}
 
 @Component({
   selector: 'app-login-form',
@@ -43,32 +48,28 @@ export class LoginFormComponent {
   async authenticateUser() {
     let credentialBase: string = `${this.loginData.value.username}:${this.loginData.value.password}`;
 
-    // will need testing, but this may be what we need
     let encodedString = Buffer.from(credentialBase).toString("base64");
-    console.log(encodedString)
+    let authCredentials = `Basic ${encodedString}`;
 
-    //https://team7project2api.azurewebsites.net/login
-
-    // send request
-    const response = this.http.get("https://jsonplaceholder.typicode.com/posts/1", {
-      headers: {'Authorization': encodedString},
+    this.http.get("https://team7project2api.azurewebsites.net/login", {
+      headers: {'Authorization': authCredentials},
       observe: "response",
       responseType: "json"
     })
       .subscribe((result: any) => {
         this.loginResponse = result
-        console.log(this.loginResponse);
 
-        // if status == 200, successful login
+        // if body.id != 0, login successful
         // parse response & determine next step
-        if (this.loginResponse.status === 200) {
+        if (this.loginResponse.body.id != 0) {
           console.log('log in successful')
-          const responseBody = this.loginResponse.body;
 
-          // save response body into some variable to be used globally
-          console.log(responseBody)
+          // response body should return customer info
+          const responseBody: Customer = this.loginResponse.body;
 
-          // this.router.navigate(["/productPage"])
+          this.router.navigate(["/productPage"], {queryParams: {
+            customer:responseBody}
+          });
 
         } else {
           // let the user know that the login failed
