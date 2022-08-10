@@ -9,7 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-string ConnectionString = Environment.GetEnvironmentVariable("DB-Connection");
+string ConnectionString = await File.ReadAllTextAsync("D:/Revature/ConnectionStrings/220705-DB.txt");
 builder.Services.AddSingleton<IRepository>(sp => new SQLRepository(ConnectionString, sp.GetRequiredService<ILogger<SQLRepository>>()));
 var app = builder.Build();
 
