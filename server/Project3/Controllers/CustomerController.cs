@@ -53,7 +53,7 @@ namespace Project3.Controllers
             }
         }
 
-        [HttpPost("/customer/{CustomerID}")]
+        [HttpPost("/customer")]
         public async Task<ActionResult<Customer>> AddCustomer(Customer customer)
         {
             try

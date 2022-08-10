@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router"
-import {ProductItemComponent} from "../product-item/product-item.component";
-import {FiltersComponent} from "../filters/filters.component";
 
 // for testing only
 import {testJson, cart} from "../testJson";
@@ -18,8 +16,9 @@ export class ProductPageComponent {
   // real data will likely be created in the constructor
   products = testJson;
   cart = cart;
-  userProfile = this.setUserProfile();
   // testing only
+
+  // https://team7project2api.azurewebsites.net/store for getting al jewelry
 
   constructor(private router: Router) {}
 
@@ -27,7 +26,7 @@ export class ProductPageComponent {
   // the change in this variable is tracked in cart component, which reacts accordingly
   openModalCommand = false;
   toggleCartModal() {
-    this.openModalCommand = !this.openModalCommand
+    this.openModalCommand = !this.openModalCommand;
   }
 
   // adds clicked tile to cart
@@ -35,38 +34,15 @@ export class ProductPageComponent {
     cart.push(product);
   }
 
-  setUserProfile() {
-    return "testUser";
-  }
-
-  profileModalToggle = false;
+  openProfileModalCommand = false;
   toggleProfileModal() {
-    this.profileModalToggle = !this.profileModalToggle;
-  }
-
-  // fetch order history from API
-  viewOrderHistory() {}
-
-  // move user back to login page & reset the session user
-  logout() {}
-
-  activeFilter(event: any) {
-    let clickedFilter = event.target;
-    clickedFilter.classList.toggle("active-filter");
-  }
-
-  filterType(type: string) {
-    // inject type into url
-      fetch("");
-  }
-
-  filterMaterial(type: string) {
-    // inject material into url
-    fetch("");
+    this.openProfileModalCommand = !this.openProfileModalCommand;
   }
 
   // allow for infinite scroll OR pagination
   // will be tied to the fetchProducts endpoint
   // grab perhaps first 20 columns, save what column # we are at
   // fetch next 20, so on & so forth
+
+  // for fetching the initial product page, return Oninit to make the call right away
 }

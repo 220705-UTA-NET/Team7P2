@@ -3,31 +3,8 @@
         <h1>All That Glitters is Gold</h1>
         <div class="title-divider"></div>
         <p>Find the perfect piece to flaunt who you are</p>
-        <form class="form-login" (submit)="authenticateUser()" [formGroup]="loginData">
-            <div class="wrapper-label-input">
-                <label [ngClass]="{'usernameLabelShift': usernameLabelShift}">Username</label>
-                <input type="text" (focus)="shiftLabel('username')" formControlName="username"> 
-            </div>
-
-            <div class="wrapper-label-input">
-                <label [ngClass]="{'passwordLabelShift': passwordLabelShift}">Password</label>
-                <input type="password" (focus)="shiftLabel('password')" formControlName="password">
-            </div>
-            <button type="submit" class="btn-sign-in">Sign in</button>
-            <button type="button" (click)="toggleCreationModal()" class="btn-create-new">New? Create an account</button>
-        </form>
+        <app-login-form></app-login-form>
+        <button type="button" (click)="toggleCreationModal()" class="btn-create-new">New? Create an account</button>
     </main>
-    <section class="user-creation-modal-background" [ngClass]="{'modal-display ' : displayModal}" class="modal-hide user-creation-modal-background">
-        <div class="user-creation-modal">
-            <img src="/assets/images/login/x-solid.svg" alt="close-icon" (click)="toggleCreationModal()">
-            <h2>Create your account</h2>
-            <form class="form-user-creation" (submit)="createUserAccount($event)" [formGroup]="userCreationData">
-                <input type="text" placeholder="username" formControlName="username">
-                <input type="password" placeholder="password" formControlName="password">
-                <input type="password" placeholder="re-type password" (change)="checkPasswordMatch()" formControlName="rePassword">
-                <p [ngClass]="{'display-password-error' : displayPasswordError, 'hide-password-error' : !displayPasswordError}">Passwords do not match</p>
-                <button type="submit">Create</button>
-            </form>
-        </div>
-    </section>
+    <app-new-user [creationModal]="creationModal"></app-new-user>
 </div>
