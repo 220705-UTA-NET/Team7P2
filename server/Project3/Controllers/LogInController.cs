@@ -58,7 +58,8 @@ namespace Project3.Controllers
                         Constants.Audience,
                         claims,
                         DateTime.Now,
-                        DateTime.Now.AddHours(1),
+                        // For now, the token will last for a day. Once refresh tokens are included, this will be shorten down.
+                        DateTime.Now.AddDays(1),
                         signingCredentials
                         );
                     var tokenJson = new JwtSecurityTokenHandler().WriteToken(token);
@@ -70,7 +71,7 @@ namespace Project3.Controllers
                 }
                 else
                 {
-                    _logger.LogError("Fail sign-in attempt ...");
+                    _logger.LogError("Failed sign-in attempt ...");
                     return StatusCode(401);
                 }
 

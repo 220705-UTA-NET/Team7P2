@@ -1,12 +1,9 @@
 # Team7_P2
+                              
+## Daily Standup Notes
+https://docs.google.com/document/d/1VxzTVP910fRPC32Lse5oV17omZ7-3FG038kQav2Ed9k/edit
 
-## Team Breakdown
-**DevOps**      **Database**        **API**     **Frontend**        **Testing**
-Kadin               Joseph           Ellery         Kadin             Kadin
-                    Rogers          Derick          Derick      Whoever finishes
-                                     Rogers         Joseph
-
-## Live link to proposal (work in progress)
+## Live link to proposal
 https://docs.google.com/document/d/1YOrJzFbNLmRTkkXQ_gYmX-Trm4ur2GcjxMZJE0VxAgY/edit
 
 ## Batch Excel Sheet

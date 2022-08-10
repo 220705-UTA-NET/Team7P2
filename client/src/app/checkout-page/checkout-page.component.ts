@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router"
+
 // for testing only
-import {testJson, cart} from "../product-page/testJson";
+import {testJson, cart} from "../testJson";
 
 @Component({
   selector: 'app-checkout-page',
@@ -9,9 +10,7 @@ import {testJson, cart} from "../product-page/testJson";
   styleUrls: ['./checkout-page.component.css']
 })
 export class CheckoutPageComponent {
-  constructor(private router: Router) {
-
-  }
+  constructor(private router: Router) {}
 
   products = testJson;
   cart = cart;
@@ -26,9 +25,10 @@ export class CheckoutPageComponent {
   // send request to Stripe API
   // set up confirmation modal
   confirmationModal = false;
-  makePurchase() {
-    // send request to Stripe API
-    fetch("");
+  async makePurchase() {
+
+    // make request
+    // fetch("")
 
     this.confirmationModal = !this.confirmationModal;
   }

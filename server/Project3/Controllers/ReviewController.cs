@@ -20,7 +20,7 @@ namespace Project3.Controllers
             _repo = repo;
         }
 
-        [HttpGet("/review/{ItemID}")]
+        [HttpGet("/review/item/{ItemID}")]
         public async Task<ActionResult<List<Review>>> GetProductReviews([FromRoute] int ItemID)
         {
             List<Review> list = new List<Review>();
@@ -36,7 +36,7 @@ namespace Project3.Controllers
             return list;
         }
 
-        [HttpGet("/review/{CustomerID}")]
+        [HttpGet("/review/customer/{CustomerID}")]
         public async Task<ActionResult<List<Review>>> GetCustomerReviews([FromRoute] int CustomerID)
         {
             List<Review> list = new List<Review>();
