@@ -25,9 +25,10 @@ namespace Project3.Controllers
             try
             {
                 list = await _repo.ListJewelry();
-                _logger.LogInformation("Sending Jewelry List...");
+                _logger.LogInformation("Retrieving Jewelry List ...");
             }catch(Exception e)
             {
+                // Minor error checking for now
                 _logger.LogError(e, e.Message);
                 return StatusCode(500);
             }

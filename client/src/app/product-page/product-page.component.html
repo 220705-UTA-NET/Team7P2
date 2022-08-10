@@ -1,1 +1,26 @@
-<p>product-page works!</p>
+<div class="product-page-background">
+    <!-- logo, cart & account -->
+    <header class="container-navbar">
+        <h1>All That Glitters is Gold</h1>
+        <div class="container-cart-user">
+            <img src="/assets/images/products/cart-shopping-solid.svg" alt="cart" class="cart-icon" (click)="toggleCartModal()">
+            <span class="cart-count">{{cart.length}}</span>
+
+            <img src="/assets/images/products/user-solid.svg" alt="user-profile" class="user-icon" (click)="toggleProfileModal()">
+        </div>
+    </header>
+    <!-- display list of products -->
+    <main class="container-products">
+        <div *ngFor="let product of products;" class="container-single-product" (click)="addToCart(product)">
+            <app-product-item [product]="product"></app-product-item>
+        </div>
+    </main>
+    <!-- filters -->
+    <div class="filters-placement">
+        <app-filters></app-filters>
+    </div>
+    <!-- cart component -->
+    <app-cart [openModalCommand]="openModalCommand"></app-cart>
+    <!-- user profile modal -->
+    <app-user-profile [openProfileModalCommand]="openProfileModalCommand"></app-user-profile>
+</div>
