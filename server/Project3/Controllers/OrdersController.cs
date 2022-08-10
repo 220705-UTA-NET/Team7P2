@@ -41,19 +41,17 @@ namespace Project3.Controllers
         [HttpPost("/orders{product_id}&{customer_id}")]
         public async Task<ActionResult<Order>> MakePurchase(int product_id, int customer_id)
         {
-            Order order;
             try
             {
-                order = await _repo.MakePurchase(customer_id, product_id);
+                await _repo.MakePurchase(customer_id, product_id);
                 _logger.LogInformation($"Customer #{customer_id} purchased Product #{product_id} ...");
+                return StatusCode(201);
             }catch(Exception e)
             {
                 // Minor error checking for now
                 _logger.LogError(e, e.Message);
                 return StatusCode(500);
             }
-
-            return order;
         }
     }
 }
