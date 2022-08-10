@@ -19,23 +19,25 @@ namespace Project3.Model
         // Name of the product
         public string name { get; set; }
         // The pricing of the product
-        public decimal price { get; set; }
+        public double price { get; set; }
         // What material the product is made of
         public string material { get; set; }
         // What type of jewelry the product is (i.e. Is it a necklace, ring , etc.)
         public string type { get; set; }
+        // Image of product
+        public string imgURL { get; set; }
 
-        public string? img { get; set; }
 
         public Jewelry() { }
 
-        public Jewelry(int id, string name, decimal price, string material, string type, string? img){ 
+        public Jewelry(int id, string name, double price, string material, string type, string imgURL)
+        {
             this.id = id;
             this.name = name;
             this.material = material;
             this.type = type;
             this.price = price;
-            this.img = img;
+            this.imgURL = imgURL;
         }
     }
 }

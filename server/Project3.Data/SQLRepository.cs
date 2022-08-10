@@ -44,7 +44,7 @@ namespace Project3.Data
             Jewelry NewJewelry;
             while (await reader.ReadAsync())
             {
-                NewJewelry = new Jewelry(reader.GetInt32(0), reader.GetString(1), (decimal)reader.GetFloat(2),
+                NewJewelry = new Jewelry(reader.GetInt32(0), reader.GetString(1), reader.GetDouble(2),
                                          reader.GetString(3), reader.GetString(4), reader.IsDBNull(5) ? "" : reader.GetString(5));
                 jewelry.Add(NewJewelry);
             }
@@ -56,6 +56,46 @@ namespace Project3.Data
             return jewelry;
 
         }
+
+        public async Task<List<Jewelry>> ListFilteredJewelry(string filter, string value) {
+            List<Jewelry> jewelry = new List<Jewelry>();
+
+            using SqlConnection connection = new(_ConnectionString);
+            await connection.OpenAsync();
+
+            string cmdText = "";
+
+            switch (filter)
+            {
+                case "Material":
+                    cmdText = "SELECT * FROM Jewelry WHERE Material = @Value;";
+                    break;
+                case "item_Type":
+                    cmdText = "SELECT * FROM Jewelry WHERE item_Type = @Value;";
+                    break;
+            }
+
+            SqlCommand cmd = new SqlCommand(cmdText, connection);
+
+            cmd.Parameters.AddWithValue("@Value", value);
+
+            using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+
+            Jewelry NewJewelry;
+            while (await reader.ReadAsync())
+            {
+                NewJewelry = new Jewelry(reader.GetInt32(0), reader.GetString(1), reader.GetDouble(2),
+                                         reader.GetString(3), reader.GetString(4), reader.GetString(5));
+                jewelry.Add(NewJewelry);
+            }
+
+            await connection.CloseAsync();
+            
+            _logger.LogInformation("Executed ListFilteredJewelry, returned {0} results", jewelry.Count);
+
+            return jewelry;
+        }
+
         public async Task<Jewelry> GetJewelry(int ItemID) {
             Jewelry jewelry = new Jewelry();
 
@@ -72,7 +112,7 @@ namespace Project3.Data
 
             while (await reader.ReadAsync())
             {
-                jewelry = new Jewelry(reader.GetInt32(0), reader.GetString(1), (decimal)reader.GetFloat(2), 
+                jewelry = new Jewelry(reader.GetInt32(0), reader.GetString(1), reader.GetDouble(2),
                                       reader.GetString(3), reader.GetString(4), reader.IsDBNull(5) ? "" : reader.GetString(5));
             }
 
@@ -98,7 +138,7 @@ namespace Project3.Data
             while (await reader.ReadAsync())
             {
                 NewReview = new Review(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2),
-                                       reader.GetDateTime(3), reader.IsDBNull(4) ? "" : reader.GetString(4), reader.IsDBNull(5) ? -1 : reader.GetInt32(5));
+                                       reader.GetDateTime(3), reader.IsDBNull(4) ? "" : reader.GetString(4), reader.IsDBNull(5) ? -1 : reader.GetByte(5));
                 reviews.Add(NewReview);
             }
 
@@ -127,7 +167,7 @@ namespace Project3.Data
             while (await reader.ReadAsync())
             {
                 NewReview = new Review(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2),
-                                       reader.GetDateTime(3), reader.IsDBNull(4) ? "" : reader.GetString(4), reader.IsDBNull(5) ? -1 : reader.GetInt32(5));
+                                       reader.GetDateTime(3), reader.IsDBNull(4) ? "" : reader.GetString(4), reader.IsDBNull(5) ? -1 : reader.GetByte(5));
                 reviews.Add(NewReview);
             }
 
@@ -269,6 +309,26 @@ namespace Project3.Data
 
             return orders;
         }
+
+        public async Task<Customer> LogInCustomer(string Username, string Password)
+        {
+            Customer customer = new Customer();
+            using SqlConnection connection = new(_ConnectionString);
+            await connection.OpenAsync();
+            string cmdText = @"SELECT CU.Customer_ID, CName, Shipping_address FROM Customers AS CU
+                           JOIN Cred AS CR ON CU.Customer_ID=CR.Customer_ID
+                           WHERE userN=@Username AND Pass=@Password";
+
+            SqlCommand cmd = new SqlCommand(cmdText, connection);
+            cmd.Parameters.AddWithValue("@Username", Username);
+            cmd.Parameters.AddWithValue("@Password", Password);
+
+            using SqlDataReader reader = cmd.ExecuteReader();
+
+            if (await reader.ReadAsync()) customer = new Customer(reader.GetInt32(0), reader.GetString(1), reader.GetString(2));
+
+            return customer;
+        }
         public async Task<List<Jewelry_transaction>> ListTransactions()
         {
             List<Jewelry_transaction> transactions = new List<Jewelry_transaction>();
@@ -285,7 +345,7 @@ namespace Project3.Data
             Jewelry_transaction NewJewelryTransaction;
             while (await reader.ReadAsync())
             {
-                NewJewelryTransaction = new Jewelry_transaction(reader.GetInt32(0), reader.GetInt32(1),reader.GetInt32(2), reader.GetInt32(3));
+                NewJewelryTransaction = new Jewelry_transaction(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2), reader.GetInt32(3));
 
                 transactions.Add(NewJewelryTransaction);
             }
@@ -297,9 +357,6 @@ namespace Project3.Data
             return transactions;
 
         }
-
-
-
 
     }
 }

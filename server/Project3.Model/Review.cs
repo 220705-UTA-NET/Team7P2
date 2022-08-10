@@ -25,12 +25,12 @@ namespace Project3.Model
         // The review itself, should the customer write one
         public string? content { get; set; }
         // The rating of the item purchased made by the customer, should they rate their purchase
-        public int? rating { get; set; }
+        public byte? rating { get; set; }
 
 
         public Review() { }
 
-        public Review(int id, int jewelry_id, int customer_id, DateTime review_date, string? content, int? rating)
+        public Review(int id, int jewelry_id, int customer_id, DateTime review_date, string? content, byte? rating)
         {
             this.id = id;
             this.jewelry_id = jewelry_id;

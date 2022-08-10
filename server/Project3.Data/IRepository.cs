@@ -12,6 +12,8 @@ namespace Project3.Data
     {
         // Returns a list of Jewelry on the store
         public Task<List<Jewelry>> ListJewelry();
+        // Returns a list of Jewelry based on a filter
+        public Task<List<Jewelry>> ListFilteredJewelry(string filter, string value);
         // Returns data pertaining to one of the jewelries
         public Task<Jewelry> GetJewelry(int ItemID);
         // Returns a list of reviews for one of the jewelries
@@ -30,6 +32,10 @@ namespace Project3.Data
         public Task MakePurchase(int CustomerID, int ProductID);
         // Lists the purchases that a customer has made
         public Task<List<Order>> ListOrders(int CustomerID);
+        // Retrieve the Customer with the specified Username
+        public Task<Customer> LogInCustomer(string UserName, string Password);
+
+
         
         public Task<List<Jewelry_transaction>>listTransactions();
 
