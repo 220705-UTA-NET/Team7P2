@@ -30,7 +30,7 @@ namespace Project3.Model
 
         public Review() { }
 
-        public Review(int id, int jewelry_id, int customer_id, DateTime review_date, string? content, int rating)
+        public Review(int id, int jewelry_id, int customer_id, DateTime review_date, string? content, int? rating)
         {
             this.id = id;
             this.jewelry_id = jewelry_id;

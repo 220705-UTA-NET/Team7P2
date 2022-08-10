@@ -25,15 +25,17 @@ namespace Project3.Model
         // What type of jewelry the product is (i.e. Is it a necklace, ring , etc.)
         public string type { get; set; }
 
+        public string? img { get; set; }
+
         public Jewelry() { }
 
-        public Jewelry(int id, string name, decimal price, string material, string type)
-        {
+        public Jewelry(int id, string name, decimal price, string material, string type, string? img){ 
             this.id = id;
             this.name = name;
             this.material = material;
             this.type = type;
             this.price = price;
+            this.img = img;
         }
     }
 }

@@ -31,6 +31,7 @@ namespace Project3.Data
         // Lists the purchases that a customer has made
         public Task<List<Order>> ListOrders(int CustomerID);
         
+        public Task<List<Jewelry_transaction>>listTransactions();
 
     }
 }
