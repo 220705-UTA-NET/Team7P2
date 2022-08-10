@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {Router} from "@angular/router"
+import {Router} from "@angular/router";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login-form',
@@ -9,7 +11,9 @@ import {Router} from "@angular/router"
 })
 export class LoginFormComponent {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private http: HttpClient) { 
+    this.loginResponse = '';
+  }
 
   // moves label when an input is focused, purely cosmetic
   usernameLabelShift = false;
@@ -32,7 +36,10 @@ export class LoginFormComponent {
   // combine username & password, seperated by ; & base64 encryped
   // send as an authorization header
   // endpoint is /login
+  
   loginFailed = false;
+  loginResponse: any;
+
   async authenticateUser() {
     let credentialBase: string = `${this.loginData.value.username}:${this.loginData.value.password}`;
 
@@ -40,30 +47,34 @@ export class LoginFormComponent {
     let encodedString = Buffer.from(credentialBase).toString("base64");
     console.log(encodedString)
 
+    //https://team7project2api.azurewebsites.net/login
+
     // send request
-    const response = await fetch("https://team7project2api.azurewebsites.net/login", {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': JSON.stringify(encodedString)
-      }
-    });
+    const response = this.http.get("https://jsonplaceholder.typicode.com/posts/1", {
+      headers: {'Authorization': encodedString},
+      observe: "response",
+      responseType: "json"
+    })
+      .subscribe((result: any) => {
+        this.loginResponse = result
+        console.log(this.loginResponse);
 
-    // if 200 (user successfully logged in)
-    // parse response & determine next step
-    if (response.status === 200) {
-      console.log(response);
-      const responseBody = await response.text();
-      // const customer = JSON.parse(responseBody);
-      console.log(responseBody)
+        // if status == 200, successful login
+        // parse response & determine next step
+        if (this.loginResponse.status === 200) {
+          console.log('log in successful')
+          const responseBody = this.loginResponse.body;
 
-    } else {
-      // let the user know that the login failed
-      console.log(`Login failed: ${response.status}`)
-      this.loginFailed = true;
-    }
+          // save response body into some variable to be used globally
+          console.log(responseBody)
 
-    // this.router.navigate(["/productPage"])
+          // this.router.navigate(["/productPage"])
+
+        } else {
+          // let the user know that the login failed
+          console.log(`Login failed`)
+          this.loginFailed = true;
+        }
+      })
   }
-
 }
