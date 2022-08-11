@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project3.Data;
@@ -7,6 +8,7 @@ namespace Project3.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CustomerController : ControllerBase
     {
         private readonly ILogger<CustomerController> _logger;
@@ -54,11 +56,11 @@ namespace Project3.Controllers
         }
 
         [HttpPost("/customer")]
-        public async Task<ActionResult<Customer>> AddCustomer(Customer customer)
+        public async Task<ActionResult<Customer>> AddCustomer(Customer customer, string username, string password)
         {
             try
             {
-                await _repo.AddCustomer(customer);
+                await _repo.AddCustomer(customer, username, password);
                 _logger.LogInformation("Adding Customer...");
                 return StatusCode(201);
             }

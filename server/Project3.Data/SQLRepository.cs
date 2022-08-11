@@ -57,27 +57,38 @@ namespace Project3.Data
 
         }
 
-        public async Task<List<Jewelry>> ListFilteredJewelry(string filter, string value) {
+        public async Task<List<Jewelry>> ListFilteredJewelry(string material, string item_type) {
             List<Jewelry> jewelry = new List<Jewelry>();
 
             using SqlConnection connection = new(_ConnectionString);
             await connection.OpenAsync();
 
-            string cmdText = "";
+            string cmdText = "SELECT * FROM Jewelry WHERE ";
 
-            switch (filter)
+            bool materialFilter = material != "None";
+            bool itemTypeFilter = item_type != "None";
+            bool two_filters = material != "None" && item_type != "None";
+
+            if (materialFilter)
             {
-                case "Material":
-                    cmdText = "SELECT * FROM Jewelry WHERE Material = @Value;";
-                    break;
-                case "item_Type":
-                    cmdText = "SELECT * FROM Jewelry WHERE item_Type = @Value;";
-                    break;
+                cmdText += "Material = @Material";
             }
-
+            if (two_filters)
+            {
+                cmdText += " AND ";
+            }
+            if (itemTypeFilter)
+            {
+                cmdText += "item_Type = @item_Type";
+            }
             SqlCommand cmd = new SqlCommand(cmdText, connection);
 
-            cmd.Parameters.AddWithValue("@Value", value);
+            if (materialFilter) { 
+                cmd.Parameters.AddWithValue("@Material", material); 
+            }
+            if (itemTypeFilter) {
+                cmd.Parameters.AddWithValue("@item_Type", item_type);
+            }
 
             using SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
@@ -241,7 +252,7 @@ namespace Project3.Data
 
             _logger.LogInformation("Executed ModifyCustomerProfile");
         }
-        public async Task AddCustomer(Customer customer) {
+        public async Task AddCustomer(Customer customer, string username, string password) {
             using SqlConnection connection = new(_ConnectionString);
             await connection.OpenAsync();
 
@@ -256,6 +267,19 @@ namespace Project3.Data
             cmd.Parameters.AddWithValue("@Shipping_address", customer.shipping_address);
 
             await cmd.ExecuteNonQueryAsync();
+
+            cmdText =
+            @"INSERT INTO Cred (userN, Pass, Customer_ID)
+            VALUES
+            (@userN, @Pass, @Customer_ID)";
+
+            using SqlCommand credcmd = new SqlCommand(cmdText, connection);
+
+            credcmd.Parameters.AddWithValue("@userN", username);
+            credcmd.Parameters.AddWithValue("@Pass", password);
+            credcmd.Parameters.AddWithValue("@Customer_ID", customer.id);
+
+            await credcmd.ExecuteNonQueryAsync();
 
             await connection.CloseAsync();
 
@@ -312,12 +336,12 @@ namespace Project3.Data
             return orders;
         }
 
-        public async Task<Customer> LogInCustomer(string Username, string Password)
+        public async Task<int> LogInCustomer(string Username, string Password)
         {
-            Customer customer = new Customer();
+            int customerId = 0;
             using SqlConnection connection = new(_ConnectionString);
             await connection.OpenAsync();
-            string cmdText = @"SELECT CU.Customer_ID, CName, Shipping_address FROM Customers AS CU
+            string cmdText = @"SELECT CU.Customer_ID FROM Customers AS CU
                            JOIN Cred AS CR ON CU.Customer_ID=CR.Customer_ID
                            WHERE userN=@Username AND Pass=@Password";
 
@@ -327,8 +351,14 @@ namespace Project3.Data
 
             using SqlDataReader reader = cmd.ExecuteReader();
 
-            if (await reader.ReadAsync()) customer = new Customer(reader.GetInt32(0), reader.GetString(1), reader.GetString(2));
+            if (await reader.ReadAsync()) customerId = reader.GetInt32(0);
 
+            return customerId;
+        }
+
+        public async Task<Customer> RegisterCustomer(string Username, string Password)
+        {
+            Customer customer = new Customer();
             return customer;
         }
     }

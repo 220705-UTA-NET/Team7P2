@@ -13,7 +13,7 @@ namespace Project3.Data
         // Returns a list of Jewelry on the store
         public Task<List<Jewelry>> ListJewelry();
         // Returns a list of Jewelry based on a filter
-        public Task<List<Jewelry>> ListFilteredJewelry(string filter, string value);
+        public Task<List<Jewelry>> ListFilteredJewelry(string material, string item_type);
         // Returns data pertaining to one of the jewelries
         public Task<Jewelry> GetJewelry(int ItemID);
         // Returns a list of reviews for one of the jewelries
@@ -27,13 +27,15 @@ namespace Project3.Data
         // Modifies a field within the customer's profile (For now just Shipping Address)
         public Task ModifyCustomerProfile(int CustomerID, string field, string value);
         // Creates a customer to be added to the database
-        public Task AddCustomer(Customer customer);
+        public Task AddCustomer(Customer customer, string username, string password);
         // Creates a order containing the jewelry to be bought, the buyer's id, and the date in which the order was made
         public Task MakePurchase(int CustomerID, int ProductID);
         // Lists the purchases that a customer has made
         public Task<List<Order>> ListOrders(int CustomerID);
         // Retrieve the Customer with the specified Username
-        public Task<Customer> LogInCustomer(string UserName, string Password);
+        public Task<int> LogInCustomer(string Username, string Password);
+        // Creates a customer with the specified username
+        public Task<Customer> RegisterCustomer(string Username, string Password);
 
 
 

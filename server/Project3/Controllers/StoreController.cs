@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project3.Data;
 using Project3.Model;
@@ -7,6 +8,7 @@ namespace Project3.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class StoreController : ControllerBase
     {
         private readonly ILogger<StoreController> _logger;
@@ -35,13 +37,13 @@ namespace Project3.Controllers
             return list;
         }
 
-        [HttpGet("/store/{filter}/{value}")]
-        public async Task<ActionResult<List<Jewelry>>> GetJewelryList([FromRoute] string filter, string value)
+        [HttpGet("/store/{material}/{item_type}")]
+        public async Task<ActionResult<List<Jewelry>>> GetJewelryList([FromRoute] string material, string item_type)
         {
             List<Jewelry> list = new List<Jewelry>();
             try
             {
-                list = await _repo.ListFilteredJewelry(filter, value);
+                list = await _repo.ListFilteredJewelry(material, item_type);
                 _logger.LogInformation("Sending Filtered Jewelry List...");
             }
             catch (Exception e)
