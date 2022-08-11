@@ -27,7 +27,7 @@ namespace Project3.Data
         // Modifies a field within the customer's profile (For now just Shipping Address)
         public Task ModifyCustomerProfile(int CustomerID, string field, string value);
         // Creates a customer to be added to the database
-        public Task AddCustomer(Customer customer);
+        public Task AddCustomer(Customer customer, string username, string password);
         // Creates a order containing the jewelry to be bought, the buyer's id, and the date in which the order was made
         public Task MakePurchase(int CustomerID, int ProductID);
         // Lists the purchases that a customer has made

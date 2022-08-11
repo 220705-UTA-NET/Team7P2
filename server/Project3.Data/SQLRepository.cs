@@ -241,7 +241,7 @@ namespace Project3.Data
 
             _logger.LogInformation("Executed ModifyCustomerProfile");
         }
-        public async Task AddCustomer(Customer customer) {
+        public async Task AddCustomer(Customer customer, string username, string password) {
             using SqlConnection connection = new(_ConnectionString);
             await connection.OpenAsync();
 
@@ -254,6 +254,19 @@ namespace Project3.Data
 
             cmd.Parameters.AddWithValue("@CName", customer.name);
             cmd.Parameters.AddWithValue("@Shipping_address", customer.shipping_address);
+
+            await cmd.ExecuteNonQueryAsync();
+
+            cmdText =
+            @"INSERT INTO Cred (userN, Pass, Customer_ID)
+            VALUES
+            (@userN, @Pass, @Customer_ID)";
+
+            using SqlCommand credcmd = new SqlCommand(cmdText, connection);
+
+            credcmd.Parameters.AddWithValue("@userN", username);
+            credcmd.Parameters.AddWithValue("@Pass", password);
+            credcmd.Parameters.AddWithValue("@Customer_ID", customer.id);
 
             await cmd.ExecuteNonQueryAsync();
 
