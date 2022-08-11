@@ -1,7 +1,6 @@
 import { Component, Input, IterableDiffers, OnInit } from '@angular/core';
 import {Router, ActivatedRoute} from "@angular/router"
 import { Product } from '../product-page/product-page.component';
-import { fromEvent, map } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
@@ -12,18 +11,22 @@ import { fromEvent, map } from 'rxjs';
 export class CartComponent implements OnInit {
   constructor(private router: Router, private iterableDiffer: IterableDiffers, private route: ActivatedRoute) {
     this.route.queryParams.subscribe((params) => {
-      let previousCart: Product[] = JSON.parse(params["cart"]);
-
-
-      this.previousCart = previousCart;
-      this.cartPriceTotal = this.cartTotal();
+      try {
+        let previousCart: Product[] = JSON.parse(params["cart"]);
+        this.previousCart = previousCart;
+        this.cartPriceTotal = this.cartTotal();
+      } catch (ex) {
+        console.log(ex);
+      }
     })
   }
+
+  @Input() previousUrl: string = '';
 
   // necessary to have another field, previousCart, in order to observe its changes & push to cart
   previousCart: Product[] = []
   ngOnInit(): void {
-    this.previousCart.forEach((item) => this.cart.push(item))
+      this.previousCart.forEach((item) => this.cart.push(item))
   }
 
   // listening for changes to openModalCommand from parent (fires when user clicks cart icon to open modal)

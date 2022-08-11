@@ -19,11 +19,17 @@ export interface Product {
 
 export class ProductPageComponent implements OnInit {
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(private router: Router, private http: HttpClient) {
+    // views where the user came from, relevant for persisting user cart
+    const previousRoute = this.router.getCurrentNavigation()?.previousNavigation?.finalUrl?.toString();
+    this.previousUrl = previousRoute || '';
+  }
 
   ngOnInit(): void {
     this.fetchAllProducts();
   }
+
+  previousUrl: string = '';
 
   customer: Customer = {
     "CustomerID": 0,
@@ -31,6 +37,8 @@ export class ProductPageComponent implements OnInit {
   };
 
   allProducts: Array<Product> = [];
+  productFetchError: boolean = false;
+
   fetchAllProducts() {
     // will not parse without {} since getItem can be null
     const customer: Customer = JSON.parse(localStorage.getItem("customer") || '{}');
@@ -53,7 +61,8 @@ export class ProductPageComponent implements OnInit {
 
         } else {
           // render a statement that there was a problem loading the results
-
+          this.productFetchError = true;
+          console.log(result.status)
         }
       })
   }

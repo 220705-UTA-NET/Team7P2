@@ -14,13 +14,14 @@
         <div *ngFor="let product of allProducts;" class="container-single-product" (click)="addToCart(product)">
             <app-product-item [product]="product"></app-product-item>
         </div>
+        <p class="product-fetch-error" [ngClass]="{'display-product-error' : productFetchError}">There was an error fetching our products. Please try again</p>
     </main>
     <!-- filters -->
     <div class="filters-placement">
         <app-filters></app-filters>
     </div>
     <!-- cart component -->
-    <app-cart [openModalCommand]="openModalCommand" [cart]="cart"></app-cart>
+    <app-cart [openModalCommand]="openModalCommand" [cart]="cart" [previousUrl]="previousUrl"></app-cart>
     <!-- user profile modal -->
     <app-user-profile [openProfileModalCommand]="openProfileModalCommand"></app-user-profile>
 </div>
