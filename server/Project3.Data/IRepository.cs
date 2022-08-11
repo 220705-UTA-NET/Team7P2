@@ -29,7 +29,7 @@ namespace Project3.Data
         // Creates a customer to be added to the database
         public Task AddCustomer(Customer customer);
         // Creates a order containing the jewelry to be bought, the buyer's id, and the date in which the order was made
-        public Task MakePurchase(int CustomerID, int ProductID);
+        public Task MakePurchase(int CustomerID);
         // Lists the purchases that a customer has made
         public Task<List<Order>> ListOrders(int CustomerID);
         // Retrieve the Customer with the specified Username

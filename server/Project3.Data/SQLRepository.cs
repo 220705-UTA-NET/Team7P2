@@ -261,7 +261,8 @@ namespace Project3.Data
 
             _logger.LogInformation("Executed AddCustomer");
         }
-        public async Task MakePurchase(int CustomerID) {
+        public async Task MakePurchase(int CustomerID)
+        {
             using SqlConnection connection = new(_ConnectionString);
             await connection.OpenAsync();
 
