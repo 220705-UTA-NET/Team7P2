@@ -268,7 +268,7 @@ namespace Project3.Data
             credcmd.Parameters.AddWithValue("@Pass", password);
             credcmd.Parameters.AddWithValue("@Customer_ID", customer.id);
 
-            await cmd.ExecuteNonQueryAsync();
+            await credcmd.ExecuteNonQueryAsync();
 
             await connection.CloseAsync();
 
