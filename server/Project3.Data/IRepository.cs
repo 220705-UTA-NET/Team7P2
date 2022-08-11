@@ -35,9 +35,8 @@ namespace Project3.Data
         // Retrieve the Customer with the specified Username
         public Task<Customer> LogInCustomer(string UserName, string Password);
 
-
         
-        public Task<List<Jewelry_transaction>>listTransactions();
+        public Task<List<Jewelry_transaction>>ListTransactions();
 
     }
 }
