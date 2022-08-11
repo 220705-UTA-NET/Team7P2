@@ -138,7 +138,7 @@ namespace Project3.Data
             while (await reader.ReadAsync())
             {
                 NewReview = new Review(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2),
-                                       reader.GetDateTime(3), reader.IsDBNull(4) ? "" : reader.GetString(4), reader.IsDBNull(5) ? -1 : reader.GetByte(5));
+                                       reader.GetDateTime(3), reader.IsDBNull(4) ? "" : reader.GetString(4), reader.GetByte(5));
                 reviews.Add(NewReview);
             }
 
@@ -167,7 +167,7 @@ namespace Project3.Data
             while (await reader.ReadAsync())
             {
                 NewReview = new Review(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2),
-                                       reader.GetDateTime(3), reader.IsDBNull(4) ? "" : reader.GetString(4), reader.IsDBNull(5) ? -1 : reader.GetByte(5));
+                                       reader.GetDateTime(3), reader.IsDBNull(4) ? "" : reader.GetString(4),  reader.GetByte(5));
                 reviews.Add(NewReview);
             }
 
