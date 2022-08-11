@@ -36,10 +36,6 @@ export class LoginFormComponent {
       username : new FormControl(''),
       password : new FormControl('')
   })
-
-  // combine username & password, seperated by ; & base64 encryped
-  // send as an authorization header
-  // endpoint is /login
   
   loginFailed = false;
   loginResponse: any;

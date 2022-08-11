@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router, Params} from "@angular/router"
+import {Router} from "@angular/router"
 import { HttpClient } from '@angular/common/http';
 import {Customer} from "../login-form/login-form.component";
-
-// for testing only
-import {testJson, cart} from "../testJson";
-// testing only
 
 export interface Product {
   id: number,
@@ -22,13 +18,7 @@ export interface Product {
 })
 
 export class ProductPageComponent implements OnInit {
-  // for testing item placement only
-  // real data will likely be created in the constructor
-  products = testJson;
-  cart = cart;
-  // testing only
 
-  // https://team7project2api.azurewebsites.net/store for getting al jewelry
   constructor(private router: Router, private http: HttpClient) {}
 
   ngOnInit(): void {
@@ -39,6 +29,7 @@ export class ProductPageComponent implements OnInit {
     "CustomerID": 0,
     "Access-Token": ''
   };
+
   allProducts: Array<Product> = [];
   fetchAllProducts() {
     // will not parse without {} since getItem can be null
@@ -52,9 +43,18 @@ export class ProductPageComponent implements OnInit {
       responseType: "json"
     })
       .subscribe((result: any) => {
-        console.log(result)
-        // loop through result.body, appending each product to allProducts
-        // add error handling for 500 returns
+        if (result.status === 200) {
+          const products = result.body;
+
+          products.forEach((item: Product) => {
+            this.allProducts.push(item);
+
+          })
+
+        } else {
+          // render a statement that there was a problem loading the results
+
+        }
       })
   }
 
@@ -65,9 +65,10 @@ export class ProductPageComponent implements OnInit {
     this.openModalCommand = !this.openModalCommand;
   }
 
+  cart: Product[] = [];
   // adds clicked tile to cart
-  addToCart(product: any) {
-    cart.push(product);
+  addToCart(product: Product) {
+    this.cart.push(product);
   }
 
   openProfileModalCommand = false;
