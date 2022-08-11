@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project3.Data;
@@ -7,6 +8,7 @@ namespace Project3.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ReviewController : ControllerBase
     {
         private readonly ILogger<ReviewController> _logger;

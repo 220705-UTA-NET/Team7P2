@@ -312,12 +312,12 @@ namespace Project3.Data
             return orders;
         }
 
-        public async Task<Customer> LogInCustomer(string Username, string Password)
+        public async Task<int> LogInCustomer(string Username, string Password)
         {
-            Customer customer = new Customer();
+            int customerId = 0;
             using SqlConnection connection = new(_ConnectionString);
             await connection.OpenAsync();
-            string cmdText = @"SELECT CU.Customer_ID, CName, Shipping_address FROM Customers AS CU
+            string cmdText = @"SELECT CU.Customer_ID FROM Customers AS CU
                            JOIN Cred AS CR ON CU.Customer_ID=CR.Customer_ID
                            WHERE userN=@Username AND Pass=@Password";
 
@@ -327,8 +327,14 @@ namespace Project3.Data
 
             using SqlDataReader reader = cmd.ExecuteReader();
 
-            if (await reader.ReadAsync()) customer = new Customer(reader.GetInt32(0), reader.GetString(1), reader.GetString(2));
+            if (await reader.ReadAsync()) customerId = reader.GetInt32(0);
 
+            return customerId;
+        }
+
+        public async Task<Customer> RegisterCustomer(string Username, string Password)
+        {
+            Customer customer = new Customer();
             return customer;
         }
     }

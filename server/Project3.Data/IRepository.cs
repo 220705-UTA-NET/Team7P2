@@ -33,7 +33,9 @@ namespace Project3.Data
         // Lists the purchases that a customer has made
         public Task<List<Order>> ListOrders(int CustomerID);
         // Retrieve the Customer with the specified Username
-        public Task<Customer> LogInCustomer(string UserName, string Password);
+        public Task<int> LogInCustomer(string Username, string Password);
+        // Creates a customer with the specified username
+        public Task<Customer> RegisterCustomer(string Username, string Password);
 
 
 
