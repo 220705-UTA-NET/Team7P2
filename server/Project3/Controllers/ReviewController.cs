@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project3.Data;
@@ -7,6 +8,7 @@ namespace Project3.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ReviewController : ControllerBase
     {
         private readonly ILogger<ReviewController> _logger;
@@ -18,7 +20,7 @@ namespace Project3.Controllers
             _repo = repo;
         }
 
-        [HttpGet("/review/{ItemID}")]
+        [HttpGet("/review/item/{ItemID}")]
         public async Task<ActionResult<List<Review>>> GetProductReviews([FromRoute] int ItemID)
         {
             List<Review> list = new List<Review>();
@@ -34,7 +36,7 @@ namespace Project3.Controllers
             return list;
         }
 
-        [HttpGet("/review/{CustomerID}")]
+        [HttpGet("/review/customer/{CustomerID}")]
         public async Task<ActionResult<List<Review>>> GetCustomerReviews([FromRoute] int CustomerID)
         {
             List<Review> list = new List<Review>();
