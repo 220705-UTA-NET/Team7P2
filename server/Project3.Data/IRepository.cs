@@ -13,7 +13,7 @@ namespace Project3.Data
         // Returns a list of Jewelry on the store
         public Task<List<Jewelry>> ListJewelry();
         // Returns a list of Jewelry based on a filter
-        public Task<List<Jewelry>> ListFilteredJewelry(string filter, string value);
+        public Task<List<Jewelry>> ListFilteredJewelry(string material, string item_type);
         // Returns data pertaining to one of the jewelries
         public Task<Jewelry> GetJewelry(int ItemID);
         // Returns a list of reviews for one of the jewelries

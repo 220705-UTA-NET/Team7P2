@@ -57,27 +57,38 @@ namespace Project3.Data
 
         }
 
-        public async Task<List<Jewelry>> ListFilteredJewelry(string filter, string value) {
+        public async Task<List<Jewelry>> ListFilteredJewelry(string material, string item_type) {
             List<Jewelry> jewelry = new List<Jewelry>();
 
             using SqlConnection connection = new(_ConnectionString);
             await connection.OpenAsync();
 
-            string cmdText = "";
+            string cmdText = "SELECT * FROM Jewelry WHERE ";
 
-            switch (filter)
+            bool materialFilter = material != "None";
+            bool itemTypeFilter = item_type != "None";
+            bool two_filters = material != "None" && item_type != "None";
+
+            if (materialFilter)
             {
-                case "Material":
-                    cmdText = "SELECT * FROM Jewelry WHERE Material = @Value;";
-                    break;
-                case "item_Type":
-                    cmdText = "SELECT * FROM Jewelry WHERE item_Type = @Value;";
-                    break;
+                cmdText += "Material = @Material";
             }
-
+            if (two_filters)
+            {
+                cmdText += " AND ";
+            }
+            if (itemTypeFilter)
+            {
+                cmdText += "item_Type = @item_Type";
+            }
             SqlCommand cmd = new SqlCommand(cmdText, connection);
 
-            cmd.Parameters.AddWithValue("@Value", value);
+            if (materialFilter) { 
+                cmd.Parameters.AddWithValue("@Material", material); 
+            }
+            if (itemTypeFilter) {
+                cmd.Parameters.AddWithValue("@item_Type", item_type);
+            }
 
             using SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
