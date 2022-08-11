@@ -29,25 +29,25 @@ export class ProductPageComponent implements OnInit {
   // testing only
 
   // https://team7project2api.azurewebsites.net/store for getting al jewelry
-  constructor(private router: Router, private http: HttpClient, private route: ActivatedRoute) {}
-
-  customer: any;
+  constructor(private router: Router, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.fetchAllProducts();
-    this.route.queryParams.subscribe(
-      (params: Params) => {
-        this.customer = params["customer"];
-      }
-    );
-
-    console.log(this.customer);
   }
 
+  customer: Customer = {
+    "CustomerID": 0,
+    "Access-Token": ''
+  };
   allProducts: Array<Product> = [];
-  async fetchAllProducts() {
+  fetchAllProducts() {
+    // will not parse without {} since getItem can be null
+    const customer: Customer = JSON.parse(localStorage.getItem("customer") || '{}');
+    this.customer = customer;
+
     // returns List<Jewelry> (id, name, price, material, type)
     this.http.get("https://team7project2api.azurewebsites.net/store", {
+      headers: {"Authorization": `Bearer ${customer["Access-Token"]}`},
       observe: "response",
       responseType: "json"
     })

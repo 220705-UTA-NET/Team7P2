@@ -2,15 +2,16 @@
     <h2>Filter by...</h2>
     <ul class="container-type">
         <h3>Type</h3>
-        <p (click)="filterType('ring'); activeFilter($event)">Ring</p>
-        <p (click)="filterType('necklace'); activeFilter($event)">Necklace</p>
-        <p (click)="filterType('earrings'); activeFilter($event)">Earrings</p>
-        <p (click)="filterType('bracelet'); activeFilter($event)">Bracelet</p>
+        <p (click)="activateFilter($event, 'type', 'ring')">Ring</p>
+        <p (click)="activateFilter($event, 'type','necklace')">Necklace</p>
+        <p (click)="activateFilter($event, 'type','earrings')">Earrings</p>
+        <p (click)="activateFilter($event, 'type','bracelet')">Bracelet</p>
     </ul>
     <ul class="container-material">
         <h3>Material</h3>
-        <p (click)="filterMaterial('gold'); activeFilter($event)">Gold</p>
-        <p (click)="filterMaterial('silver'); activeFilter($event)">Silver</p>
-        <p (click)="filterMaterial('platinum'); activeFilter($event)">Platinum</p>
+        <p (click)="activateFilter($event, 'material', 'gold')">Gold</p>
+        <p (click)="activateFilter($event, 'material', 'silver')">Silver</p>
+        <p (click)="activateFilter($event, 'material', 'platinum')">Platinum</p>
     </ul>
+    <button class="btn-reset" (click)="resetFilters()">Reset</button>
 </aside>

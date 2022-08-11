@@ -4,9 +4,8 @@ import {Router} from "@angular/router";
 import { HttpClient } from '@angular/common/http';
 
 export interface Customer {
-  id: number,
-  name: string,
-  shipping_address: string
+  "CustomerID": number,
+  "Access-Token": string
 }
 
 @Component({
@@ -59,17 +58,21 @@ export class LoginFormComponent {
       .subscribe((result: any) => {
         this.loginResponse = result
 
+        console.log(result)
+        
         // if body.id != 0, login successful
         // parse response & determine next step
-        if (this.loginResponse.body.id != 0) {
+        if (this.loginResponse.status != 401) {
           console.log('log in successful')
 
+          // save token to localStorage
+          // localStorage.setItem('bearerToken', this.loginResponse.body)
           // response body should return customer info
-          const responseBody: Customer = this.loginResponse.body;
+          const customer: Customer = this.loginResponse.body;
 
-          this.router.navigate(["/productPage"], {queryParams: {
-            customer:responseBody}
-          });
+          localStorage.setItem('customer', JSON.stringify(customer));
+
+          this.router.navigate(["/productPage"]);
 
         } else {
           // let the user know that the login failed
