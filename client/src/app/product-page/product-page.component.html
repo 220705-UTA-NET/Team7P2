@@ -18,10 +18,10 @@
     </main>
     <!-- filters -->
     <div class="filters-placement">
-        <app-filters></app-filters>
+        <app-filters [accessToken]="accessToken" (updatedProducts)="updateFilteredProducts($event)"></app-filters>
     </div>
     <!-- cart component -->
-    <app-cart [openModalCommand]="openModalCommand" [cart]="cart" [previousUrl]="previousUrl"></app-cart>
+    <app-cart [openModalCommand]="openModalCommand" [cart]="cart"></app-cart>
     <!-- user profile modal -->
-    <app-user-profile [openProfileModalCommand]="openProfileModalCommand"></app-user-profile>
+    <app-user-profile [openProfileModalCommand]="openProfileModalCommand" [customer]="customer"></app-user-profile>
 </div>

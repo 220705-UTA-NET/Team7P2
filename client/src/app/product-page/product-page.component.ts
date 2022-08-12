@@ -20,16 +20,20 @@ export interface Product {
 export class ProductPageComponent implements OnInit {
 
   constructor(private router: Router, private http: HttpClient) {
-    // views where the user came from, relevant for persisting user cart
-    const previousRoute = this.router.getCurrentNavigation()?.previousNavigation?.finalUrl?.toString();
-    this.previousUrl = previousRoute || '';
+    // if user does not have login token, re-route them to login page
+    const checkTokenPresent: Customer = JSON.parse(localStorage.getItem("customer") || '{}');
+    if (!checkTokenPresent['Access-Token']) {
+      this.router.navigate(["/"]);
+    } else {
+      this.accessToken = checkTokenPresent['Access-Token']
+    }
   }
 
   ngOnInit(): void {
     this.fetchAllProducts();
   }
 
-  previousUrl: string = '';
+  accessToken: string = '';
 
   customer: Customer = {
     "CustomerID": 0,
@@ -67,6 +71,10 @@ export class ProductPageComponent implements OnInit {
       })
   }
 
+  updateFilteredProducts(filteredProducts: Product[]) {
+    this.allProducts = filteredProducts;
+  }
+
   // for opening the modal to the cart
   // the change in this variable is tracked in cart component, which reacts accordingly
   openModalCommand = false;
@@ -87,7 +95,7 @@ export class ProductPageComponent implements OnInit {
 
   // allow for infinite scroll OR pagination
   // will be tied to the fetchProducts endpoint
-  // grab perhaps first 20 columns, save what column # we are at
-  // fetch next 20, so on & so forth
+  // grab perhaps first 9 columns, save what column # we are at
+  // fetch next 9, so on & so forth
 
 }

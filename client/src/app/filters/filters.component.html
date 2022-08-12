@@ -4,14 +4,16 @@
         <h3>Type</h3>
         <p (click)="activateFilter($event, 'type', 'ring')">Ring</p>
         <p (click)="activateFilter($event, 'type','necklace')">Necklace</p>
-        <p (click)="activateFilter($event, 'type','earrings')">Earrings</p>
-        <p (click)="activateFilter($event, 'type','bracelet')">Bracelet</p>
+        <p (click)="activateFilter($event, 'type','accessory')">Accessory</p>
     </ul>
     <ul class="container-material">
         <h3>Material</h3>
-        <p (click)="activateFilter($event, 'material', 'gold')">Gold</p>
+        <p (click)="activateFilter($event, 'material', 'seastone')">Seastone</p>
+        <p (click)="activateFilter($event, 'material', 'diamond')">Diamond</p>
+        <p (click)="activateFilter($event, 'material', 'amber')">Amber</p>
         <p (click)="activateFilter($event, 'material', 'silver')">Silver</p>
-        <p (click)="activateFilter($event, 'material', 'platinum')">Platinum</p>
+        <p (click)="activateFilter($event, 'material', 'gold')">Gold</p>
+        <p (click)="activateFilter($event, 'material', 'metal')">Metal</p>
     </ul>
     <button class="btn-reset" (click)="resetFilters()">Reset</button>
 </aside>

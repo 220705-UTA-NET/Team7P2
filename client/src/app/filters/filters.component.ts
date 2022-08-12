@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Product} from "../product-page/product-page.component";
+import { Router } from '@angular/router';
 
 export interface ActiveFilters {
   type: string,
@@ -15,12 +16,15 @@ export interface ActiveFilters {
 
 export class FiltersComponent {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
+
+  @Input() accessToken: string = '';
 
   currentFilters: ActiveFilters = {
     type: 'None',
     material: 'None'
   }
+
   activateFilter(event: any, category: string, detail: string) {
     let clickedFilter = event.target;
     clickedFilter.classList.toggle("active-filter");
@@ -38,16 +42,18 @@ export class FiltersComponent {
     }
   }
 
-  // uri format: store/{filter}/{value}
-  filteredProducts: Array<Product> = [];
+  // output to be listened for on product-page
+  // should be of type Product[], but linter won't recognize it
+  @Output() updatedProducts = new EventEmitter<any>();
   filterProducts() {
-    this.http.get(`https://team7project2api.azurewebsites.net/${this.currentFilters.material}/${this.currentFilters.type}`, {
+    this.http.get(`https://team7project2api.azurewebsites.net/store/${this.currentFilters.material}/${this.currentFilters.type}`, {
+      headers: {"Authorization": `Bearer ${this.accessToken}`},
       observe: "response",
       responseType: "json"
     })
       .subscribe((result) => {
-        // this.filteredProducts = result.body
-        console.log(result);
+        // need to subscribe to changes to filteredProducts & change allProducts in product-page accordingly
+        this.updatedProducts.emit(result.body)
       })
   }
 
@@ -61,15 +67,13 @@ export class FiltersComponent {
 
   allProducts: Array<Product> = [];
   fetchAllProducts() {
-    // returns List<Jewelry> (id, name, price, material, type)
     this.http.get("https://team7project2api.azurewebsites.net/store", {
+      headers: {"Authorization": `Bearer ${this.accessToken}`},
       observe: "response",
       responseType: "json"
     })
       .subscribe((result: any) => {
-        console.log(result)
-        // loop through result.body, appending each product to allProducts
-        // add error handling for 500 returns
+        this.updatedProducts.emit(result.body)
       })
   }
 }
