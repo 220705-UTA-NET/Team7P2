@@ -79,4 +79,5 @@ INSERT INTO Cred VALUES('user','passw',1),('user1','passw2',2);
 
 */
 
-
+-- 10 jewls per type
+--

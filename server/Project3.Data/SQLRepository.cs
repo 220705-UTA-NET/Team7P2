@@ -359,5 +359,30 @@ namespace Project3.Data
 
         }
 
+        public async Task AddTransaction(int CustomerID ,int OrderID, int ItemID)
+        {
+            using SqlConnection connection = new(_ConnectionString);
+            await connection.OpenAsync();
+
+            string cmdText =
+            @"INSERT INTO J_T (Customer_ID, Order_ID, Item_ID)
+            VALUES
+            (@Customer_ID, @Order_ID, @Item_ID)";
+
+            using SqlCommand cmd = new SqlCommand(cmdText, connection);
+
+            cmd.Parameters.AddWithValue("@Customer_ID", CustomerID);
+            cmd.Parameters.AddWithValue("@Order_ID", OrderID);
+            cmd.Parameters.AddWithValue("@Item_ID", ItemID);
+            
+           
+
+            await cmd.ExecuteNonQueryAsync();
+
+            await connection.CloseAsync();
+
+            _logger.LogInformation("Executed AddTransaction");
+        }
+
     }
 }
