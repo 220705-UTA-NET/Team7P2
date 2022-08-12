@@ -24,7 +24,7 @@ namespace Project3.Model
 
         public Order() { }
 
-        public Order(int id, int customer_id, int jewelry_id, DateTime order_date)
+        public Order(int id, int customer_id, DateTime order_date)
         {
             this.id = id;
             this.customer_id = customer_id;
