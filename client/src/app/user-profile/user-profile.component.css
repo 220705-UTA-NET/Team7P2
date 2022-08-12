@@ -39,14 +39,16 @@
     opacity: 0.7;
 }
 
+button {
+    color: white;
+}
+
 .btn-order-history {
     background-color: goldenrod;
-    color: black;
 }
 
 .btn-logout {
     background-color: rgb(255, 61, 61);
-    color: black;
 }
 
 .close-icon {

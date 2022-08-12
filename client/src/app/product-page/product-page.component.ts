@@ -19,11 +19,21 @@ export interface Product {
 
 export class ProductPageComponent implements OnInit {
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(private router: Router, private http: HttpClient) {
+    // if user does not have login token, re-route them to login page
+    const checkTokenPresent: Customer = JSON.parse(localStorage.getItem("customer") || '{}');
+    if (!checkTokenPresent['Access-Token']) {
+      this.router.navigate(["/"]);
+    } else {
+      this.accessToken = checkTokenPresent['Access-Token']
+    }
+  }
 
   ngOnInit(): void {
     this.fetchAllProducts();
   }
+
+  accessToken: string = '';
 
   customer: Customer = {
     "CustomerID": 0,
@@ -31,6 +41,8 @@ export class ProductPageComponent implements OnInit {
   };
 
   allProducts: Array<Product> = [];
+  productFetchError: boolean = false;
+
   fetchAllProducts() {
     // will not parse without {} since getItem can be null
     const customer: Customer = JSON.parse(localStorage.getItem("customer") || '{}');
@@ -53,9 +65,14 @@ export class ProductPageComponent implements OnInit {
 
         } else {
           // render a statement that there was a problem loading the results
-
+          this.productFetchError = true;
+          console.log(result.status)
         }
       })
+  }
+
+  updateFilteredProducts(filteredProducts: Product[]) {
+    this.allProducts = filteredProducts;
   }
 
   // for opening the modal to the cart
@@ -78,7 +95,7 @@ export class ProductPageComponent implements OnInit {
 
   // allow for infinite scroll OR pagination
   // will be tied to the fetchProducts endpoint
-  // grab perhaps first 20 columns, save what column # we are at
-  // fetch next 20, so on & so forth
+  // grab perhaps first 9 columns, save what column # we are at
+  // fetch next 9, so on & so forth
 
 }

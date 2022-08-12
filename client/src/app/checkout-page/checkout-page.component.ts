@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import {ActivatedRoute, Router, Params} from "@angular/router"
+import {ActivatedRoute, Router, Params} from "@angular/router";
 import { Product } from '../product-page/product-page.component';
+import {Customer} from "../login-form/login-form.component";
 
 @Component({
   selector: 'app-checkout-page',
@@ -11,6 +12,12 @@ import { Product } from '../product-page/product-page.component';
 export class CheckoutPageComponent {
 
   constructor(private router: Router, private route: ActivatedRoute) {
+    // if user does not have login token, re-route them to login page
+    const checkTokenPresent: Customer = JSON.parse(localStorage.getItem("customer") || '{}');
+    if (!checkTokenPresent['Access-Token']) {
+      this.router.navigate(["/"]);
+    }
+
     this.route.queryParams.subscribe((params) => {
       let filledCart: Product[] = JSON.parse(params["cart"]);
       this.cart = filledCart;
