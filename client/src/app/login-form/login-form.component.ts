@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Router} from "@angular/router";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+
+export interface Customer {
+  "CustomerID": number,
+  "Access-Token": string
+}
 
 @Component({
   selector: 'app-login-form',
@@ -32,10 +36,6 @@ export class LoginFormComponent {
       username : new FormControl(''),
       password : new FormControl('')
   })
-
-  // combine username & password, seperated by ; & base64 encryped
-  // send as an authorization header
-  // endpoint is /login
   
   loginFailed = false;
   loginResponse: any;
@@ -43,32 +43,32 @@ export class LoginFormComponent {
   async authenticateUser() {
     let credentialBase: string = `${this.loginData.value.username}:${this.loginData.value.password}`;
 
-    // will need testing, but this may be what we need
     let encodedString = Buffer.from(credentialBase).toString("base64");
-    console.log(encodedString)
+    let authCredentials = `Basic ${encodedString}`;
 
-    //https://team7project2api.azurewebsites.net/login
-
-    // send request
-    const response = this.http.get("https://jsonplaceholder.typicode.com/posts/1", {
-      headers: {'Authorization': encodedString},
+    this.http.get("https://team7project2api.azurewebsites.net/login", {
+      headers: {'Authorization': authCredentials},
       observe: "response",
       responseType: "json"
     })
       .subscribe((result: any) => {
         this.loginResponse = result
-        console.log(this.loginResponse);
 
-        // if status == 200, successful login
+        console.log(result)
+        
+        // if body.id != 0, login successful
         // parse response & determine next step
-        if (this.loginResponse.status === 200) {
+        if (this.loginResponse.status != 401) {
           console.log('log in successful')
-          const responseBody = this.loginResponse.body;
 
-          // save response body into some variable to be used globally
-          console.log(responseBody)
+          // save token to localStorage
+          // localStorage.setItem('bearerToken', this.loginResponse.body)
+          // response body should return customer info
+          const customer: Customer = this.loginResponse.body;
 
-          // this.router.navigate(["/productPage"])
+          localStorage.setItem('customer', JSON.stringify(customer));
+
+          this.router.navigate(["/productPage"]);
 
         } else {
           // let the user know that the login failed

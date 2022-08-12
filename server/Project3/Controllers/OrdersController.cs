@@ -20,7 +20,7 @@ namespace Project3.Controllers
             _repo = repo;
         }
 
-        [HttpGet("/orders{user_id}")]
+        [HttpGet("/orders/{user_id}")]
         public async Task<ActionResult<List<Order>>> ListOrders([FromRoute]int user_id)
         {
             List<Order> orders;
@@ -40,8 +40,8 @@ namespace Project3.Controllers
             return orders;
         }
 
-        [HttpPost("/orders{product_id}")]
-        public async Task<ActionResult<Order>> MakePurchase( int customer_id)
+        [HttpPost("/orders/{product_id}&{customer_id}")]
+        public async Task<ActionResult<Order>> MakePurchase(int product_id, int customer_id)
         {
             try
             {
