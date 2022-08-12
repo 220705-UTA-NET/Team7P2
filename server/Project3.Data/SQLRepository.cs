@@ -292,7 +292,7 @@ namespace Project3.Data
 
             SqlCommand cmd = new SqlCommand(cmdText, connection);
 
-            cmd.Parameters.AddWithValue("Customer_ID", CustomerID);
+            cmd.Parameters.AddWithValue("@Customer_ID", CustomerID);
 
             using SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
@@ -383,6 +383,38 @@ namespace Project3.Data
 
             _logger.LogInformation("Executed AddTransaction");
         }
+        public async Task<List<Item>> ListCustomerTransaction(int CustomerID)
+        {
+            List<Item> orders = new List<Item>();
+
+            using SqlConnection connection = new(_ConnectionString);
+            await connection.OpenAsync();
+
+            string cmdText = "SELECT Orders.Order_ID, Orders.Order_Date, J_T.Jewelry_ID, Jewelry.Item_name, Jewelry.Price " +
+                "FROM Orders join J_T ON Orders.Order_ID = J_T.Order_ID join Jewelry on Jewelry.Item_ID = J_T.Item_ID " +
+                "WHERE Customer_ID = @Customer_ID;";
+
+            SqlCommand cmd = new SqlCommand(cmdText, connection);
+
+            cmd.Parameters.AddWithValue("@Customer_ID", CustomerID);
+
+            using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+
+            Item NewOrder;
+            while (await reader.ReadAsync())
+            {
+                NewOrder = new Item(reader.GetInt32(0), reader.GetDateTime(1), reader.GetInt32(2), 
+                reader.GetString(3), reader.GetDouble(4));
+                orders.Add(NewOrder);
+            }
+
+            await connection.CloseAsync();
+
+            _logger.LogInformation("Executed ListCustomerTransactio, returned {0} results", orders.Count);
+
+            return orders;
+        }
+
 
     }
 }
