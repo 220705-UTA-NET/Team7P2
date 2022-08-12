@@ -1,47 +1,58 @@
 import { Component } from '@angular/core';
-import {Router} from "@angular/router"
-
-// for testing only
-import {testJson, cart} from "../testJson";
+import {ActivatedRoute, Router, Params} from "@angular/router";
+import { Product } from '../product-page/product-page.component';
+import {Customer} from "../login-form/login-form.component";
 
 @Component({
   selector: 'app-checkout-page',
   templateUrl: './checkout-page.component.html',
   styleUrls: ['./checkout-page.component.css']
 })
-export class CheckoutPageComponent {
-  constructor(private router: Router) {}
 
-  products = testJson;
-  cart = cart;
-  cartPriceTotal = this.cartTotal();
+export class CheckoutPageComponent {
+
+  constructor(private router: Router, private route: ActivatedRoute) {
+    // if user does not have login token, re-route them to login page
+    const checkTokenPresent: Customer = JSON.parse(localStorage.getItem("customer") || '{}');
+    if (!checkTokenPresent['Access-Token']) {
+      this.router.navigate(["/"]);
+    }
+
+    this.route.queryParams.subscribe((params) => {
+      let filledCart: Product[] = JSON.parse(params["cart"]);
+      this.cart = filledCart;
+      this.cartPriceTotal = this.cartTotal();
+    });
+  }
+
+  cart: Product[] = [];
+  cartPriceTotal = 0;
 
   cartTotal() {
     let cartPriceTotal = 0;
-    cart.forEach(cartItem => cartPriceTotal += cartItem.price)
+    this.cart.forEach(cartItem => cartPriceTotal += cartItem.price)
     return cartPriceTotal;
   }
 
   // send request to Stripe API
   // set up confirmation modal
   confirmationModal = false;
-  async makePurchase() {
+  makePurchase() {
 
-    // make request
-    // fetch("")
+    // make request to payment api
 
     this.confirmationModal = !this.confirmationModal;
   }
 
   // re-route user back to product page, but maintain login
   cancelOrder() {
-    this.router.navigate(["/productPage"]);
+    // will need to pass the current cart so that it is not lost
+    this.router.navigate(["/productPage"], {queryParams : {cart: JSON.stringify(this.cart)}});
   }
 
   // return user back to product page with an empty cart
   continueShopping() {
-    // empty cart
-
+    // cart is automatically reset
     // return user to productPage
     this.router.navigate(["/productPage"]);
   }

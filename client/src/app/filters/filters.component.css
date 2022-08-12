@@ -41,3 +41,24 @@
 .container-type {
     margin-top: 2rem;
 }
+
+.btn-reset {
+    transition: linear all 0.2s;
+    background-color: goldenrod;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.15rem;
+    cursor: pointer;
+}
+
+.btn-reset:hover {
+    transition: linear all 0.2s;
+    transform: scale(1.1);
+}
+
+.btn-reset:active {
+    transition: linear all 0.2s;
+    transform: scale(0.95);
+}
