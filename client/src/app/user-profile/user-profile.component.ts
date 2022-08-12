@@ -9,6 +9,10 @@ export interface ICustomer {
   shipping_address: string
 }
 
+export interface Order {
+  order_date: string
+}
+
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',

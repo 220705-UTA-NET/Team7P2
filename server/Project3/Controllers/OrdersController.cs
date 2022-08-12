@@ -20,7 +20,7 @@ namespace Project3.Controllers
             _repo = repo;
         }
 
-        [HttpGet("/orders{user_id}")]
+        [HttpGet("/orders/{user_id}")]
         public async Task<ActionResult<List<Order>>> ListOrders([FromRoute]int user_id)
         {
             List<Order> orders;
