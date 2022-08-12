@@ -311,12 +311,12 @@ namespace Project3.Data
             return orders;
         }
 
-        public async Task<int> LogInCustomer(string Username, string Password)
+        public async Task<Customer> LogInCustomer(string Username, string Password)
         {
-            int customerId = 0;
+            Customer customer = new Customer();
             using SqlConnection connection = new(_ConnectionString);
             await connection.OpenAsync();
-            string cmdText = @"SELECT CU.Customer_ID FROM Customers AS CU
+            string cmdText = @"SELECT CU.Customer_ID, CU.CName, CU.Shipping_address FROM Customers AS CU
                            JOIN Cred AS CR ON CU.Customer_ID=CR.Customer_ID
                            WHERE userN=@Username AND Pass=@Password";
 
@@ -326,9 +326,9 @@ namespace Project3.Data
 
             using SqlDataReader reader = cmd.ExecuteReader();
 
-            if (await reader.ReadAsync()) customerId = reader.GetInt32(0);
+            if (await reader.ReadAsync()) customer = new Customer(reader.GetInt32(0), reader.GetString(1), reader.GetString(2));
 
-            return customerId;
+            return customer;
         }
 
         public async Task<Customer> RegisterCustomer(string Username, string Password)
@@ -371,7 +371,7 @@ namespace Project3.Data
             await connection.OpenAsync();
 
             string cmdText =
-            @"INSERT INTO J_T (Customer_ID, Order_ID, Item_ID)
+            @"INSERT INTO J_T (Customers_ID, Order_ID, Item_ID)
             VALUES
             (@Customer_ID, @Order_ID, @Item_ID)";
 
@@ -416,7 +416,7 @@ namespace Project3.Data
 
             await connection.CloseAsync();
 
-            _logger.LogInformation("Executed ListCustomerTransactio, returned {0} results", orders.Count);
+            _logger.LogInformation("Executed ListCustomerTransaction, returned {0} results", orders.Count);
 
             return orders;
         }

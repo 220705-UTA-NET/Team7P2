@@ -26,7 +26,7 @@ namespace Project3.Controllers
         [HttpGet("/login")]
         public async Task<ActionResult<Dictionary<string, string>>> LogIn()
         {
-            int customerId;
+            Customer customer;
             try
             {
                 // Basic Authentication For Now.
@@ -38,14 +38,14 @@ namespace Project3.Controllers
 
                 string[] cred = DString.Split(':');
 
-                customerId = await _repo.LogInCustomer(cred[0], cred[1]);
+                customer = (await _repo.LogInCustomer(cred[0], cred[1]));
 
-                if (customerId != 0) {
+                if (customer.id != 0) {
 
                     // May just re-direct to a different endpoint
                     var claims = new[]
                     {
-                        new Claim(JwtRegisteredClaimNames.Sub, $"{customerId}")
+                        new Claim(JwtRegisteredClaimNames.Sub, $"{customer.id}")
                     };
 
                     var secretBytes = Encoding.UTF8.GetBytes(Constants.Secret);
@@ -64,8 +64,11 @@ namespace Project3.Controllers
                         );
                     var tokenJson = new JwtSecurityTokenHandler().WriteToken(token);
                     Dictionary<string, string> response = new Dictionary<string, string>();
-                    response.Add("CustomerID", $"{customerId}");
+                    response.Add("CustomerID", $"{customer.id}");
                     response.Add("Access-Token", tokenJson);
+                    response.Add("CustomerName", $"{customer.name}");
+                    response.Add("CustomerAddress", $"{customer.shipping_address}");
+                    
 
                     return response;
                 }
