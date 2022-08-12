@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
-import {Router} from "@angular/router"
-import {cart} from "../testJson";
+import { Component, Input, IterableDiffers, OnInit } from '@angular/core';
+import {Router, ActivatedRoute} from "@angular/router"
+import { Product } from '../product-page/product-page.component';
+import { fromEvent, map } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
@@ -8,12 +9,22 @@ import {cart} from "../testJson";
   styleUrls: ['./cart.component.css']
 })
 
-export class CartComponent {
-  // for testing fake values ONLY
-  cart = cart;
-  // 
+export class CartComponent implements OnInit {
+  constructor(private router: Router, private iterableDiffer: IterableDiffers, private route: ActivatedRoute) {
+    this.route.queryParams.subscribe((params) => {
+      let previousCart: Product[] = JSON.parse(params["cart"]);
 
-  constructor(private router: Router) {}
+
+      this.previousCart = previousCart;
+      this.cartPriceTotal = this.cartTotal();
+    })
+  }
+
+  // necessary to have another field, previousCart, in order to observe its changes & push to cart
+  previousCart: Product[] = []
+  ngOnInit(): void {
+    this.previousCart.forEach((item) => this.cart.push(item))
+  }
 
   // listening for changes to openModalCommand from parent (fires when user clicks cart icon to open modal)
   @Input() openModalCommand: boolean = false;
@@ -21,33 +32,37 @@ export class CartComponent {
     this.toggleCartModal();
   }
 
+  @Input() cart: Product[] = [];
+  ngDoCheck() {
+    let changes = this.iterableDiffer.find(this.cart);
+    if (changes) {
+      this.cartPriceTotal = this.cartTotal();
+    }
+  }
+
   // cartToggle needs to be initially set to TRUE so that it does not automatically open on load:
   // The opening of the modal within parent product-page component fires an event that triggers toggleCartModal automatically
   cartToggle = true;
   toggleCartModal() {
-    console.log("fired toggleCartModal")
     this.cartToggle = !this.cartToggle;
   }
 
-  cartPriceTotal = this.cartTotal();
+  cartPriceTotal = 0;
   cartTotal() {
     let cartPriceTotal = 0;
-    cart.forEach(cartItem => cartPriceTotal += cartItem.price)
+    this.cart.forEach(cartItem => cartPriceTotal += cartItem.price)
     return cartPriceTotal;
   }
 
   makePurchase() {
     // send cart data to checkout page
-    this.router.navigate(["/checkout"]);
+    this.router.navigate(["/checkout"], {queryParams : {cart: JSON.stringify(this.cart)}});
   }
 
-  // interface ProductItem {
-  //   name: string,
-  //   price: number,
-  // }
-
   removeCartItem(itemName: any) {
-    let itemIndex = cart.indexOf(itemName);
-    cart.splice(itemIndex, 1);
+    let itemIndex = this.cart.indexOf(itemName);
+    this.cart.splice(itemIndex, 1);
+    // update cart total
+    this.cartPriceTotal = this.cartTotal();
   }
 }

@@ -11,7 +11,7 @@
     </header>
     <!-- display list of products -->
     <main class="container-products">
-        <div *ngFor="let product of products;" class="container-single-product" (click)="addToCart(product)">
+        <div *ngFor="let product of allProducts;" class="container-single-product" (click)="addToCart(product)">
             <app-product-item [product]="product"></app-product-item>
         </div>
     </main>
@@ -20,7 +20,7 @@
         <app-filters></app-filters>
     </div>
     <!-- cart component -->
-    <app-cart [openModalCommand]="openModalCommand"></app-cart>
+    <app-cart [openModalCommand]="openModalCommand" [cart]="cart"></app-cart>
     <!-- user profile modal -->
     <app-user-profile [openProfileModalCommand]="openProfileModalCommand"></app-user-profile>
 </div>
