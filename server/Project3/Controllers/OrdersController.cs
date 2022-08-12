@@ -40,13 +40,13 @@ namespace Project3.Controllers
             return orders;
         }
 
-        [HttpPost("/orders{product_id}&{customer_id}")]
-        public async Task<ActionResult<Order>> MakePurchase(int product_id, int customer_id)
+        [HttpPost("/orders{product_id}")]
+        public async Task<ActionResult<Order>> MakePurchase( int customer_id)
         {
             try
             {
-                await _repo.MakePurchase(customer_id, product_id);
-                _logger.LogInformation($"Customer #{customer_id} purchased Product #{product_id} ...");
+                await _repo.MakePurchase(customer_id);
+                _logger.LogInformation($"Customer #{customer_id} purchased Product # ...");
                 return StatusCode(201);
             }catch(Exception e)
             {

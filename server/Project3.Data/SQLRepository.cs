@@ -45,7 +45,7 @@ namespace Project3.Data
             while (await reader.ReadAsync())
             {
                 NewJewelry = new Jewelry(reader.GetInt32(0), reader.GetString(1), reader.GetDouble(2),
-                                         reader.GetString(3), reader.GetString(4), reader.GetString(5));
+                                         reader.GetString(3), reader.GetString(4), reader.IsDBNull(5) ? "" : reader.GetString(5));
                 jewelry.Add(NewJewelry);
             }
 
@@ -112,8 +112,8 @@ namespace Project3.Data
 
             while (await reader.ReadAsync())
             {
-                jewelry = new Jewelry(reader.GetInt32(0), reader.GetString(1), reader.GetDouble(2), 
-                                      reader.GetString(3), reader.GetString(4), reader.GetString(5));
+                jewelry = new Jewelry(reader.GetInt32(0), reader.GetString(1), reader.GetDouble(2),
+                                      reader.GetString(3), reader.GetString(4), reader.IsDBNull(5) ? "" : reader.GetString(5));
             }
 
             _logger.LogInformation("Executed GetJewelry");
@@ -138,7 +138,7 @@ namespace Project3.Data
             while (await reader.ReadAsync())
             {
                 NewReview = new Review(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2),
-                                       reader.GetDateTime(3), reader.GetString(4), reader.GetByte(5));
+                                       reader.GetDateTime(3), reader.IsDBNull(4) ? "" : reader.GetString(4), reader.GetByte(5));
                 reviews.Add(NewReview);
             }
 
@@ -167,7 +167,7 @@ namespace Project3.Data
             while (await reader.ReadAsync())
             {
                 NewReview = new Review(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2),
-                                       reader.GetDateTime(3), reader.GetString(4), reader.GetByte(5));
+                                       reader.GetDateTime(3), reader.IsDBNull(4) ? "" : reader.GetString(4),  reader.GetByte(5));
                 reviews.Add(NewReview);
             }
 
@@ -261,20 +261,19 @@ namespace Project3.Data
 
             _logger.LogInformation("Executed AddCustomer");
         }
-
-        public async Task MakePurchase(int CustomerID, int ProductID) {
+        public async Task MakePurchase(int CustomerID)
+        {
             using SqlConnection connection = new(_ConnectionString);
             await connection.OpenAsync();
 
             string cmdText =
-            @"INSERT INTO Orders (Customer_ID, Item_ID, Order_Date)
+            @"INSERT INTO Orders (Customer_ID, Order_Date)
             VALUES
-            (@Customer_ID, @Item_ID, @Order_Date)";
+            (@Customer_ID, @Order_Date)";
 
             using SqlCommand cmd = new SqlCommand(cmdText, connection);
 
             cmd.Parameters.AddWithValue("@Customer_ID", CustomerID);
-            cmd.Parameters.AddWithValue("@Item_ID", ProductID);
             cmd.Parameters.AddWithValue("@Order_Date", DateTime.Now);
             
             await cmd.ExecuteNonQueryAsync();
@@ -293,7 +292,7 @@ namespace Project3.Data
 
             SqlCommand cmd = new SqlCommand(cmdText, connection);
 
-            cmd.Parameters.AddWithValue("Customer_ID", CustomerID);
+            cmd.Parameters.AddWithValue("@Customer_ID", CustomerID);
 
             using SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
@@ -337,5 +336,91 @@ namespace Project3.Data
             Customer customer = new Customer();
             return customer;
         }
+        public async Task<List<Jewelry_transaction>> ListTransactions()
+        {
+            List<Jewelry_transaction> transactions = new List<Jewelry_transaction>();
+
+            using SqlConnection connection = new(_ConnectionString);
+            await connection.OpenAsync();
+
+            string cmdText = "SELECT * FROM J_T;";
+
+            SqlCommand cmd = new SqlCommand(cmdText, connection);
+
+            using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+
+            Jewelry_transaction NewJewelryTransaction;
+            while (await reader.ReadAsync())
+            {
+                NewJewelryTransaction = new Jewelry_transaction(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2), reader.GetInt32(3));
+
+                transactions.Add(NewJewelryTransaction);
+            }
+
+            await connection.CloseAsync();
+
+            _logger.LogInformation("Executed ListTransactions, returned {0} results", transactions.Count);
+
+            return transactions;
+
+        }
+
+        public async Task AddTransaction(int CustomerID ,int OrderID, int ItemID)
+        {
+            using SqlConnection connection = new(_ConnectionString);
+            await connection.OpenAsync();
+
+            string cmdText =
+            @"INSERT INTO J_T (Customer_ID, Order_ID, Item_ID)
+            VALUES
+            (@Customer_ID, @Order_ID, @Item_ID)";
+
+            using SqlCommand cmd = new SqlCommand(cmdText, connection);
+
+            cmd.Parameters.AddWithValue("@Customer_ID", CustomerID);
+            cmd.Parameters.AddWithValue("@Order_ID", OrderID);
+            cmd.Parameters.AddWithValue("@Item_ID", ItemID);
+            
+           
+
+            await cmd.ExecuteNonQueryAsync();
+
+            await connection.CloseAsync();
+
+            _logger.LogInformation("Executed AddTransaction");
+        }
+        public async Task<List<Item>> ListCustomerTransaction(int CustomerID)
+        {
+            List<Item> orders = new List<Item>();
+
+            using SqlConnection connection = new(_ConnectionString);
+            await connection.OpenAsync();
+
+            string cmdText = "SELECT Orders.Order_ID, Orders.Order_Date, J_T.Jewelry_ID, Jewelry.Item_name, Jewelry.Price " +
+                "FROM Orders join J_T ON Orders.Order_ID = J_T.Order_ID join Jewelry on Jewelry.Item_ID = J_T.Item_ID " +
+                "WHERE Customer_ID = @Customer_ID;";
+
+            SqlCommand cmd = new SqlCommand(cmdText, connection);
+
+            cmd.Parameters.AddWithValue("@Customer_ID", CustomerID);
+
+            using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+
+            Item NewOrder;
+            while (await reader.ReadAsync())
+            {
+                NewOrder = new Item(reader.GetInt32(0), reader.GetDateTime(1), reader.GetInt32(2), 
+                reader.GetString(3), reader.GetDouble(4));
+                orders.Add(NewOrder);
+            }
+
+            await connection.CloseAsync();
+
+            _logger.LogInformation("Executed ListCustomerTransactio, returned {0} results", orders.Count);
+
+            return orders;
+        }
+
+
     }
 }
