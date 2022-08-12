@@ -1,7 +1,7 @@
 
 
 
-/*
+
 
 drop table J_T;
 drop table Reviews;
@@ -65,4 +65,5 @@ rating TINYINT NULL,
 PRIMARY KEY (Reviews_ID),
 FOREIGN KEY (Customer_ID) REFERENCES Customers(Customer_ID),
 FOREIGN KEY (Item_ID) REFERENCES Jewelry(Item_ID));
-*/
+
+/* */

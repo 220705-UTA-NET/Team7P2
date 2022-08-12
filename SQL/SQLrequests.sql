@@ -67,6 +67,10 @@ INSERT into Orders VALUES(1,'08/08/2022'),(2,'08/08/2022');
 
 INSERT into Jewelry VALUES ('pearls',2000,'seastione','neckalace','Img_url'),('Diamond Ring',5000,'Diamond','ring','Img_url2');
 
+INSERT into Jewelry VALUES ('cufflinks',200,'metal','acessory','https://upload.wikimedia.org/wikipedia/commons/b/bb/Cufflinks-old_hg.jpg'),('Pendant',500,'Amber','neckalace','https://upload.wikimedia.org/wikipedia/commons/4/41/Amber.pendants.800pix.050203.jpg');
+
+INSERT into Jewelry VALUES ('Brooch',1500,'Silver','acessory','https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Wing_Brooch_MET_DT108.jpg/330px-Wing_Brooch_MET_DT108.jpg'),('Gold Ring',935,'Gold','ring','https://thejoue.com/wp-content/uploads/2021/04/Chopard-18kt-rose-gold-Ice-Cube-Pure-diamond-ring-min-800x497.jpg');
+
 INSERT INTO J_T VALUES(1,1,1),(1,1,2),(2,2,2);
 
 INSERT into Reviews VALUES(1,1,'08/08/2022','cool stuff',5),(1,2,'08/08/2022','exspensive stuff',4),(2,2,'08/08/2022','thank you',5);
@@ -75,4 +79,5 @@ INSERT INTO Cred VALUES('user','passw',1),('user1','passw2',2);
 
 */
 
-
+-- 10 jewls per type
+--
