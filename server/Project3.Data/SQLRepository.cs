@@ -323,8 +323,7 @@ namespace Project3.Data
             Order NewOrder;
             while (await reader.ReadAsync())
             {
-                NewOrder = new Order(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2),
-                                     reader.GetDateTime(3));
+                NewOrder = new Order(reader.GetInt32(0), reader.GetInt32(1), reader.GetDateTime(2));
                 orders.Add(NewOrder);
             }
 
