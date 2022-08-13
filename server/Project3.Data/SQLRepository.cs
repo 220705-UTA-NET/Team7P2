@@ -252,21 +252,27 @@ namespace Project3.Data
 
             _logger.LogInformation("Executed ModifyCustomerProfile");
         }
-        public async Task AddCustomer(Customer customer, string username, string password) {
+        public async Task AddCustomer(string CName, string Shipping_address, string username, string password) {
+            int CustomerID;
             using SqlConnection connection = new(_ConnectionString);
             await connection.OpenAsync();
 
             string cmdText =
             @"INSERT INTO Customers (CName, Shipping_address)
+            OUTPUT INSERTED.Customer_ID
             VALUES
             (@CName, @Shipping_address)";
 
             using SqlCommand cmd = new SqlCommand(cmdText, connection);
 
-            cmd.Parameters.AddWithValue("@CName", customer.name);
-            cmd.Parameters.AddWithValue("@Shipping_address", customer.shipping_address);
+            cmd.Parameters.AddWithValue("@CName", CName);
+            cmd.Parameters.AddWithValue("@Shipping_address", Shipping_address);
 
-            await cmd.ExecuteNonQueryAsync();
+            SqlDataReader reader = await cmd.ExecuteReaderAsync();
+            await reader.ReadAsync();
+            CustomerID = reader.GetInt32(0);
+            reader.CloseAsync();
+
 
             cmdText =
             @"INSERT INTO Cred (userN, Pass, Customer_ID)
@@ -277,7 +283,7 @@ namespace Project3.Data
 
             credcmd.Parameters.AddWithValue("@userN", username);
             credcmd.Parameters.AddWithValue("@Pass", password);
-            credcmd.Parameters.AddWithValue("@Customer_ID", customer.id);
+            credcmd.Parameters.AddWithValue("@Customer_ID", CustomerID);
 
             await credcmd.ExecuteNonQueryAsync();
 
@@ -361,16 +367,9 @@ namespace Project3.Data
             using SqlConnection connection = new(_ConnectionString);
             await connection.OpenAsync();
             string cmdText = @"INSERT INTO Customers (CName, Shipping_address)
+                               OUTPUT INSERTED.Customer_ID, INSERTED.CName, INSERTED.Shipping_address
                                VALUES (@CName, @Shipping_address)";
             SqlCommand cmd = new SqlCommand(cmdText, connection);
-            cmd.Parameters.AddWithValue("@CName", CName);
-            cmd.Parameters.AddWithValue("@Shipping_address", ShippingAddress);
-
-            cmd.ExecuteNonQuery();
-
-            cmdText = @"SELECT * FROM Customers
-                        WHERE CName=@CName AND Shipping_address=@Shipping_address;";
-            cmd = new SqlCommand(cmdText, connection);
             cmd.Parameters.AddWithValue("@CName", CName);
             cmd.Parameters.AddWithValue("@Shipping_address", ShippingAddress);
 

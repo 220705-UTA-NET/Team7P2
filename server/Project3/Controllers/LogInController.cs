@@ -102,10 +102,8 @@ namespace Project3.Controllers
                 using StreamReader reader = new StreamReader(Request.Body);
                 string json = await reader.ReadToEndAsync();
 
-
                 JsonObject person = (JsonObject)JsonSerializer.Deserialize(json, typeof(JsonObject));
                 customer = await _repo.RegisterCustomer(person["name"].ToString(), person["address"].ToString(), cred[0], cred[1]);
-
                 var claims = new[]
                     {
                         new Claim(JwtRegisteredClaimNames.Sub, $"{customer.id}")
