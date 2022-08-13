@@ -56,7 +56,7 @@ namespace Project3.Controllers
         }
 
         [HttpPost("/customer")]
-        public async Task<ActionResult<Customer>> AddCustomer(Customer customer, string username, string password)
+        public async Task<ActionResult<Customer>> AddCustomer([FromBody] Customer customer, string username, string password)
         {
             try
             {
