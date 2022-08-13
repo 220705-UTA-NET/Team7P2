@@ -34,6 +34,8 @@ namespace Project3.Data
         public Task<List<Order>> ListOrders(int CustomerID);
         // Retrieve the Customer with the specified Username
         public Task<Customer> LogInCustomer(string UserName, string Password);
+
+        public Task<Customer> RegisterCustomer(string CName, string ShippingAddress, string Username, string Password);
         // Add a transaction with the buyer ID the order ID and the Item ID 
         public Task AddTransaction(int CustomerID, int OrderID, int ItemID);
         // List all transactions

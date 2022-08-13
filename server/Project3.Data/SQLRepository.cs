@@ -355,10 +355,47 @@ namespace Project3.Data
             return customer;
         }
 
-        public async Task<Customer> RegisterCustomer(string Username, string Password)
+        public async Task<Customer> RegisterCustomer(string CName, string ShippingAddress, string Username, string Password)
         {
             Customer customer = new Customer();
+            using SqlConnection connection = new(_ConnectionString);
+            await connection.OpenAsync();
+            string cmdText = @"INSERT INTO Customers (CName, Shipping_address)
+                               VALUES (@CName, @Shipping_address)";
+            SqlCommand cmd = new SqlCommand(cmdText, connection);
+            cmd.Parameters.AddWithValue("@CName", CName);
+            cmd.Parameters.AddWithValue("@Shipping_address", ShippingAddress);
+
+            cmd.ExecuteNonQuery();
+
+            cmdText = @"SELECT * FROM Customers
+                        WHERE CName=@CName AND Shipping_address=@Shipping_address;";
+            cmd = new SqlCommand(cmdText, connection);
+            cmd.Parameters.AddWithValue("@CName", CName);
+            cmd.Parameters.AddWithValue("@Shipping_address", ShippingAddress);
+
+            using SqlDataReader reader = cmd.ExecuteReader();
+            await reader.ReadAsync();
+            customer.id = reader.GetInt32(0);
+            customer.name = reader.GetString(1);
+            customer.shipping_address = reader.GetString(2);
+            reader.CloseAsync();
+
+            cmdText =
+            @"INSERT INTO Cred (userN, Pass, Customer_ID)
+            VALUES
+            (@userN, @Pass, @Customer_ID)";
+
+            using SqlCommand credcmd = new SqlCommand(cmdText, connection);
+
+            credcmd.Parameters.AddWithValue("@userN", Username);
+            credcmd.Parameters.AddWithValue("@Pass", Password);
+            credcmd.Parameters.AddWithValue("@Customer_ID", customer.id);
+
+            credcmd.ExecuteNonQuery();
+
             return customer;
+
         }
         public async Task<List<Jewelry_transaction>> ListTransactions()
         {
