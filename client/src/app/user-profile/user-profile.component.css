@@ -61,3 +61,14 @@ button {
     cursor: pointer;
     filter: invert(77%) sepia(87%) saturate(1460%) hue-rotate(345deg) brightness(90%) contrast(88%);
 }
+
+.view-order {
+    display: none;
+    max-height: 3rem;
+    text-align: center;
+    margin: auto;
+}
+
+.display-view-order {
+    display: block;
+}

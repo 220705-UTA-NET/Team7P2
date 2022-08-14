@@ -2,18 +2,18 @@
     <h2>Filter by...</h2>
     <ul class="container-type">
         <h3>Type</h3>
-        <p (click)="activateFilter($event, 'type', 'ring')">Ring</p>
-        <p (click)="activateFilter($event, 'type','necklace')">Necklace</p>
-        <p (click)="activateFilter($event, 'type','accessory')">Accessory</p>
+        <p (click)="activateFilter($event, 'type', 'ring')" class="filter-option-type">Ring</p>
+        <p (click)="activateFilter($event, 'type','necklace')" class="filter-option-type">Necklace</p>
+        <p (click)="activateFilter($event, 'type','accessory')" class="filter-option-type">Accessory</p>
     </ul>
     <ul class="container-material">
         <h3>Material</h3>
-        <p (click)="activateFilter($event, 'material', 'seastone')">Seastone</p>
-        <p (click)="activateFilter($event, 'material', 'diamond')">Diamond</p>
-        <p (click)="activateFilter($event, 'material', 'amber')">Amber</p>
-        <p (click)="activateFilter($event, 'material', 'silver')">Silver</p>
-        <p (click)="activateFilter($event, 'material', 'gold')">Gold</p>
-        <p (click)="activateFilter($event, 'material', 'metal')">Metal</p>
+        <p (click)="activateFilter($event, 'material', 'seastone')" class="filter-option-material">Seastone</p>
+        <p (click)="activateFilter($event, 'material', 'diamond')" class="filter-option-material">Diamond</p>
+        <p (click)="activateFilter($event, 'material', 'amber')" class="filter-option-material">Amber</p>
+        <p (click)="activateFilter($event, 'material', 'silver')" class="filter-option-material">Silver</p>
+        <p (click)="activateFilter($event, 'material', 'gold')" class="filter-option-material">Gold</p>
+        <p (click)="activateFilter($event, 'material', 'metal')" class="filter-option-material">Metal</p>
     </ul>
     <button class="btn-reset" (click)="resetFilters()">Reset</button>
 </aside>
