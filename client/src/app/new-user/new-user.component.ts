@@ -51,7 +51,7 @@ export class NewUserComponent {
 
       const combinedData = {
         name: name,
-        shipping_address: shipping_address,
+        address: shipping_address,
         username: username,
         password: password
       };
@@ -60,7 +60,7 @@ export class NewUserComponent {
       console.log(customerData)
 
       // issue is likely due to the fact that the server cannot parse the response body
-      this.http.post(`https://team7project2api.azurewebsites.net/customer?username=${username}&password=${password}`, customerData, {
+      this.http.post(`https://team7project2api.azurewebsites.net/customer`, customerData, {
         // header for testing only since create customer is stuck under auth
         headers: new HttpHeaders({
           Authorization: `Bearer ${testingToken}`,

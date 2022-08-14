@@ -5,6 +5,7 @@ import { Component, Input, Output, EventEmitter, SimpleChange, SimpleChanges } f
   templateUrl: './product-item.component.html',
   styleUrls: ['./product-item.component.css']
 })
+
 export class ProductItemComponent {
 
   constructor() {}
@@ -24,7 +25,6 @@ export class ProductItemComponent {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['iterator'].currentValue % 8 == 0 && changes['iterator'].currentValue != 0 && changes['iterator'].currentValue != 8) {
       setTimeout(this.iObserverSetup, 1000);
-      console.log("CHANGES", changes)
     }
   }
 
@@ -41,7 +41,6 @@ export class ProductItemComponent {
           // notify product-page to update allProducts
           console.log("intersecting");
           observer.unobserve(nextObserver)
-          console.log("unobserved")
           this.displayMoreProducts.emit(this.iterator);
         }
       })
