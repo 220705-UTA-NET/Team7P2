@@ -6,15 +6,25 @@ using System.Threading.Tasks;
 
 namespace Project3.Model
 {
+
+    /*
+    * Object representation of a Transaction.
+    * 
+    * @author Joseph Boye
+    * @version 8-10-2022
+    */
     public class Jewelry_transaction
     {
         // transaction ID
         public int id { get; set; }
 
+        // Customer ID
         public int customer_id { get; set; }
 
+        // Order ID
         public int order_id { get; set; }
 
+        //Item ID
         public int Item_id { get; set; }
 
         public Jewelry_transaction() { }
