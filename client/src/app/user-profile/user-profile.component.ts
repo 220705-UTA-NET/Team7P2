@@ -56,6 +56,12 @@ export class UserProfileComponent implements OnInit {
     this.profileModalToggle = !this.profileModalToggle;
   }
 
+  displayViewOrder: boolean = false;
+  toggleViewOrderDisplay() {
+    this.displayViewOrder = !this.displayViewOrder
+  }
+
+  orderHistory: any;
   // fetch order history from API
   viewOrderHistory() {
     this.http.get(`https://team7project2api.azurewebsites.net/orders/${this.customer["CustomerID"]}`, {
@@ -65,6 +71,7 @@ export class UserProfileComponent implements OnInit {
     })
       .subscribe((result) => {
         console.log("viewOrderHistory", result)
+        this.orderHistory = result.body
       })
   }
 
