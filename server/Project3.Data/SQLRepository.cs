@@ -252,21 +252,27 @@ namespace Project3.Data
 
             _logger.LogInformation("Executed ModifyCustomerProfile");
         }
-        public async Task AddCustomer(Customer customer, string username, string password) {
+        public async Task AddCustomer(string CName, string Shipping_address, string username, string password) {
+            int CustomerID;
             using SqlConnection connection = new(_ConnectionString);
             await connection.OpenAsync();
 
             string cmdText =
             @"INSERT INTO Customers (CName, Shipping_address)
+            OUTPUT INSERTED.Customer_ID
             VALUES
             (@CName, @Shipping_address)";
 
             using SqlCommand cmd = new SqlCommand(cmdText, connection);
 
-            cmd.Parameters.AddWithValue("@CName", customer.name);
-            cmd.Parameters.AddWithValue("@Shipping_address", customer.shipping_address);
+            cmd.Parameters.AddWithValue("@CName", CName);
+            cmd.Parameters.AddWithValue("@Shipping_address", Shipping_address);
 
-            await cmd.ExecuteNonQueryAsync();
+            SqlDataReader reader = await cmd.ExecuteReaderAsync();
+            await reader.ReadAsync();
+            CustomerID = reader.GetInt32(0);
+            reader.CloseAsync();
+
 
             cmdText =
             @"INSERT INTO Cred (userN, Pass, Customer_ID)
@@ -277,7 +283,7 @@ namespace Project3.Data
 
             credcmd.Parameters.AddWithValue("@userN", username);
             credcmd.Parameters.AddWithValue("@Pass", password);
-            credcmd.Parameters.AddWithValue("@Customer_ID", customer.id);
+            credcmd.Parameters.AddWithValue("@Customer_ID", CustomerID);
 
             await credcmd.ExecuteNonQueryAsync();
 
@@ -316,15 +322,14 @@ namespace Project3.Data
 
             SqlCommand cmd = new SqlCommand(cmdText, connection);
 
-            cmd.Parameters.AddWithValue("Customer_ID", CustomerID);
+            cmd.Parameters.AddWithValue("@Customer_ID", CustomerID);
 
             using SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
             Order NewOrder;
             while (await reader.ReadAsync())
             {
-                NewOrder = new Order(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2),
-                                     reader.GetDateTime(3));
+                NewOrder = new Order(reader.GetInt32(0), reader.GetInt32(1), reader.GetDateTime(2));
                 orders.Add(NewOrder);
             }
 
@@ -335,12 +340,12 @@ namespace Project3.Data
             return orders;
         }
 
-        public async Task<int> LogInCustomer(string Username, string Password)
+        public async Task<Customer> LogInCustomer(string Username, string Password)
         {
-            int customerId = 0;
+            Customer customer = new Customer();
             using SqlConnection connection = new(_ConnectionString);
             await connection.OpenAsync();
-            string cmdText = @"SELECT CU.Customer_ID FROM Customers AS CU
+            string cmdText = @"SELECT CU.Customer_ID, CU.CName, CU.Shipping_address FROM Customers AS CU
                            JOIN Cred AS CR ON CU.Customer_ID=CR.Customer_ID
                            WHERE userN=@Username AND Pass=@Password";
 
@@ -350,15 +355,45 @@ namespace Project3.Data
 
             using SqlDataReader reader = cmd.ExecuteReader();
 
-            if (await reader.ReadAsync()) customerId = reader.GetInt32(0);
+            if (await reader.ReadAsync()) customer = new Customer(reader.GetInt32(0), reader.GetString(1), reader.GetString(2));
 
-            return customerId;
+            return customer;
         }
 
-        public async Task<Customer> RegisterCustomer(string Username, string Password)
+        public async Task<Customer> RegisterCustomer(string CName, string ShippingAddress, string Username, string Password)
         {
             Customer customer = new Customer();
+            using SqlConnection connection = new(_ConnectionString);
+            await connection.OpenAsync();
+            string cmdText = @"INSERT INTO Customers (CName, Shipping_address)
+                               OUTPUT INSERTED.Customer_ID, INSERTED.CName, INSERTED.Shipping_address
+                               VALUES (@CName, @Shipping_address)";
+            SqlCommand cmd = new SqlCommand(cmdText, connection);
+            cmd.Parameters.AddWithValue("@CName", CName);
+            cmd.Parameters.AddWithValue("@Shipping_address", ShippingAddress);
+
+            using SqlDataReader reader = cmd.ExecuteReader();
+            await reader.ReadAsync();
+            customer.id = reader.GetInt32(0);
+            customer.name = reader.GetString(1);
+            customer.shipping_address = reader.GetString(2);
+            reader.CloseAsync();
+
+            cmdText =
+            @"INSERT INTO Cred (userN, Pass, Customer_ID)
+            VALUES
+            (@userN, @Pass, @Customer_ID)";
+
+            using SqlCommand credcmd = new SqlCommand(cmdText, connection);
+
+            credcmd.Parameters.AddWithValue("@userN", Username);
+            credcmd.Parameters.AddWithValue("@Pass", Password);
+            credcmd.Parameters.AddWithValue("@Customer_ID", customer.id);
+
+            credcmd.ExecuteNonQuery();
+
             return customer;
+
         }
         public async Task<List<Jewelry_transaction>> ListTransactions()
         {
@@ -395,7 +430,7 @@ namespace Project3.Data
             await connection.OpenAsync();
 
             string cmdText =
-            @"INSERT INTO J_T (Customer_ID, Order_ID, Item_ID)
+            @"INSERT INTO J_T (Customers_ID, Order_ID, Item_ID)
             VALUES
             (@Customer_ID, @Order_ID, @Item_ID)";
 
@@ -413,6 +448,38 @@ namespace Project3.Data
 
             _logger.LogInformation("Executed AddTransaction");
         }
+        public async Task<List<Item>> ListCustomerTransaction(int CustomerID)
+        {
+            List<Item> orders = new List<Item>();
+
+            using SqlConnection connection = new(_ConnectionString);
+            await connection.OpenAsync();
+
+            string cmdText = "SELECT Orders.Order_ID, Orders.Order_Date, J_T.Jewelry_ID, Jewelry.Item_name, Jewelry.Price " +
+                "FROM Orders join J_T ON Orders.Order_ID = J_T.Order_ID join Jewelry on Jewelry.Item_ID = J_T.Item_ID " +
+                "WHERE Customer_ID = @Customer_ID;";
+
+            SqlCommand cmd = new SqlCommand(cmdText, connection);
+
+            cmd.Parameters.AddWithValue("@Customer_ID", CustomerID);
+
+            using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+
+            Item NewOrder;
+            while (await reader.ReadAsync())
+            {
+                NewOrder = new Item(reader.GetInt32(0), reader.GetDateTime(1), reader.GetInt32(2), 
+                reader.GetString(3), reader.GetDouble(4));
+                orders.Add(NewOrder);
+            }
+
+            await connection.CloseAsync();
+
+            _logger.LogInformation("Executed ListCustomerTransaction, returned {0} results", orders.Count);
+
+            return orders;
+        }
+
 
     }
 }
