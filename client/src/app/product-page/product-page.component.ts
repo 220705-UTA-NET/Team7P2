@@ -66,7 +66,10 @@ export class ProductPageComponent implements OnInit {
           })
 
           // push only the first initial 9 items; can add in the next 9 with intersectionalObserver
-          for (let i = 0; i <= 8; i++) {
+          // for (let i = 0; i <= 8; i++) {
+          //   this.allProducts.push(this.infiniteProducts[i]);
+          // }
+          for (let i = 0; i <= 5; i++) {
             this.allProducts.push(this.infiniteProducts[i]);
           }
 
