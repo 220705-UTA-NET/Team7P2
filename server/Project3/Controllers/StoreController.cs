@@ -26,7 +26,7 @@ namespace Project3.Controllers
             List<Jewelry> list = new List<Jewelry>();
             try
             {
-                list = await _repo.ListJewelry();
+                list = await _repo.ListJewelry(startrow, endrow);
                 _logger.LogInformation("Retrieving Jewelry List ...");
             }catch(Exception e)
             {

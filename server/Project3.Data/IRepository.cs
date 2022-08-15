@@ -11,7 +11,7 @@ namespace Project3.Data
     public interface IRepository
     {
         // Returns a list of Jewelry on the store
-        public Task<List<Jewelry>> ListJewelry();
+        public Task<List<Jewelry>> ListJewelry(int startrow, int endrow);
         // Returns a list of Jewelry based on a filter
         public Task<List<Jewelry>> ListFilteredJewelry(string material, string item_type);
         // Returns data pertaining to one of the jewelries
