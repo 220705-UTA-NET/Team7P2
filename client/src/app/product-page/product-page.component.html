@@ -12,7 +12,7 @@
     <!-- display list of products -->
     <main class="container-products">
         <div *ngFor="let product of allProducts; index as i" class="container-single-product" (click)="addToCart(product)">
-            <app-product-item [product]="product" [iterator]="i" (displayMoreProducts)="displayMoreProducts($event)"></app-product-item>
+            <app-product-item [product]="product" [iterator]="i" (displayMoreProducts)="displayMoreProducts($event)" [accessToken]="accessToken"></app-product-item>
         </div>
         <p class="product-fetch-error" [ngClass]="{'display-product-error' : productFetchError}">There was an error fetching our products. Please try again</p>
     </main>

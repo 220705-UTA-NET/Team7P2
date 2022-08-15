@@ -60,15 +60,16 @@ export class ProductPageComponent implements OnInit {
         if (result.status === 200) {
           const products = result.body;
 
-          // products.forEach((item: Product) => {
-          //   // this.allProducts.push(item);
-          //   this.infiniteProducts.push(item);
-          // })
-
-          this.infiniteProducts = this.testProducts
+          products.forEach((item: Product) => {
+            // this.allProducts.push(item);
+            this.infiniteProducts.push(item);
+          })
 
           // push only the first initial 9 items; can add in the next 9 with intersectionalObserver
-          for (let i = 0; i <= 8; i++) {
+          // for (let i = 0; i <= 8; i++) {
+          //   this.allProducts.push(this.infiniteProducts[i]);
+          // }
+          for (let i = 0; i <= 5; i++) {
             this.allProducts.push(this.infiniteProducts[i]);
           }
 
@@ -107,148 +108,4 @@ export class ProductPageComponent implements OnInit {
   toggleProfileModal() {
     this.openProfileModalCommand = !this.openProfileModalCommand;
   }
-
-  // infinite scroll
-  // rather than constantly requesting, just get all products but display 9 @ a time
-  // when 9th comes into view, display the next 9
-  // can achieve this by placing all products in one array & moving only a certain amount of them into allProducts
-
-
-  // for testing pagination only, delete afterwards
-  testProducts = [
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-]
-
 }
