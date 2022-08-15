@@ -20,7 +20,7 @@ namespace Project3.Controllers
             _repo = repo;
         }
 
-        [HttpGet("/store{startrow}/{endrow}")]
+        [HttpGet("/store/{startrow}/{endrow}")]
         public async Task<ActionResult<List<Jewelry>>> GetJewelryList(int startrow, int endrow)
         {
             List<Jewelry> list = new List<Jewelry>();
