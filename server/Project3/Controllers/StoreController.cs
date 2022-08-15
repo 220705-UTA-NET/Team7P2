@@ -21,7 +21,7 @@ namespace Project3.Controllers
         }
 
         [HttpGet("/store")]
-        public async Task<ActionResult<List<Jewelry>>> GetJewelryList()
+        public async Task<ActionResult<List<Jewelry>>> GetJewelryList(int startrow, int endrow)
         {
             List<Jewelry> list = new List<Jewelry>();
             try
