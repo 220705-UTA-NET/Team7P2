@@ -7,7 +7,8 @@
 
         <div [ngClass]="{'display-view-order': displayViewOrder}" class="view-order" *ngFor="let order of orderHistory">
             <h5>{{order.name}}</h5>
-            <p>{{order.price}}</p>
+            <p>${{order.price}}</p>
+            <p>{{order.order_date.slice(0, 10)}}</p>
         </div>
 
         <button type="button" class="btn-logout" (click)="logout()">Logout</button>

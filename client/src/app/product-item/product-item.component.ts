@@ -79,9 +79,6 @@ export class ProductItemComponent {
   seeReviews(event: any) {
     event.stopPropagation();
     const itemId: string = event.target.id;
-    console.log(event.target)
-
-    console.log(itemId);
 
     this.http.get(`https://team7project2api.azurewebsites.net/review/item/${itemId}`, {
       headers: {"Authorization": `Bearer ${this.accessToken}`},
@@ -93,7 +90,6 @@ export class ProductItemComponent {
         const contentBody: Review[] = result.body
         contentBody.forEach((review: Review) => {
           // render the review & the star rating within the item's container
-          console.log(review)
           this.reviews.push(review);
         })
       })
