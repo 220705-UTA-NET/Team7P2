@@ -1,4 +1,4 @@
-name: dotnetSonar
+name: angularSonar
 on:
   workflow_dispatch:
   push:
@@ -9,7 +9,7 @@ on:
     types: [opened, synchronize, reopened]
 jobs:
   build:
-    name: dotnetSonar
+    name: angularSonar
     runs-on: windows-latest
     steps:
       - name: Set up JDK 11
