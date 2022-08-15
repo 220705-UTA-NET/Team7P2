@@ -20,13 +20,13 @@ namespace Project3.Controllers
             _repo = repo;
         }
 
-        [HttpGet("/store")]
-        public async Task<ActionResult<List<Jewelry>>> GetJewelryList()
+        [HttpGet("/store{startrow}/{endrow}")]
+        public async Task<ActionResult<List<Jewelry>>> GetJewelryList(int startrow, int endrow)
         {
             List<Jewelry> list = new List<Jewelry>();
             try
             {
-                list = await _repo.ListJewelry();
+                list = await _repo.ListJewelry(startrow, endrow);
                 _logger.LogInformation("Retrieving Jewelry List ...");
             }catch(Exception e)
             {

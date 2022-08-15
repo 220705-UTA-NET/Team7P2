@@ -56,6 +56,7 @@ select Customer_ID, Review_date,content,rating from Reviews where Item_ID = 2;
 
 select Customer_ID from cred WHERE userN = 'user' and Pass= 'passw';
 
+SELECT * from Jewelry ORDER BY Item_ID OFFSET 0  ROWS FETCH NEXT 9 rows ONLY;
 
 --test insert
 /*
@@ -76,6 +77,8 @@ INSERT INTO J_T VALUES(1,1,1),(1,1,2),(2,2,2);
 INSERT into Reviews VALUES(1,1,'08/08/2022','cool stuff',5),(1,2,'08/08/2022','exspensive stuff',4),(2,2,'08/08/2022','thank you',5);
 
 INSERT INTO Cred VALUES('user','passw',1),('user1','passw2',2);
+
+
 
 */
 
