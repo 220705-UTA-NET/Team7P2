@@ -1,5 +1,5 @@
 <!-- image for testing only -->
-<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC-uPVLJimMVmuMaIvuspIGDIDEAa8XOmdjw&usqp=CAU" alt="{{product.name}}-img" class="product-img">
+<img src="{{product.imgURL}}" alt="{{product.name}}-img" class="product-img">
 <h3 class="product-name">{{product.name}}</h3>
 <p class="product-price">${{product.price}}</p>
 <div class="container-type-material">
@@ -7,4 +7,15 @@
     |
     <p>{{product.material}}</p>
 </div>
+<div class="container-review">
+    <img src="/assets/images/products/message-solid.svg" alt="speech-icon" class="review-icon" (click)="seeReviews($event)" id="{{product.id}}">
+    <h4 class="reviews">Reviews</h4>
+    <div class="wrapper-user-reviews" *ngFor="let review of reviews">
+        <div class="single-review">
+            <p>{{review.content}}</p>
+            <p class="review-rating">{{review.rating}}</p>
+        </div>
+    </div>
+</div>
+
 <h3 *ngIf="iterator % 8 == 0 && iterator != 0" class="observer"></h3>
