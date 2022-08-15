@@ -54,7 +54,7 @@ export class ProductItemComponent {
           observer.unobserve(nextObserver)
 
           // re-comment once we have more products in the db
-          // this.displayMoreProducts.emit(this.iterator);
+          this.displayMoreProducts.emit(this.iterator);
         }
       })
     }
