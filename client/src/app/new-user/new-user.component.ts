@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -12,15 +12,13 @@ export class NewUserComponent {
   constructor(private http: HttpClient) { }
 
   @Input() creationModal: boolean = false;
-  ngOnChanges() {
-    console.log('fired on change')
+  ngOnChanges(changes: SimpleChanges) {
     this.toggleCreationModal();
   } 
 
   // open a modal that enables a user to give a username & password + password confirmation
   displayModal = true;
   toggleCreationModal() {
-    console.log('toggle modal')
     this.displayModal = !this.displayModal;
   }
 
@@ -39,7 +37,6 @@ export class NewUserComponent {
     // testing only
     const testingTokenObject = JSON.parse(localStorage.getItem("customer") || '{}');
     const testingToken = testingTokenObject["Access-Token"];
-    console.log(testingToken)
 
     if (passwordsMatch) {
       // splitting up the form content since the server expects (customer, username, password)
@@ -51,16 +48,15 @@ export class NewUserComponent {
 
       const combinedData = {
         name: name,
-        shipping_address: shipping_address,
+        address: shipping_address,
         username: username,
         password: password
       };
 
       const customerData = JSON.stringify(combinedData)
-      console.log(customerData)
 
       // issue is likely due to the fact that the server cannot parse the response body
-      this.http.post(`https://team7project2api.azurewebsites.net/customer?username=${username}&password=${password}`, customerData, {
+      this.http.post(`https://team7project2api.azurewebsites.net/customer`, customerData, {
         // header for testing only since create customer is stuck under auth
         headers: new HttpHeaders({
           Authorization: `Bearer ${testingToken}`,
@@ -71,7 +67,7 @@ export class NewUserComponent {
         responseType: "json"
       })
         .subscribe((result) => {
-          console.log(result)
+          this.toggleCreationModal();
         })
 
     } else {

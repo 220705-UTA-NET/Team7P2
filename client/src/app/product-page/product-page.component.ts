@@ -5,6 +5,7 @@ import {Customer} from "../login-form/login-form.component";
 
 export interface Product {
   id: number,
+  imgURL: string,
   name: string,
   price: number,
   material: string,
@@ -45,13 +46,17 @@ export class ProductPageComponent implements OnInit {
   infiniteProducts: Array<Product> = [];
   productFetchError: boolean = false;
 
+  // for grabbing sets of products for pagination effect
+  startRow: number = 0;
+  endRow: number = 9;
+
   fetchAllProducts() {
     // will not parse without {} since getItem can be null
     const customer: Customer = JSON.parse(localStorage.getItem("customer") || '{}');
     this.customer = customer;
 
     // returns List<Jewelry> (id, name, price, material, type)
-    this.http.get("https://team7project2api.azurewebsites.net/store", {
+    this.http.get(`https://team7project2api.azurewebsites.net/store/${this.startRow}/${this.endRow}`, {
       headers: {"Authorization": `Bearer ${customer["Access-Token"]}`},
       observe: "response",
       responseType: "json"
@@ -60,17 +65,15 @@ export class ProductPageComponent implements OnInit {
         if (result.status === 200) {
           const products = result.body;
 
-          // products.forEach((item: Product) => {
-          //   // this.allProducts.push(item);
-          //   this.infiniteProducts.push(item);
-          // })
+          console.log("STORE RESULT", result);
 
-          this.infiniteProducts = this.testProducts
+          products.forEach((item: Product) => {
+            this.allProducts.push(item);
+          })
 
-          // push only the first initial 9 items; can add in the next 9 with intersectionalObserver
-          for (let i = 0; i <= 8; i++) {
-            this.allProducts.push(this.infiniteProducts[i]);
-          }
+          // update the row values
+          this.startRow += 9;
+          this.endRow += 9;
 
         } else {
           // render a statement that there was a problem loading the results
@@ -80,10 +83,9 @@ export class ProductPageComponent implements OnInit {
       })
   }
 
-  displayMoreProducts(iterator: number) {
-    for (let i = iterator; i <= iterator + 8; i++) {
-      this.allProducts.push(this.infiniteProducts[i])
-    }
+  displayMoreProducts() {
+    console.log("displaying more products")
+    this.fetchAllProducts();
   }
 
   updateFilteredProducts(filteredProducts: Product[]) {
@@ -107,148 +109,4 @@ export class ProductPageComponent implements OnInit {
   toggleProfileModal() {
     this.openProfileModalCommand = !this.openProfileModalCommand;
   }
-
-  // infinite scroll
-  // rather than constantly requesting, just get all products but display 9 @ a time
-  // when 9th comes into view, display the next 9
-  // can achieve this by placing all products in one array & moving only a certain amount of them into allProducts
-
-
-  // for testing pagination only, delete afterwards
-  testProducts = [
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-    {
-      id: 1,
-      name: "name",
-      price: 10,
-      material: "material",
-      type: "type"
-    },
-]
-
 }

@@ -29,15 +29,19 @@ namespace Project3.Data
             _ConnectionString = connectionString;
             _logger = logger;
         }
-        public async Task<List<Jewelry>> ListJewelry() {
+        public async Task<List<Jewelry>> ListJewelry(int startrow, int endrow) {
             List<Jewelry> jewelry = new List<Jewelry>();
+            List<Jewelry> jewelry1 = new List<Jewelry>();
 
             using SqlConnection connection = new(_ConnectionString);
             await connection.OpenAsync();
 
-            string cmdText = "SELECT * FROM Jewelry;";
+            string cmdText = "SELECT * from Jewelry ORDER BY Item_ID OFFSET @startrow ROWS FETCH NEXT 9 rows ONLY;";
 
             SqlCommand cmd = new SqlCommand(cmdText, connection);
+
+            cmd.Parameters.AddWithValue("@startrow", startrow);
+            // cmd.Parameters.AddWithValue("@endrow", endrow);
 
             using SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
@@ -52,6 +56,7 @@ namespace Project3.Data
             await connection.CloseAsync();
             
             _logger.LogInformation("Executed ListJewelry, returned {0} results", jewelry.Count);
+               
 
             return jewelry;
 
