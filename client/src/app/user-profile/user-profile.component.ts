@@ -29,8 +29,12 @@ export class UserProfileComponent implements OnInit {
 
   @Input() openProfileModalCommand: boolean = false;
   ngOnChanges(changes: SimpleChanges) {
-    if (changes["openProfileModalCommand"].previousValue != changes["openProfileModalCommand"].currentValue) {
-      this.toggleProfileModal();
+    try {
+      if (changes["openProfileModalCommand"].previousValue != changes["openProfileModalCommand"].currentValue) {
+        this.toggleProfileModal();
+      }
+    } catch(ex: any) {
+
     }
   } 
 

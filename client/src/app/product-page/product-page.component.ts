@@ -65,8 +65,6 @@ export class ProductPageComponent implements OnInit {
         if (result.status === 200) {
           const products = result.body;
 
-          console.log("STORE RESULT", result);
-
           products.forEach((item: Product) => {
             this.allProducts.push(item);
           })
@@ -84,7 +82,6 @@ export class ProductPageComponent implements OnInit {
   }
 
   displayMoreProducts() {
-    console.log("displaying more products")
     this.fetchAllProducts();
   }
 
