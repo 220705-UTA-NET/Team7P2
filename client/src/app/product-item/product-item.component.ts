@@ -35,7 +35,7 @@ export class ProductItemComponent {
   @Output() displayMoreProducts = new EventEmitter();
   ngOnChanges(changes: SimpleChanges) {
     if (changes['iterator'].currentValue % 8 == 0 && changes['iterator'].currentValue != 0 && changes['iterator'].currentValue != 8) {
-      setTimeout(this.iObserverSetup, 1000);
+      this.iObserverSetup();
     }
   }
 

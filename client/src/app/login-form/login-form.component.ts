@@ -54,8 +54,6 @@ export class LoginFormComponent {
     })
       .subscribe((result: any) => {
         this.loginResponse = result
-
-        console.log(result)
         
         // if body.id != 0, login successful
         // parse response & determine next step

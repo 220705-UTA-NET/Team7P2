@@ -25,4 +25,8 @@ describe('CartComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  // it('should toggle modal', () => {
+  //   expect(component.openModalCommand).toBe(true);
+  // })
 });

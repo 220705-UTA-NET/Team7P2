@@ -48,7 +48,7 @@ export class ProductPageComponent implements OnInit {
 
   // for grabbing sets of products for pagination effect
   startRow: number = 0;
-  endRow: number = 8;
+  endRow: number = 9;
 
   fetchAllProducts() {
     // will not parse without {} since getItem can be null
@@ -68,14 +68,8 @@ export class ProductPageComponent implements OnInit {
           console.log("STORE RESULT", result);
 
           products.forEach((item: Product) => {
-            // this.allProducts.push(item);
-            this.infiniteProducts.push(item);
+            this.allProducts.push(item);
           })
-
-          // push only the first initial 9 items; can add in the next 9 with intersectionalObserver
-          for (let i = 0; i <= 8; i++) {
-            this.allProducts.push(this.infiniteProducts[i]);
-          }
 
           // update the row values
           this.startRow += 9;
@@ -89,10 +83,9 @@ export class ProductPageComponent implements OnInit {
       })
   }
 
-  displayMoreProducts(iterator: number) {
-    for (let i = iterator; i <= iterator + 8; i++) {
-      this.allProducts.push(this.infiniteProducts[i])
-    }
+  displayMoreProducts() {
+    console.log("displaying more products")
+    this.fetchAllProducts();
   }
 
   updateFilteredProducts(filteredProducts: Product[]) {
