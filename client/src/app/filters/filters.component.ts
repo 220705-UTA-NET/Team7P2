@@ -27,7 +27,6 @@ export class FiltersComponent {
 
   activateFilter(event: any, category: string, detail: string) {
     // reset active class of all
-    console.log(event.target.classList)
     if (event.target.classList.contains("filter-option-type")) {
       const elements = this.elem.nativeElement.querySelectorAll(".filter-option-type")
       elements.forEach((element: any) => {
@@ -91,7 +90,6 @@ export class FiltersComponent {
       responseType: "json"
     })
       .subscribe((result: any) => {
-        console.log("reset", result)
         this.updatedProducts.emit(result.body)
       })
   }

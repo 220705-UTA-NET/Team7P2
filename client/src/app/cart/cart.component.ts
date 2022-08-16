@@ -1,4 +1,4 @@
-import { Component, Input, IterableDiffers, OnInit } from '@angular/core';
+import { Component, Input, IterableDiffers, OnInit, SimpleChanges } from '@angular/core';
 import {Router, ActivatedRoute} from "@angular/router"
 import { Product } from '../product-page/product-page.component';
 
@@ -31,8 +31,10 @@ export class CartComponent implements OnInit {
 
   // listening for changes to openModalCommand from parent (fires when user clicks cart icon to open modal)
   @Input() openModalCommand: boolean = false;
-  ngOnChanges() {
-    this.toggleCartModal();
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes["openModalCommand"].previousValue != changes["openModalCommand"].currentValue) {
+      this.toggleCartModal();
+    }
   }
 
   @Input() cart: Product[] = [];
