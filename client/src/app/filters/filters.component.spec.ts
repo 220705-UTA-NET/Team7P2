@@ -25,4 +25,9 @@ describe('FiltersComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should reset all filters', () => {
+    component.resetFilters();
+    expect(component.currentFilters.material && component.currentFilters.type).toBe("None");
+  })
 });

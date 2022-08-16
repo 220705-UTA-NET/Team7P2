@@ -14,7 +14,7 @@ namespace Project3.Controllers
         private readonly ILogger<CustomerController> _logger;
         private readonly IRepository _repo;
 
-        public CustomerController(ILogger<CustomerController> logger, IRepository repo)
+        public CustomerController(<CustomerController> logger, IRepository repo)
         {
             _logger = logger;
             _repo = repo;

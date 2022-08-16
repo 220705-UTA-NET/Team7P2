@@ -20,9 +20,20 @@ describe('LoginFormComponent', () => {
     fixture = TestBed.createComponent(LoginFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should shift label for username', () => {
+    component.shiftLabel('username');
+    expect(component.usernameLabelShift).toBe(true);
+  });
+
+  it('should shift label for password', () => {
+    component.shiftLabel('password');
+    expect(component.passwordLabelShift).toBe(true);
+  })
 });
