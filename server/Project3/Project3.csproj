@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Project3.Data\Project3.Data.csproj" />
     <ProjectReference Include="..\Project3.Model\Project3.Model.csproj" />
+	  <InternalsVisibleTo Include="$(AssemblyName).Test"/>
   </ItemGroup>
 
 </Project>

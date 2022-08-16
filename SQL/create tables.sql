@@ -10,8 +10,6 @@ Drop table Cred;
 drop table Customers;
 DROP TABLE Jewelry;
 
-
-
 CREATE TABLE Customers   
 (Customer_ID INT IDENTITY Not NULL UNIQUE,    
 CName NVARCHAR(16) NOT NULL,       
