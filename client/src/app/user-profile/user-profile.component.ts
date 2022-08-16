@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Router} from "@angular/router"
 import {Customer} from "../login-form/login-form.component";
@@ -28,8 +28,10 @@ export class UserProfileComponent implements OnInit {
   }
 
   @Input() openProfileModalCommand: boolean = false;
-  ngOnChanges() {
-    this.toggleProfileModal();
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes["openProfileModalCommand"].previousValue != changes["openProfileModalCommand"].currentValue) {
+      this.toggleProfileModal();
+    }
   } 
 
   @Input() customer: Customer = {
@@ -69,7 +71,6 @@ export class UserProfileComponent implements OnInit {
       responseType: "json"
     })
       .subscribe((result) => {
-        console.log("viewOrderHistory", result)
         this.orderHistory = result.body
       })
   }

@@ -14,6 +14,7 @@ export interface Customer {
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.css']
 })
+
 export class LoginFormComponent {
 
   constructor(private router: Router, private http: HttpClient) { 
@@ -41,12 +42,16 @@ export class LoginFormComponent {
   loginFailed = false;
   loginResponse: any;
 
-  async authenticateUser() {
+  authenticateUser() {
     let credentialBase: string = `${this.loginData.value.username}:${this.loginData.value.password}`;
 
     let encodedString = Buffer.from(credentialBase).toString("base64");
     let authCredentials = `Basic ${encodedString}`;
 
+    this.sendLoginRequest(authCredentials);
+  }
+
+  sendLoginRequest(authCredentials: string): void {
     this.http.get("https://team7project2api.azurewebsites.net/login", {
       headers: {'Authorization': authCredentials},
       observe: "response",
@@ -54,8 +59,6 @@ export class LoginFormComponent {
     })
       .subscribe((result: any) => {
         this.loginResponse = result
-
-        console.log(result)
         
         // if body.id != 0, login successful
         // parse response & determine next step
