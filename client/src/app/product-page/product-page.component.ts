@@ -5,11 +5,11 @@ import {Customer} from "../login-form/login-form.component";
 
 export interface Product {
   id: number,
-  imgURL: string,
   name: string,
   price: number,
   material: string,
-  type: string
+  type: string,
+  imgURL: string,
 }
 
 @Component({

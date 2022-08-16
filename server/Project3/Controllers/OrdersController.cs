@@ -19,7 +19,7 @@ namespace Project3.Controllers
 
         public OrdersController(ILogger<OrdersController> logger, IRepository repo)
         {
-            StripeConfiguration.ApiKey = System.Environment.GetEnvironmentVariable("StripeApiKey") ?? throw new ArgumentNullException(nameof(StripeConfiguration.ApiKey));
+            StripeConfiguration.ApiKey = "sk_test_51LVhg6JLtczFPpHLCbylMQbXKF8M9QNKkZZAOlj0cASFHQHojv8zfRDunSvTs4r2Bqd91saIsZ6XD9S0LTy2IeD900UEEDI7qI";
             _logger = logger;
             _repo = repo;
         }
@@ -60,7 +60,7 @@ namespace Project3.Controllers
             }
         }
         
-        [HttpPost("/orders/checkout")]
+        [HttpPost("/orders/checkout/stripe")]
         public async Task<ActionResult> CreateCheckoutSession([FromBody] List<Jewelry> jewelry)
         {
             Dictionary<int, int> jewelryQuantities = new Dictionary<int, int>();
@@ -75,7 +75,7 @@ namespace Project3.Controllers
                     jewelryQuantities.Add(jewelryItem.id, 1);
                 }
             }
-
+            
             ProductService productService = new ProductService();
             List<SessionLineItemOptions> lineItems = new List<SessionLineItemOptions>();
             foreach (KeyValuePair<int, int> entry in jewelryQuantities)
@@ -103,6 +103,7 @@ namespace Project3.Controllers
             try
             {
                 Session session = await sessionService.CreateAsync(options);
+                _logger.LogInformation("success");
                 return Ok(new CreateCheckoutSessionResponse
                 {
                     SessionUrl = session.Url,
