@@ -27,6 +27,7 @@ namespace Project3.Model
         // Image of product
         public string imgURL { get; set; }
 
+
         public Jewelry() { }
 
         public Jewelry(int id, string name, double price, string material, string type, string imgURL)

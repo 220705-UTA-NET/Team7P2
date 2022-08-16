@@ -20,13 +20,13 @@ namespace Project3.Controllers
             _repo = repo;
         }
 
-        [HttpGet("/store")]
-        public async Task<ActionResult<List<Jewelry>>> GetJewelryList()
+        [HttpGet("/store/{startrow}/{endrow}")]
+        public async Task<ActionResult<List<Jewelry>>> GetJewelryList([FromRoute] int startrow, int endrow)
         {
             List<Jewelry> list = new List<Jewelry>();
             try
             {
-                list = await _repo.ListJewelry();
+                list = await _repo.ListJewelry(startrow, endrow);
                 _logger.LogInformation("Retrieving Jewelry List ...");
             }catch(Exception e)
             {
@@ -37,13 +37,13 @@ namespace Project3.Controllers
             return list;
         }
 
-        [HttpGet("/store/{filter}/{value}")]
-        public async Task<ActionResult<List<Jewelry>>> GetJewelryList([FromRoute] string filter, string value)
+        [HttpGet("/store/filter/{material}/{item_type}")]
+        public async Task<ActionResult<List<Jewelry>>> GetJewelryList([FromRoute] string material, string item_type)
         {
             List<Jewelry> list = new List<Jewelry>();
             try
             {
-                list = await _repo.ListFilteredJewelry(filter, value);
+                list = await _repo.ListFilteredJewelry(material, item_type);
                 _logger.LogInformation("Sending Filtered Jewelry List...");
             }
             catch (Exception e)

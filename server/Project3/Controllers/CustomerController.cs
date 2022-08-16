@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project3.Data;
 using Project3.Model;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace Project3.Controllers
 {
@@ -56,11 +58,15 @@ namespace Project3.Controllers
         }
 
         [HttpPost("/customer")]
-        public async Task<ActionResult<Customer>> AddCustomer(Customer customer)
+        public async Task<ActionResult<Customer>> AddCustomer()
         {
             try
             {
-                await _repo.AddCustomer(customer);
+                using StreamReader reader = new StreamReader(Request.Body);
+                string json = await reader.ReadToEndAsync();
+                JsonObject person = (JsonObject)JsonSerializer.Deserialize(json, typeof(JsonObject));
+
+                await _repo.AddCustomer(person["name"].ToString(), person["address"].ToString(), person["username"].ToString(), person["password"].ToString());
                 _logger.LogInformation("Adding Customer...");
                 return StatusCode(201);
             }
@@ -70,5 +76,6 @@ namespace Project3.Controllers
                 return StatusCode(500);
             }
         }
+
     }
 }

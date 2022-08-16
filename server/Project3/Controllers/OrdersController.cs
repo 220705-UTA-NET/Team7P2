@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project3.Data;
 using Project3.Model;
+using Stripe;
+using Stripe.Checkout;
+
 
 namespace Project3.Controllers
 {
@@ -16,6 +19,7 @@ namespace Project3.Controllers
 
         public OrdersController(ILogger<OrdersController> logger, IRepository repo)
         {
+            StripeConfiguration.ApiKey = System.Environment.GetEnvironmentVariable("StripeApiKey") ?? throw new ArgumentNullException(nameof(StripeConfiguration.ApiKey));
             _logger = logger;
             _repo = repo;
         }
@@ -40,13 +44,13 @@ namespace Project3.Controllers
             return orders;
         }
 
-        [HttpPost("/orders{product_id}&{customer_id}")]
+        [HttpPost("/orders/{product_id}&{customer_id}")]
         public async Task<ActionResult<Order>> MakePurchase(int product_id, int customer_id)
         {
             try
             {
-                await _repo.MakePurchase(customer_id, product_id);
-                _logger.LogInformation($"Customer #{customer_id} purchased Product #{product_id} ...");
+                await _repo.MakePurchase(customer_id);
+                _logger.LogInformation($"Customer #{customer_id} purchased Product # ...");
                 return StatusCode(201);
             }catch(Exception e)
             {
@@ -55,5 +59,66 @@ namespace Project3.Controllers
                 return StatusCode(500);
             }
         }
+        
+        [HttpPost("/orders/checkout")]
+        public async Task<ActionResult> CreateCheckoutSession([FromBody] List<Jewelry> jewelry)
+        {
+            Dictionary<int, int> jewelryQuantities = new Dictionary<int, int>();
+            foreach (Jewelry jewelryItem in jewelry)
+            {
+                if (jewelryQuantities.ContainsKey(jewelryItem.id))
+                {
+                    jewelryQuantities[jewelryItem.id]++;
+                }
+                else
+                {
+                    jewelryQuantities.Add(jewelryItem.id, 1);
+                }
+            }
+
+            ProductService productService = new ProductService();
+            List<SessionLineItemOptions> lineItems = new List<SessionLineItemOptions>();
+            foreach (KeyValuePair<int, int> entry in jewelryQuantities)
+            {
+                Product product = await productService.GetAsync(entry.Key.ToString());
+                lineItems.Add
+                (
+                    new SessionLineItemOptions
+                    {
+                        Price = product.DefaultPriceId,
+                        Quantity = entry.Value,
+                    }
+                );
+            }
+
+            SessionCreateOptions options = new SessionCreateOptions
+            {
+                LineItems = lineItems,
+                Mode = "payment",
+                SuccessUrl = "https://example.com/success.html",
+                CancelUrl = "https://example.com/canceled.html",
+            };
+            
+            SessionService sessionService = new SessionService();
+            try
+            {
+                Session session = await sessionService.CreateAsync(options);
+                return Ok(new CreateCheckoutSessionResponse
+                {
+                    SessionUrl = session.Url,
+                });
+            }
+            catch (StripeException ex)
+            {
+                Console.WriteLine(ex.StripeError.Message);
+                return StatusCode(400);
+            }
+            
+        }
+    }
+    
+    public class CreateCheckoutSessionResponse
+    {
+        public string SessionUrl { get; set; }
     }
 }
