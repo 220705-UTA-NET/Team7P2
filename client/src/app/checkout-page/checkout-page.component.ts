@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 import {ActivatedRoute, Router, Params} from "@angular/router";
 import { Product } from '../product-page/product-page.component';
-import {Customer} from "../login-form/login-form.component";
+import { Customer } from "../login-form/login-form.component";
+import { HttpClient } from '@angular/common/http';
+
+interface Session {
+  sessionUrl: string;
+}
 
 @Component({
   selector: 'app-checkout-page',
@@ -11,7 +16,7 @@ import {Customer} from "../login-form/login-form.component";
 
 export class CheckoutPageComponent {
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(private router: Router, private route: ActivatedRoute, private http: HttpClient) {
     // if user does not have login token, re-route them to login page
     const checkTokenPresent: Customer = JSON.parse(localStorage.getItem("customer") || '{}');
     if (!checkTokenPresent['Access-Token']) {
@@ -19,11 +24,17 @@ export class CheckoutPageComponent {
     }
 
     this.route.queryParams.subscribe((params) => {
+      console.log(params["cart"]);
       let filledCart: Product[] = JSON.parse(params["cart"]);
       this.cart = filledCart;
       this.cartPriceTotal = this.cartTotal();
     });
   }
+
+  customer: Customer = {
+    "CustomerID": 0,
+    "Access-Token": ''
+  };
 
   cart: Product[] = [];
   cartPriceTotal = 0;
@@ -38,9 +49,19 @@ export class CheckoutPageComponent {
   // set up confirmation modal
   confirmationModal = false;
   makePurchase() {
-
+    const customer: Customer = JSON.parse(localStorage.getItem("customer") || '{}');
+    this.customer = customer;
+    console.log(customer["Access-Token"]);
+    console.log(JSON.stringify(this.cart));
     // make request to payment api
-
+    this.http.post<Session>("https://localhost:7208/orders/checkout", {
+      headers: { "Authorization": `Bearer ${customer["Access-Token"]}`},
+      observe: "response",
+      responseType: "json",
+      body: JSON.stringify(this.cart),
+    }).subscribe((session: Session) => {
+      window.open(session.sessionUrl, "_blank")
+    })
     this.confirmationModal = !this.confirmationModal;
   }
 

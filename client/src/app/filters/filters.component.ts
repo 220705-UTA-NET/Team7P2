@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Product} from "../product-page/product-page.component";
 import { Router } from '@angular/router';
@@ -16,7 +16,7 @@ export interface ActiveFilters {
 
 export class FiltersComponent {
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private elem: ElementRef) { }
 
   @Input() accessToken: string = '';
 
@@ -26,6 +26,20 @@ export class FiltersComponent {
   }
 
   activateFilter(event: any, category: string, detail: string) {
+    // reset active class of all
+    if (event.target.classList.contains("filter-option-type")) {
+      const elements = this.elem.nativeElement.querySelectorAll(".filter-option-type")
+      elements.forEach((element: any) => {
+        element.classList.remove("active-filter");
+      });
+
+    } else if (event.target.classList.contains("filter-option-material"))  {
+        const elements = this.elem.nativeElement.querySelectorAll(".filter-option-material")
+        elements.forEach((element: any) => {
+          element.classList.remove("active-filter");
+        });
+    }
+
     let clickedFilter = event.target;
     clickedFilter.classList.toggle("active-filter");
 
@@ -46,7 +60,7 @@ export class FiltersComponent {
   // should be of type Product[], but linter won't recognize it
   @Output() updatedProducts = new EventEmitter<any>();
   filterProducts() {
-    this.http.get(`https://team7project2api.azurewebsites.net/store/${this.currentFilters.material}/${this.currentFilters.type}`, {
+    this.http.get(`https://team7project2api.azurewebsites.net/store/filter/${this.currentFilters.material}/${this.currentFilters.type}`, {
       headers: {"Authorization": `Bearer ${this.accessToken}`},
       observe: "response",
       responseType: "json"
@@ -66,8 +80,11 @@ export class FiltersComponent {
   }
 
   allProducts: Array<Product> = [];
+
+  startRow: number = 0;
+  endRow: number = 8;
   fetchAllProducts() {
-    this.http.get("https://team7project2api.azurewebsites.net/store", {
+    this.http.get(`https://team7project2api.azurewebsites.net/store/${this.startRow}/${this.endRow}`, {
       headers: {"Authorization": `Bearer ${this.accessToken}`},
       observe: "response",
       responseType: "json"

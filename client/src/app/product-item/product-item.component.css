@@ -25,3 +25,58 @@
     gap: 1.5rem;
     padding-bottom: 0.5rem;
 }
+
+.observer {
+    display: block;
+}
+
+.container-review {
+    position: relative;
+    z-index: 3;
+    margin: auto auto 10px -90px;
+    padding: 5px;
+}
+
+.container-review:hover {
+    border: 1px solid rgb(227, 227, 227);
+}
+
+.review-icon {
+    transition: linear all 0.2s;
+    height: 14px;
+    width: 14px;
+    filter: invert(77%) sepia(87%) saturate(1460%) hue-rotate(345deg) brightness(90%) contrast(88%);
+    margin-left: 45px;
+}
+
+.review-icon:hover {
+    transition: linear all 0.2s;
+    transform: scale(1.1);
+}
+
+.reviews {
+    color: goldenrod;
+}
+
+.wrapper-user-reviews {
+    display: flex;
+    flex-direction: column;
+    padding-top: 1rem;
+}
+
+.single-review {
+    border-bottom: 1px solid white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10rem;
+    padding-bottom: 1rem;
+}
+
+.review-rating {
+    border: 1px solid goldenrod;
+    border-radius: 100%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+}
