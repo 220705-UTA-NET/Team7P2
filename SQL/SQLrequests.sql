@@ -86,9 +86,7 @@ INSERT into Reviews VALUES(1,1,'08/08/2022','cool stuff',5),(1,2,'08/08/2022','e
 
 INSERT INTO Cred VALUES('user','passw',1),('user1','passw2',2),('a','a',3);
 
-
-INSERT into Jewelry VALUES 
-('Diamond Necklace',2500,'Diamond','necklace','https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2F4.bp.blogspot.com%2F_Q5JWnk9IbJo%2FTOL6uDouKPI%2FAAAAAAAABRE%2Fwp7hIpV7B80%2Fs1600%2F00525%2BNK%2B103.60%2BCarat%2BDiamond%2BNecklace.jpg&f=1&nofb=1'),
+INSERT into Jewelry VALUES('Diamond Necklace',2500,'Diamond','necklace','https://2.bp.blogspot.com/-a0SUaWbKdZc/WcuaC-RLXLI/AAAAAAAACWM/UYxb3ze_I9s6p9fhK9KqUfrheZFRtxjewCLcBGAs/s1600/necklace%2B12.jpg'),
 ('Emerald earing',900,'Emerald','earing','https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fww1.prweb.com%2Fprfiles%2F2019%2F04%2F29%2F16275483%2FERG0070.jpg&f=1&nofb=1'),
 ('Turtle pendant',1200,'Diamond','accessory','https://i5.walmartimages.com/asr/686e8068-c6cd-4dd4-bccb-272de8f9597b_1.743e55d949fd9783b100fda20d4df166.jpeg'),
 ('Emerald Necklace',1900,'Emerald','necklace','https://stauer-cdn-bi1tspyakbh4frq6pd1dkakl9n7hjflhje.netdna-ssl.com/images/stauer/products/17887_800.jpg'),
@@ -107,10 +105,7 @@ INSERT into Jewelry VALUES
 ('Sapphire Necklace',800,'Sapphire','necklace','https://a.1stdibscdn.com/archivesE/jewelry/1stdibs/051514/DiamondScene_CC_DM/10/X.jpg'),
 ('Amethyst Necklace',650,'Amethyst','necklace','https://fd-gallery.com/wp-content/uploads/2018/10/NCK-563-1.jpg'),
 ('Amethyst earing',770,'Amethyst','earing','https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.HNb7_kdrp3IjRMJiwWqPyQHaHa%26pid%3DApi&f=1'),
-('Amethyst Ring',3500,'Amethyst','ring','http://www.tracyandstacy.com/uploads/3/2/7/6/3276508/s751022952061511_p505_i1_w3024.jpeg?width=2560'),
-
-
-;
+('Amethyst Ring',3500,'Amethyst','ring','http://www.tracyandstacy.com/uploads/3/2/7/6/3276508/s751022952061511_p505_i1_w3024.jpeg?width=2560');
 
 
 */
