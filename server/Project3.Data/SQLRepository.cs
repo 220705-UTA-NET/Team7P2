@@ -36,12 +36,12 @@ namespace Project3.Data
             using SqlConnection connection = new(_ConnectionString);
             await connection.OpenAsync();
 
-            string cmdText = "SELECT * from Jewelry ORDER BY Item_ID OFFSET @startrow ROWS FETCH NEXT @endrow rows ONLY;";
+            string cmdText = "SELECT * from Jewelry ORDER BY Item_ID OFFSET @startrow ROWS FETCH NEXT 9 rows ONLY;";
 
             SqlCommand cmd = new SqlCommand(cmdText, connection);
 
             cmd.Parameters.AddWithValue("@startrow", startrow);
-            cmd.Parameters.AddWithValue("@endrow", endrow);
+            # cmd.Parameters.AddWithValue("@endrow", endrow);
 
             using SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
