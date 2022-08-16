@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Router} from "@angular/router";
 import { HttpClient } from '@angular/common/http';
+import {Buffer} from 'buffer';
 
 export interface Customer {
   "CustomerID": number,

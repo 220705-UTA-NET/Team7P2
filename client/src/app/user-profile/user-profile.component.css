@@ -67,8 +67,11 @@ button {
     max-height: 3rem;
     text-align: center;
     margin: auto;
+    gap: 10px;
+    border-bottom: 1px solid goldenrod;
 }
 
 .display-view-order {
-    display: block;
+    display: flex;
+    flex-direction: row;
 }

@@ -27,7 +27,6 @@ export class UserProfileComponent implements OnInit {
     this.setUserProfile();
   }
 
-
   @Input() openProfileModalCommand: boolean = false;
   ngOnChanges() {
     this.toggleProfileModal();
@@ -64,7 +63,7 @@ export class UserProfileComponent implements OnInit {
   orderHistory: any;
   // fetch order history from API
   viewOrderHistory() {
-    this.http.get(`https://team7project2api.azurewebsites.net/orders/${this.customer["CustomerID"]}`, {
+    this.http.get(`https://team7project2api.azurewebsites.net/transactions/${this.customer["CustomerID"]}`, {
       headers: {"Authorization": `Bearer ${this.customer["Access-Token"]}`},
       observe: "response",
       responseType: "json"
