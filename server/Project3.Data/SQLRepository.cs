@@ -41,7 +41,7 @@ namespace Project3.Data
             SqlCommand cmd = new SqlCommand(cmdText, connection);
 
             cmd.Parameters.AddWithValue("@startrow", startrow);
-            # cmd.Parameters.AddWithValue("@endrow", endrow);
+            // cmd.Parameters.AddWithValue("@endrow", endrow);
 
             using SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
