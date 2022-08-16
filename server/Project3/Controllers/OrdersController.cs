@@ -19,7 +19,7 @@ namespace Project3.Controllers
 
         public OrdersController(ILogger<OrdersController> logger, IRepository repo)
         {
-            StripeConfiguration.ApiKey = "sk_test_51LVhg6JLtczFPpHLCbylMQbXKF8M9QNKkZZAOlj0cASFHQHojv8zfRDunSvTs4r2Bqd91saIsZ6XD9S0LTy2IeD900UEEDI7qI";
+            StripeConfiguration.ApiKey = System.Environment.GetEnvironmentVariable("StripeApiKey") ?? throw new ArgumentNullException(nameof(ConnectionString));
             _logger = logger;
             _repo = repo;
         }
