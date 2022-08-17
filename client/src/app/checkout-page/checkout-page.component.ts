@@ -52,7 +52,7 @@ export class CheckoutPageComponent {
     const customer: Customer = JSON.parse(localStorage.getItem("customer") || '{}');
     this.customer = customer;
     // make request to payment api
-    this.http.post<Session>("https://localhost:7208/orders/checkout/stripe", JSON.stringify(this.cart), {
+    this.http.post<Session>("https://team7project2api.azurewebsites.net/orders/checkout/stripe", JSON.stringify(this.cart), {
       headers: {
         "Authorization": `Bearer ${customer["Access-Token"]}`,
         "Content-Type": "application/json"
