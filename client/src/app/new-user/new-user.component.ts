@@ -31,8 +31,13 @@ export class NewUserComponent {
     rePassword: new FormControl('')
   })
 
+  createBtnText: string = 'Create';
+
   createUserAccount(event: any) {
     event.preventDefault();
+
+    this.createBtnText = 'Creating...'
+
     let passwordsMatch: boolean = this.checkPasswordMatch();
 
     const tokenObject = JSON.parse(localStorage.getItem("customer") || '{}');
@@ -72,6 +77,7 @@ export class NewUserComponent {
 
     if (this.userCreationData.value.password != this.userCreationData.value.rePassword) {
         response = false;
+        this.createBtnText = 'Create';
     } else {
         response = true;
     }

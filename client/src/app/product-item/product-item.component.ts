@@ -37,15 +37,12 @@ export class ProductItemComponent {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['iterator'].currentValue % 8 == 0 && changes['iterator'].currentValue != 0 && changes['iterator'].currentValue != 8) {
 
-      // call to API occurs twice
+      // call to API occurs twice for the very first observer
       // the reason is that the same observer that is initially set gets set a second time (as it comes into view) and thus re-fires
-      // likely occuring because the function to find other h3s with 'observe' class fires before the rest of the content has been rendered
-      console.log("CHANGES", changes['iterator'])
-
-
+      // occurs because the function to find other h3s with 'observe' class fires before the next bit of the content has been rendered
+      // setTimeout allows us to call the function the first time, but then blows up with a function being 'undefined'
 
       this.iObserverSetup();
-      
     }
   }
 
@@ -63,6 +60,7 @@ export class ProductItemComponent {
           console.log("intersecting");
           observer.unobserve(nextObserver)
 
+          // doesn't matter what is emitted, just need the signal to fectch more products
           this.displayMoreProducts.emit(this.iterator);
         }
       })

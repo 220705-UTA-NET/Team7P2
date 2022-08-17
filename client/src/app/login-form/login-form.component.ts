@@ -52,7 +52,10 @@ export class LoginFormComponent {
     this.sendLoginRequest(authCredentials);
   }
 
+  loginBtnText: string = 'Sign in';
+
   sendLoginRequest(authCredentials: string): void {
+    this.loginBtnText = 'Loading...';
 
     this.service.postLogin(authCredentials)
       .subscribe((result: any) => {
@@ -60,22 +63,19 @@ export class LoginFormComponent {
         
         // if body.id != 0, login successful
         // parse response & determine next step
-        if (this.loginResponse.status != 401) {
-          console.log('log in successful')
-
-          // save token to localStorage
-          // localStorage.setItem('bearerToken', this.loginResponse.body)
+        if (this.loginResponse.status === 200) {
           // response body should return customer info
           const customer: Customer = this.loginResponse.body;
-
+          // save token to localStorage
           localStorage.setItem('customer', JSON.stringify(customer));
-
+          // re-route user to productPage
           this.router.navigate(["/productPage"]);
 
         } else {
           // let the user know that the login failed
           console.log(`Login failed`)
           this.loginFailed = true;
+          this.loginBtnText = 'Sign in';
         }
       })
   }
