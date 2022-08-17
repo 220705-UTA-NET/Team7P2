@@ -95,8 +95,8 @@ namespace Project3.Controllers
             {
                 LineItems = lineItems,
                 Mode = "payment",
-                SuccessUrl = "https://example.com/success.html",
-                CancelUrl = "https://example.com/canceled.html",
+                SuccessUrl = "https://team7p2client.azurewebsites.net/",
+                CancelUrl = "https://team7p2client.azurewebsites.net/",
             };
             
             SessionService sessionService = new SessionService();
