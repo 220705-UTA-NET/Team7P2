@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {ApiService} from "../api.service";
 
 export interface Review {
   id: number,
@@ -18,7 +19,7 @@ export interface Review {
 
 export class ProductItemComponent {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private service: ApiService) {}
 
   ngAfterViewInit() {
     // for initial setup
@@ -80,11 +81,7 @@ export class ProductItemComponent {
     event.stopPropagation();
     const itemId: string = event.target.id;
 
-    this.http.get(`https://team7project2api.azurewebsites.net/review/item/${itemId}`, {
-      headers: {"Authorization": `Bearer ${this.accessToken}`},
-      observe: "response",
-      responseType: "json"
-    })
+    this.service.getReviews(this.accessToken, itemId)
       .subscribe((result: any) => {
         // returns all results in an array, with content being the text
         const contentBody: Review[] = result.body

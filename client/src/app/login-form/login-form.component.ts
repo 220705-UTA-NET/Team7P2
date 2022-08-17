@@ -3,6 +3,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {Router} from "@angular/router";
 import { HttpClient } from '@angular/common/http';
 import {Buffer} from 'buffer';
+import { ApiService } from '../api.service';
 
 export interface Customer {
   "CustomerID": number,
@@ -17,7 +18,7 @@ export interface Customer {
 
 export class LoginFormComponent {
 
-  constructor(private router: Router, private http: HttpClient) { 
+  constructor(private router: Router, private http: HttpClient, private service: ApiService) { 
     this.loginResponse = '';
   }
 
@@ -52,11 +53,8 @@ export class LoginFormComponent {
   }
 
   sendLoginRequest(authCredentials: string): void {
-    this.http.get("https://team7project2api.azurewebsites.net/login", {
-      headers: {'Authorization': authCredentials},
-      observe: "response",
-      responseType: "json"
-    })
+
+    this.service.postLogin(authCredentials)
       .subscribe((result: any) => {
         this.loginResponse = result
         

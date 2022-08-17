@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router"
 import { HttpClient } from '@angular/common/http';
 import {Customer} from "../login-form/login-form.component";
+import { ApiService } from '../api.service';
 
 export interface Product {
   id: number,
@@ -20,7 +21,7 @@ export interface Product {
 
 export class ProductPageComponent implements OnInit {
 
-  constructor(private router: Router, private http: HttpClient) {
+  constructor(private router: Router, private http: HttpClient, private service: ApiService) {
     // if user does not have login token, re-route them to login page
     const checkTokenPresent: Customer = JSON.parse(localStorage.getItem("customer") || '{}');
     if (!checkTokenPresent['Access-Token']) {
@@ -55,12 +56,7 @@ export class ProductPageComponent implements OnInit {
     const customer: Customer = JSON.parse(localStorage.getItem("customer") || '{}');
     this.customer = customer;
 
-    // returns List<Jewelry> (id, name, price, material, type)
-    this.http.get(`https://team7project2api.azurewebsites.net/store/${this.startRow}/${this.endRow}`, {
-      headers: {"Authorization": `Bearer ${customer["Access-Token"]}`},
-      observe: "response",
-      responseType: "json"
-    })
+    this.service.getProducts(this.startRow, this.endRow, customer["Access-Token"])
       .subscribe((result: any) => {
         if (result.status === 200) {
           const products = result.body;
