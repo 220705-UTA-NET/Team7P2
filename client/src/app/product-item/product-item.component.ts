@@ -22,7 +22,7 @@ export class ProductItemComponent {
   constructor(private http: HttpClient, private service: ApiService) {}
 
   ngAfterViewInit() {
-    // for initial setup
+    // for initial setup only
     if (this.iterator == 8) {
       this.iObserverSetup();
     }
@@ -36,7 +36,16 @@ export class ProductItemComponent {
   @Output() displayMoreProducts = new EventEmitter();
   ngOnChanges(changes: SimpleChanges) {
     if (changes['iterator'].currentValue % 8 == 0 && changes['iterator'].currentValue != 0 && changes['iterator'].currentValue != 8) {
+
+      // call to API occurs twice
+      // the reason is that the same observer that is initially set gets set a second time (as it comes into view) and thus re-fires
+      // likely occuring because the function to find other h3s with 'observe' class fires before the rest of the content has been rendered
+      console.log("CHANGES", changes['iterator'])
+
+
+
       this.iObserverSetup();
+      
     }
   }
 
@@ -54,7 +63,6 @@ export class ProductItemComponent {
           console.log("intersecting");
           observer.unobserve(nextObserver)
 
-          // re-comment once we have more products in the db
           this.displayMoreProducts.emit(this.iterator);
         }
       })
@@ -71,9 +79,10 @@ export class ProductItemComponent {
       }
     })
     let nextObserver = observerList[observerList.length - 1]
-    console.log(nextObserver, observerList.length)
+    console.log(nextObserver)
 
     observer.observe(nextObserver);
+    observer.disconnect;
   }
 
   reviews: Review[] = [];
