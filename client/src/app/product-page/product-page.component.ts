@@ -5,6 +5,7 @@ import {Customer} from "../login-form/login-form.component";
 
 export interface Product {
   id: number,
+  imgURL: string,
   name: string,
   price: number,
   material: string,
@@ -41,7 +42,13 @@ export class ProductPageComponent implements OnInit {
   };
 
   allProducts: Array<Product> = [];
+  // for infinite scrolling products; used in combination with allProducts
+  infiniteProducts: Array<Product> = [];
   productFetchError: boolean = false;
+
+  // for grabbing sets of products for pagination effect
+  startRow: number = 0;
+  endRow: number = 9;
 
   fetchAllProducts() {
     // will not parse without {} since getItem can be null
@@ -49,7 +56,7 @@ export class ProductPageComponent implements OnInit {
     this.customer = customer;
 
     // returns List<Jewelry> (id, name, price, material, type)
-    this.http.get("https://team7project2api.azurewebsites.net/store", {
+    this.http.get(`https://team7project2api.azurewebsites.net/store/${this.startRow}/${this.endRow}`, {
       headers: {"Authorization": `Bearer ${customer["Access-Token"]}`},
       observe: "response",
       responseType: "json"
@@ -58,10 +65,15 @@ export class ProductPageComponent implements OnInit {
         if (result.status === 200) {
           const products = result.body;
 
+          console.log("STORE RESULT", result);
+
           products.forEach((item: Product) => {
             this.allProducts.push(item);
-
           })
+
+          // update the row values
+          this.startRow += 9;
+          this.endRow += 9;
 
         } else {
           // render a statement that there was a problem loading the results
@@ -69,6 +81,11 @@ export class ProductPageComponent implements OnInit {
           console.log(result.status)
         }
       })
+  }
+
+  displayMoreProducts() {
+    console.log("displaying more products")
+    this.fetchAllProducts();
   }
 
   updateFilteredProducts(filteredProducts: Product[]) {
@@ -92,10 +109,4 @@ export class ProductPageComponent implements OnInit {
   toggleProfileModal() {
     this.openProfileModalCommand = !this.openProfileModalCommand;
   }
-
-  // allow for infinite scroll OR pagination
-  // will be tied to the fetchProducts endpoint
-  // grab perhaps first 9 columns, save what column # we are at
-  // fetch next 9, so on & so forth
-
 }

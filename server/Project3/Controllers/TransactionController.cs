@@ -21,7 +21,7 @@ namespace Project3.Controllers
             _repo = repo;
         }
 
-        [HttpGet("/transactions{CustomerID}")]
+        [HttpGet("/transactions/{CustomerID}")]
         public async Task<ActionResult<List<Item>>> ListCustomerTransactions(int CustomerID)
         {
             List<Item> result = new List<Item>();

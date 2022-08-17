@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {Router} from "@angular/router"
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-new-user',
@@ -9,22 +9,22 @@ import {Router} from "@angular/router"
 })
 export class NewUserComponent {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   @Input() creationModal: boolean = false;
-  ngOnChanges() {
-    console.log('fired on change')
+  ngOnChanges(changes: SimpleChanges) {
     this.toggleCreationModal();
   } 
 
   // open a modal that enables a user to give a username & password + password confirmation
   displayModal = true;
   toggleCreationModal() {
-    console.log('toggle modal')
     this.displayModal = !this.displayModal;
   }
 
   userCreationData = new FormGroup({
+    name: new FormControl(''),
+    shipping_address: new FormControl(''),
     username: new FormControl(''),
     password: new FormControl(''),
     rePassword: new FormControl('')
@@ -34,14 +34,41 @@ export class NewUserComponent {
     event.preventDefault();
     let passwordsMatch: boolean = this.checkPasswordMatch();
 
+    // testing only
+    const testingTokenObject = JSON.parse(localStorage.getItem("customer") || '{}');
+    const testingToken = testingTokenObject["Access-Token"];
+
     if (passwordsMatch) {
-      fetch("https://httpbin.org/post", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(this.userCreationData.value)
-      });
+      // splitting up the form content since the server expects (customer, username, password)
+
+      const name = this.userCreationData.value.name;
+      const shipping_address = this.userCreationData.value.shipping_address;
+      const username = this.userCreationData.value.username;
+      const password = this.userCreationData.value.password
+
+      const combinedData = {
+        name: name,
+        address: shipping_address,
+        username: username,
+        password: password
+      };
+
+      const customerData = JSON.stringify(combinedData)
+
+      // issue is likely due to the fact that the server cannot parse the response body
+      this.http.post(`https://team7project2api.azurewebsites.net/customer`, customerData, {
+        // header for testing only since create customer is stuck under auth
+        headers: new HttpHeaders({
+          Authorization: `Bearer ${testingToken}`,
+          "Content-Type": "application/json"
+          
+        }),
+        observe: "response",
+        responseType: "json"
+      })
+        .subscribe((result) => {
+          this.toggleCreationModal();
+        })
 
     } else {
       this.displayPasswordError = true;

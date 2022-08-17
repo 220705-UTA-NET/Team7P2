@@ -37,7 +37,7 @@ namespace Project3.Controllers
             return list;
         }
 
-        [HttpGet("/store/{material}/{item_type}")]
+        [HttpGet("/store/filter/{material}/{item_type}")]
         public async Task<ActionResult<List<Jewelry>>> GetJewelryList([FromRoute] string material, string item_type)
         {
             List<Jewelry> list = new List<Jewelry>();

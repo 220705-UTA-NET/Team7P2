@@ -2,13 +2,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NewUserComponent } from './new-user.component';
 
+import { RouterTestingModule } from '@angular/router/testing';
+
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+
 describe('NewUserComponent', () => {
   let component: NewUserComponent;
   let fixture: ComponentFixture<NewUserComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NewUserComponent ]
+      declarations: [ NewUserComponent ],
+      imports: [RouterTestingModule, HttpClientTestingModule]
     })
     .compileComponents();
 
