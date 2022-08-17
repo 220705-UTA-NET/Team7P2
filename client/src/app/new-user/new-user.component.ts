@@ -1,6 +1,7 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { ApiService } from '../api.service';
 
 @Component({
   selector: 'app-new-user',
@@ -9,7 +10,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class NewUserComponent {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private service: ApiService) { }
 
   @Input() creationModal: boolean = false;
   ngOnChanges(changes: SimpleChanges) {
@@ -34,9 +35,8 @@ export class NewUserComponent {
     event.preventDefault();
     let passwordsMatch: boolean = this.checkPasswordMatch();
 
-    // testing only
-    const testingTokenObject = JSON.parse(localStorage.getItem("customer") || '{}');
-    const testingToken = testingTokenObject["Access-Token"];
+    const tokenObject = JSON.parse(localStorage.getItem("customer") || '{}');
+    const accessToken = tokenObject["Access-Token"];
 
     if (passwordsMatch) {
       // splitting up the form content since the server expects (customer, username, password)
@@ -55,18 +55,8 @@ export class NewUserComponent {
 
       const customerData = JSON.stringify(combinedData)
 
-      // issue is likely due to the fact that the server cannot parse the response body
-      this.http.post(`https://team7project2api.azurewebsites.net/customer`, customerData, {
-        // header for testing only since create customer is stuck under auth
-        headers: new HttpHeaders({
-          Authorization: `Bearer ${testingToken}`,
-          "Content-Type": "application/json"
-          
-        }),
-        observe: "response",
-        responseType: "json"
-      })
-        .subscribe((result) => {
+      this.service.postUserCreation(customerData, accessToken)
+        .subscribe(() => {
           this.toggleCreationModal();
         })
 

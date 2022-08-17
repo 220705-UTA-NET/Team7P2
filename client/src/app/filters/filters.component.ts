@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, ElementRef } from '@angular/cor
 import { HttpClient } from '@angular/common/http';
 import {Product} from "../product-page/product-page.component";
 import { Router } from '@angular/router';
+import { ApiService } from '../api.service';
 
 export interface ActiveFilters {
   type: string,
@@ -16,7 +17,7 @@ export interface ActiveFilters {
 
 export class FiltersComponent {
 
-  constructor(private http: HttpClient, private router: Router, private elem: ElementRef) { }
+  constructor(private http: HttpClient, private router: Router, private elem: ElementRef, private service: ApiService) { }
 
   @Input() accessToken: string = '';
 
@@ -52,7 +53,6 @@ export class FiltersComponent {
       this.currentFilters.material = detail;
 
       this.filterProducts();
-
     }
   }
 
@@ -60,11 +60,7 @@ export class FiltersComponent {
   // should be of type Product[], but linter won't recognize it
   @Output() updatedProducts = new EventEmitter<any>();
   filterProducts() {
-    this.http.get(`https://team7project2api.azurewebsites.net/store/filter/${this.currentFilters.material}/${this.currentFilters.type}`, {
-      headers: {"Authorization": `Bearer ${this.accessToken}`},
-      observe: "response",
-      responseType: "json"
-    })
+    this.service.getFilteredProducts(this.currentFilters.material, this.currentFilters.type, this.accessToken)
       .subscribe((result) => {
         // need to subscribe to changes to filteredProducts & change allProducts in product-page accordingly
         this.updatedProducts.emit(result.body)
@@ -76,6 +72,16 @@ export class FiltersComponent {
     this.currentFilters.type = 'None';
     this.currentFilters.material = 'None';
 
+    const materials = this.elem.nativeElement.querySelectorAll(".filter-option-material");
+    const types = this.elem.nativeElement.querySelectorAll(".filter-option-type");
+
+    materials.forEach((element: any) => {
+      element.classList.remove("active-filter");
+    });
+    types.forEach((element: any) => {
+      element.classList.remove("active-filter");
+    });
+
     this.fetchAllProducts();
   }
 
@@ -84,11 +90,7 @@ export class FiltersComponent {
   startRow: number = 0;
   endRow: number = 8;
   fetchAllProducts() {
-    this.http.get(`https://team7project2api.azurewebsites.net/store/${this.startRow}/${this.endRow}`, {
-      headers: {"Authorization": `Bearer ${this.accessToken}`},
-      observe: "response",
-      responseType: "json"
-    })
+    this.service.getProducts(this.startRow, this.endRow, this.accessToken)
       .subscribe((result: any) => {
         this.updatedProducts.emit(result.body)
       })
