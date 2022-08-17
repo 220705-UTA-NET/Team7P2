@@ -55,4 +55,4 @@ jobs:
             context: ./client/
             file: ./client/Dockerfile
             push: true
-            tags: ${{ secrets.DOCKERHUB_USERNAME }}/p2client:latest
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/p2client:newest
