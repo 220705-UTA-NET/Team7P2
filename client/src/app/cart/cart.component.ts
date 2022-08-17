@@ -32,8 +32,12 @@ export class CartComponent implements OnInit {
   // listening for changes to openModalCommand from parent (fires when user clicks cart icon to open modal)
   @Input() openModalCommand: boolean = false;
   ngOnChanges(changes: SimpleChanges) {
-    if (changes["openModalCommand"].previousValue != changes["openModalCommand"].currentValue) {
-      this.toggleCartModal();
+    try {
+      if (changes["openModalCommand"].previousValue != changes["openModalCommand"].currentValue) {
+        this.toggleCartModal();
+      }
+    } catch(ex: any) {
+
     }
   }
 

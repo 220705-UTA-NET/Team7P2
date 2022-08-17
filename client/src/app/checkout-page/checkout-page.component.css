@@ -30,9 +30,9 @@
 .line-item-single {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    gap: 10rem;
+    justify-content: space-between;
     font-size: 1.5rem;
+    padding: 0px 30px;
 }
 
 .container-subtotal {
@@ -73,7 +73,8 @@
 }
 
 .container-checkout button.btn-cancel {
-    background-color: rgb(255, 55, 55);
+    background-color: transparent;
+    color: red;
     width: 20%;
 }
 
@@ -103,7 +104,8 @@
 
 .container-order-list {
     border-top: 1px solid black;
-    width: 80%;
+    width: 95%;
+    margin: auto;
 }
 
 .confirmation-modal h3 {

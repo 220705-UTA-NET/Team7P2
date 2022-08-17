@@ -60,7 +60,7 @@ namespace Project3.Controllers
             }
         }
         
-        [HttpPost("/orders/checkout")]
+        [HttpPost("/orders/checkout/stripe")]
         public async Task<ActionResult> CreateCheckoutSession([FromBody] List<Jewelry> jewelry)
         {
             Dictionary<int, int> jewelryQuantities = new Dictionary<int, int>();
@@ -75,7 +75,7 @@ namespace Project3.Controllers
                     jewelryQuantities.Add(jewelryItem.id, 1);
                 }
             }
-
+            
             ProductService productService = new ProductService();
             List<SessionLineItemOptions> lineItems = new List<SessionLineItemOptions>();
             foreach (KeyValuePair<int, int> entry in jewelryQuantities)
@@ -95,14 +95,15 @@ namespace Project3.Controllers
             {
                 LineItems = lineItems,
                 Mode = "payment",
-                SuccessUrl = "https://example.com/success.html",
-                CancelUrl = "https://example.com/canceled.html",
+                SuccessUrl = "https://team7p2client.azurewebsites.net/",
+                CancelUrl = "https://team7p2client.azurewebsites.net/",
             };
             
             SessionService sessionService = new SessionService();
             try
             {
                 Session session = await sessionService.CreateAsync(options);
+                _logger.LogInformation("success");
                 return Ok(new CreateCheckoutSessionResponse
                 {
                     SessionUrl = session.Url,

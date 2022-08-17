@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {ApiService} from "../api.service";
 
 export interface Review {
   id: number,
@@ -18,10 +19,10 @@ export interface Review {
 
 export class ProductItemComponent {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private service: ApiService) {}
 
   ngAfterViewInit() {
-    // for initial setup
+    // for initial setup only
     if (this.iterator == 8) {
       this.iObserverSetup();
     }
@@ -35,6 +36,12 @@ export class ProductItemComponent {
   @Output() displayMoreProducts = new EventEmitter();
   ngOnChanges(changes: SimpleChanges) {
     if (changes['iterator'].currentValue % 8 == 0 && changes['iterator'].currentValue != 0 && changes['iterator'].currentValue != 8) {
+
+      // call to API occurs twice for the very first observer
+      // the reason is that the same observer that is initially set gets set a second time (as it comes into view) and thus re-fires
+      // occurs because the function to find other h3s with 'observe' class fires before the next bit of the content has been rendered
+      // setTimeout allows us to call the function the first time, but then blows up with a function being 'undefined'
+
       this.iObserverSetup();
     }
   }
@@ -53,7 +60,7 @@ export class ProductItemComponent {
           console.log("intersecting");
           observer.unobserve(nextObserver)
 
-          // re-comment once we have more products in the db
+          // doesn't matter what is emitted, just need the signal to fectch more products
           this.displayMoreProducts.emit(this.iterator);
         }
       })
@@ -70,9 +77,10 @@ export class ProductItemComponent {
       }
     })
     let nextObserver = observerList[observerList.length - 1]
-    console.log(nextObserver, observerList.length)
+    console.log(nextObserver)
 
     observer.observe(nextObserver);
+    observer.disconnect;
   }
 
   reviews: Review[] = [];
@@ -80,11 +88,7 @@ export class ProductItemComponent {
     event.stopPropagation();
     const itemId: string = event.target.id;
 
-    this.http.get(`https://team7project2api.azurewebsites.net/review/item/${itemId}`, {
-      headers: {"Authorization": `Bearer ${this.accessToken}`},
-      observe: "response",
-      responseType: "json"
-    })
+    this.service.getReviews(this.accessToken, itemId)
       .subscribe((result: any) => {
         // returns all results in an array, with content being the text
         const contentBody: Review[] = result.body

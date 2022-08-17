@@ -51,14 +51,13 @@ export class CheckoutPageComponent {
   makePurchase() {
     const customer: Customer = JSON.parse(localStorage.getItem("customer") || '{}');
     this.customer = customer;
-    console.log(customer["Access-Token"]);
-    console.log(JSON.stringify(this.cart));
     // make request to payment api
-    this.http.post<Session>("https://localhost:7208/orders/checkout", {
-      headers: { "Authorization": `Bearer ${customer["Access-Token"]}`},
-      observe: "response",
-      responseType: "json",
-      body: JSON.stringify(this.cart),
+    this.http.post<Session>("https://team7project2api.azurewebsites.net/orders/checkout/stripe", JSON.stringify(this.cart), {
+      headers: {
+        "Authorization": `Bearer ${customer["Access-Token"]}`,
+        "Content-Type": "application/json"
+      },
+      responseType: "json"
     }).subscribe((session: Session) => {
       window.open(session.sessionUrl, "_blank")
     })

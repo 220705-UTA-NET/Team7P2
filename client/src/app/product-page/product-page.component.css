@@ -69,6 +69,10 @@
     overflow-y: scroll;
 }
 
+.container-products::-webkit-scrollbar-thumb {
+    background-color: goldenrod;
+}
+
 .container-single-product {
     transition: linear all 0.2s;
     border: 1px solid white;
@@ -83,6 +87,7 @@
 .container-single-product:hover {
     transition: linear all 0.2s;
     background-color: rgb(218, 165, 32, 0.3);
+    transform: scale(1.01);
 }
 
 .container-cart-single {
