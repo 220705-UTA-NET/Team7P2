@@ -36,7 +36,7 @@ FOREIGN KEY (Customer_ID) REFERENCES Customers(Customer_ID));
 
 CREATE TABLE Jewelry   
 (Item_ID INT IDENTITY Not NULL UNIQUE,    
-Item_name NVARCHAR(16) NOT NULL,    
+Item_name NVARCHAR(20) NOT NULL,    
 Price Float NOT NULL,    
 Material NVARCHAR(30) NOT NULL,    
 item_Type NVARCHAR(30) NOT NULL,
