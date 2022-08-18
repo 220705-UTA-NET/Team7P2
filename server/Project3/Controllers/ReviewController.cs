@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project3.Data;
 using Project3.Model;
+using System.Text.Json;
 
 namespace Project3.Controllers
 {
@@ -53,12 +54,16 @@ namespace Project3.Controllers
         }
 
         [HttpPost("/review/{ProductID}/{CustomerID}")]
-        public async Task<ActionResult<Review>> AddReview(Review review)
+        public async Task<ActionResult> AddReview()
         {
             try
             {
+                using StreamReader reader = new StreamReader(Request.Body);
+                string json = await reader.ReadToEndAsync();
+                Review review = JsonSerializer.Deserialize<Review>(json);
+
                 await _repo.AddReview(review);
-                _logger.LogInformation("Adding Review...");
+                _logger.LogInformation($"Adding Review ... ");
                 return StatusCode(201);
             }
             catch (Exception ex)

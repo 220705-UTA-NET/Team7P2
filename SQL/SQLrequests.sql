@@ -80,6 +80,12 @@ INSERT into Jewelry VALUES ('cufflinks',200,'Metal','Accessory','https://upload.
 
 INSERT into Jewelry VALUES ('Brooch',1500,'Silver','Accessory','https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Wing_Brooch_MET_DT108.jpg/330px-Wing_Brooch_MET_DT108.jpg'),('Gold Ring',935,'Gold','Ring','https://thejoue.com/wp-content/uploads/2021/04/Chopard-18kt-rose-gold-Ice-Cube-Pure-diamond-ring-min-800x497.jpg');
 
+INSERT into Jewelry VALUES 
+('Diamond Necklace',2500,'Diamond','necklace','https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2F4.bp.blogspot.com%2F_Q5JWnk9IbJo%2FTOL6uDouKPI%2FAAAAAAAABRE%2Fwp7hIpV7B80%2Fs1600%2F00525%2BNK%2B103.60%2BCarat%2BDiamond%2BNecklace.jpg&f=1&nofb=1'),
+('Emerald earing',1900,'Emerald','accessory','https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fww1.prweb.com%2Fprfiles%2F2019%2F04%2F29%2F16275483%2FERG0070.jpg&f=1&nofb=1');
+
+
+
 INSERT INTO J_T VALUES(1,1,1),(1,1,2),(2,2,2);
 
 INSERT into Reviews VALUES(1,1,'08/08/2022','cool stuff',5),(1,2,'08/08/2022','exspensive stuff',4),(2,2,'08/08/2022','thank you',5);
