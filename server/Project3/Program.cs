@@ -13,7 +13,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-string ConnectionString = System.Environment.GetEnvironmentVariable("sql_connection_string") ?? throw new ArgumentNullException(nameof(ConnectionString));
+string ConnectionString = System.Environment.GetEnvironmentVariable("DB-Connection", EnvironmentVariableTarget.User);
+//string ConnectionString = System.Environment.GetEnvironmentVariable("sql_connection_string") ?? throw new ArgumentNullException(nameof(ConnectionString));
 
 builder.Services.AddAuthentication("OAuth")
     .AddJwtBearer("OAuth", config =>
