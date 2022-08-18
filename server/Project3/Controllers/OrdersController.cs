@@ -45,7 +45,7 @@ namespace Project3.Controllers
         }
 
         [HttpPost("/orders/{product_id}&{customer_id}")]
-        public async Task<ActionResult<Order>> MakePurchase(int product_id, int customer_id)
+        public async Task<ActionResult> MakePurchase(int product_id, int customer_id)
         {
             try
             {
