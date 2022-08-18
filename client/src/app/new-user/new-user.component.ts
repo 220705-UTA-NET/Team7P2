@@ -2,6 +2,7 @@ import { Component, Input, SimpleChanges } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../api.service';
+import {Buffer} from 'buffer';
 
 @Component({
   selector: 'app-new-user',
@@ -40,8 +41,9 @@ export class NewUserComponent {
 
     let passwordsMatch: boolean = this.checkPasswordMatch();
 
-    const tokenObject = JSON.parse(localStorage.getItem("customer") || '{}');
-    const accessToken = tokenObject["Access-Token"];
+    // testing only
+    // const tokenObject = JSON.parse(localStorage.getItem("customer") || '{}');
+    // const accessToken = tokenObject["Access-Token"];
 
     if (passwordsMatch) {
       // splitting up the form content since the server expects (customer, username, password)
@@ -60,7 +62,12 @@ export class NewUserComponent {
 
       const customerData = JSON.stringify(combinedData)
 
-      this.service.postUserCreation(customerData, accessToken)
+      // create the auth header for the newly forged account
+      let credentialBase: string = `${username}:${password}`;
+      let encodedString = Buffer.from(credentialBase).toString("base64");
+      let authCredentials = `Basic ${encodedString}`;
+
+      this.service.postUserCreation(customerData, authCredentials)
         .subscribe(() => {
           this.toggleCreationModal();
         })

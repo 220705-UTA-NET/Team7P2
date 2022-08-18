@@ -21,10 +21,10 @@ export class ApiService {
   }
 
   postUserCreation(customerData: string, accessToken: string) {
-    const response = this.http.post(`https://team7project2api.azurewebsites.net/customer`, customerData, {
+    const response = this.http.post(`https://team7project2api.azurewebsites.net/login`, customerData, {
       // header for testing only since create customer is stuck under auth
       headers: new HttpHeaders({
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `${accessToken}`,
         "Content-Type": "application/json"
         
       }),
@@ -37,6 +37,7 @@ export class ApiService {
 
   // product page requests
   getProducts(startRow: number, endRow: number, accessToken: string) {
+    console.log(accessToken)
     const response = this.http.get(`https://team7project2api.azurewebsites.net/store/${startRow}/${endRow}`, {
       headers: {"Authorization": `Bearer ${accessToken}`},
       observe: "response",
